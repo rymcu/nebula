@@ -4,7 +4,7 @@
       <header-view/>
     </el-header>
     <el-main>
-      <!--      <nuxt></nuxt>-->
+      <aside-view/>
     </el-main>
     <el-footer>
       <footer-view/>
@@ -15,12 +15,14 @@
 <script>
   import HeaderView from "./header";
   import FooterView from "./footer";
+  import AsideView from './aside/main';
 
   export default {
     name: "PcMain",
     components: {
       HeaderView,
-      FooterView
+      FooterView,
+      AsideView
     }
   }
 </script>
