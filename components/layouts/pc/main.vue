@@ -4,7 +4,7 @@
       <header-view/>
     </el-header>
     <el-main>
-      <aside-view/>
+      <aside-view key="aside"/>
     </el-main>
     <el-footer>
       <footer-view/>

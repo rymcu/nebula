@@ -50,5 +50,8 @@ export default {
   */
   build: {
     transpile: [/^element-ui/],
+  },
+  proxy: {
+    '/api': 'http://localhost:8099/vertical/'
   }
 }
