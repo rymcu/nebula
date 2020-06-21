@@ -13,6 +13,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import HeaderView from "./header";
   import FooterView from "./footer";
   import AsideView from './aside/main';
@@ -23,6 +24,9 @@
       HeaderView,
       FooterView,
       AsideView
+    },
+    computed: {
+      ...mapState('global', [])
     }
   }
 </script>

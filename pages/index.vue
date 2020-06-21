@@ -1,29 +1,7 @@
 <template>
   <div>
-    <pc-main-view v-if="!isMobile"/>
-    <mobile-main-view v-else/>
   </div>
 </template>
-
-<script>
-import PcMainView from '~/components/layouts/pc/main.vue'
-import MobileMainView from '~/components/layouts/mobile/main.vue'
-
-export default {
-  components: {
-    PcMainView,
-    MobileMainView
-  },
-  computed: {
-    theme() {
-      return this.$store.state.theme
-    },
-    isMobile() {
-      return this.$store.state.isMobile
-    }
-  }
-}
-</script>
 
 <style>
   .el-header {

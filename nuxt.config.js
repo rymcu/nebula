@@ -6,11 +6,23 @@ export default {
   */
   mode: 'universal',
   /*
+  ** Render configuration
+  */
+  render: {
+    csp: true
+  },
+  /*
+  ** Environment variable configuration
+  */
+  env: {
+    baseUrl: 'http://127.0.0.1:8099'
+  },
+  /*
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'RYMCU - 嵌入式知识学习交流平台',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -32,7 +44,7 @@ export default {
   */
   plugins: [
     '@/plugins/element-ui',
-    '@/plugins/axios'
+    // '@/plugins/axios'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -43,6 +55,7 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios'
   ],
   /*
   ** Build configuration
@@ -52,6 +65,9 @@ export default {
     transpile: [/^element-ui/],
   },
   proxy: {
-    '/api': 'http://localhost:8099/vertical/'
+    '/api': {
+      target: 'http://localhost:8099/vertical/',
+
+    }
   }
 }

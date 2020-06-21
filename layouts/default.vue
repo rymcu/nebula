@@ -1,8 +1,30 @@
 <template>
   <div>
-    <nuxt />
+    <pc-main-view v-if="!isMobile"/>
+    <mobile-main-view v-else/>
   </div>
 </template>
+<script>
+  import Vue from 'vue';
+  import PcMainView from '~/components/layouts/pc/main.vue';
+  import MobileMainView from '~/components/layouts/mobile/main.vue';
+
+  export default Vue.extend({
+    name: 'App',
+    components: {
+      PcMainView,
+      MobileMainView
+    },
+    computed: {
+      theme() {
+        return this.$store.state.global.theme
+      },
+      isMobile() {
+        return this.$store.state.global.isMobile
+      }
+    }
+  })
+</script>
 
 <style>
   body {
@@ -15,11 +37,13 @@
   }
 
   a, li {
-    text-decoration:none !important;
+    text-decoration: none !important;
   }
+
   h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, .h1 a, .h2 a, .h3 a, .h4 a, .h5 a, .h6 a {
     color: inherit;
   }
+
   h4, .h4 {
     font-size: 1.125rem;
   }
@@ -81,38 +105,38 @@
   }
 
   .article-summary-md {
-    position:relative;
-    line-height:1.4em;
+    position: relative;
+    line-height: 1.4em;
     /* 3 times the line-height to show 3 lines */
-    height:4.2em;
-    overflow:hidden;
+    height: 4.2em;
+    overflow: hidden;
   }
 
   .article-summary-md::after {
-    content:"...";
-    font-weight:bold;
-    position:absolute;
-    bottom:0;
-    right:0;
-    padding:0 20px 1px 45px;
+    content: "...";
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0 20px 1px 45px;
     /*background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;*/
   }
 
   .article-summary-sd {
-    position:relative;
-    line-height:1.4em;
+    position: relative;
+    line-height: 1.4em;
     /* 1 times the line-height to show 1 lines */
-    height:1.4em;
-    overflow:hidden;
+    height: 1.4em;
+    overflow: hidden;
   }
 
   .article-summary-sd::after {
-    content:"...";
-    font-weight:bold;
-    position:absolute;
-    bottom:0;
-    right:0;
-    padding:0 20px 1px 45px;
+    content: "...";
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0 20px 1px 45px;
     /*background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;*/
   }
 
@@ -154,6 +178,7 @@
   .text-left {
     text-align: left;
   }
+
   .text-right {
     text-align: right;
   }

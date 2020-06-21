@@ -1,7 +1,7 @@
 <template>
   <el-row class="wrapper">
     <el-col :xs="24" :sm="24" :xl="24" style="margin: 0 auto;">
-      <el-col v-for="article in articles" :key="article.idArticle" style="padding-bottom: 1rem;">
+      <el-col v-for="article in articles.data" :key="article.idArticle" style="padding-bottom: 1rem;">
         <el-card>
           <div class="card-body d-flex flex-column">
             <el-link @click="onRouter('article',article.articleLink)" :underline="false" style="margin-bottom: .5rem;">
@@ -49,52 +49,29 @@
 </template>
 
 <script>
-  export default {
-    name: "AsideMain",
+  import Vue from 'vue';
+  import { mapState } from 'vuex';
+
+  export default Vue.extend({
+    name: "PcAside",
     data() {
       return {
-        articles: [],
-        pagination: {
-          currentPage: 1,
-          pageSize: 10,
-          total: 0
-        }
       }
     },
+    computed: {
+      ...mapState({
+        articles: state => state.article.list.data,
+        pagination: state => state.article.list.data.pagination
+      })
+    },
     methods: {
-      currentChange(val){
-        this.getData(val);
-      },
-      async getData(p){
-        let _ts = this;
-        const responseTopData = await this.axios.get('/console/articles?page='+p);
-        if (responseTopData) {
-          responseTopData.pagination.currentPage = p;
-          _ts.$set(_ts, 'articles', responseTopData.articles);
-          _ts.$set(_ts, 'pagination', responseTopData.pagination);
-          window.scrollTo(0, 0);
-        }
-      },
-      onRouter (name, data) {
-        if (name === 'article') {
-          this.$router.push({
-            path: data
-          })
-        } else {
-          this.$router.push(
-            {
-              path: '/user/' + data
-            }
-          )
-        }
+      currentChange(p) {
+        console.log(p);
       }
     },
     mounted () {
-      this.$store.commit('setActiveMenu', 'home');
-      const p = this.pagination.currentPage;
-      this.getData(p);
     }
-  }
+  })
 </script>
 
 <style scoped>
