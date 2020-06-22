@@ -1,4 +1,4 @@
-export const actions = () => ({
+export const actions = {
   nuxtServerInit(store, {req}) {
     // 初始化时的全局任务
     const initFetchAppData = [
@@ -7,4 +7,4 @@ export const actions = () => ({
     ]
     return Promise.all(initFetchAppData)
   }
-})
+}

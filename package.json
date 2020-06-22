@@ -12,8 +12,11 @@
     "@nuxtjs/axios": "^5.11.0",
     "cross-env": "^7.0.2",
     "element-ui": "^2.13.2",
+    "express": "^4.17.1",
     "nuxt": "^2.13.0",
     "vditor": "^3.3.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@nuxtjs/proxy": "^2.0.0"
+  }
 }

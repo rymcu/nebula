@@ -8,14 +8,14 @@ export const state = () => ({
 })
 
 
-export const getters = () => ({
+export const getters = {
   isMobile: state => state.isMobile
-})
+}
 
-export const mutations = () => ({
+export const mutations = {
 
-})
+}
 
-export const actions = () => ({
+export const actions ={
 
-})
+}

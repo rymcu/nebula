@@ -4,7 +4,7 @@
       <header-view/>
     </el-header>
     <el-main>
-      <aside-view key="aside"/>
+      <nuxt :nuxt-child-key="$route.name" />
     </el-main>
     <el-footer>
       <footer-view/>
@@ -16,14 +16,12 @@
   import { mapState } from 'vuex'
   import HeaderView from "./header";
   import FooterView from "./footer";
-  import AsideView from './aside/main';
 
   export default {
     name: "PcMain",
     components: {
       HeaderView,
-      FooterView,
-      AsideView
+      FooterView
     },
     computed: {
       ...mapState('global', [])

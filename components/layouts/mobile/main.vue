@@ -17,7 +17,7 @@
   import MobileFooter from "./footer";
 
   export default {
-    name: "moblieMain",
+    name: "mobileMain",
     components: {MobileFooter, MobileHeader}
   }
 </script>

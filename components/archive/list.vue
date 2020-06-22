@@ -1,7 +1,7 @@
 <template>
   <el-row class="wrapper">
     <el-col :xs="24" :sm="24" :xl="24" style="margin: 0 auto;">
-      <el-col v-for="article in articles.data" :key="article.idArticle" style="padding-bottom: 1rem;">
+      <el-col v-for="article in articles.articles" :key="article.idArticle" style="padding-bottom: 1rem;">
         <el-card>
           <div class="card-body d-flex flex-column">
             <el-link @click="onRouter('article',article.articleLink)" :underline="false" style="margin-bottom: .5rem;">
@@ -36,10 +36,10 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination v-show="pagination.total > 10" v-model="pagination"
+          <el-pagination v-show="articles.pagination.total > 10" v-model="articles.pagination"
                          layout="prev, pager, next"
-                         :current-page="pagination.currentPage"
-                         :total="pagination.total"
+                         :current-page="articles.pagination.currentPage"
+                         :total="articles.pagination.total"
                          @current-change="currentChange">
           </el-pagination>
         </div>
@@ -49,29 +49,32 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import { mapState } from 'vuex';
-
-  export default Vue.extend({
-    name: "PcAside",
-    data() {
-      return {
+  export default {
+    name: "ArticleList",
+    props: {
+      articles: {
+        type: Object
       }
-    },
-    computed: {
-      ...mapState({
-        articles: state => state.article.list.data,
-        pagination: state => state.article.list.data.pagination
-      })
     },
     methods: {
-      currentChange(p) {
-        console.log(p);
+      currentChange(page) {
+        this.$emit('currentChange', page);
+      },
+      onRouter(name, data) {
+        if ("article" === name) {
+          this.$router.push({
+            path: data
+          })
+        } else {
+          this.$router.push(
+            {
+              path: '/user/' + data
+            }
+          )
+        }
       }
-    },
-    mounted () {
     }
-  })
+  }
 </script>
 
 <style scoped>
