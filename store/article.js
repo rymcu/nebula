@@ -41,7 +41,7 @@ export const mutations = {
     state.detail.fetching = action
   },
   updateDetailData(state, action) {
-    state.detail.data = action
+    state.detail.data = action.article
   },
 
   // 更新文章阅读全文状态
@@ -78,12 +78,13 @@ export const actions = {
 
   // 获取文章详情
   fetchDetail({ commit }, params = {}) {
-    const delay = fetchDelay(
-      isBrowser && isArticleDetailRoute(window.$nuxt.$route.name) ? null : 0
-    )
+    // const delay = fetchDelay(
+    //   isBrowser
+    // )
+    console.log(params)
     if (isBrowser) {
       Vue.nextTick(() => {
-        scrollTo(0, 300, { easing: Easing['ease-in'] })
+        window.scrollTo(0, 300);
       })
     }
     commit('updateDetailFetching', true)
@@ -91,13 +92,13 @@ export const actions = {
     return this.$axios
       .$get(`${ARTICLE_API_PATH}/article/${params.article_id}`)
       .then(response => {
-        return new Promise(resolve => {
-          delay(() => {
-            commit('updateDetailData', response.result)
-            commit('updateDetailFetching', false)
-            resolve(response)
-          })
-        })
+        commit('updateDetailData', response.data)
+        commit('updateDetailFetching', false)
+        // return new Promise(resolve => {
+        //   delay(() => {
+        //     resolve(response)
+        //   })
+        // })
       })
       .catch(error => {
         commit('updateDetailFetching', false)
