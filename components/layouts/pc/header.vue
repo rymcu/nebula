@@ -71,8 +71,12 @@
           </el-link>
         </el-col>
         <el-col v-else>
-          <el-link :underline="false" style="margin-left: 10px;" href="/login">登录</el-link>
-          <el-link :underline="false" style="margin-left: 10px;" href="/register">注册</el-link>
+          <nuxt-link to="login">
+            <el-link :underline="false" style="margin-left: 10px;">登录</el-link>
+          </nuxt-link>
+          <nuxt-link to="register">
+            <el-link :underline="false" style="margin-left: 10px;">注册</el-link>
+          </nuxt-link>
         </el-col>
       </el-col>
     </el-col>
