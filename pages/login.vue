@@ -77,15 +77,14 @@
               password: _ts.user.password
             }
 
-            _ts.axios.post('/console/login', _ts.qs.stringify(data)).then(function (res) {
-              if (res) {
-                if (res.message) {
-                  _ts.$message(res.message);
+            _ts.$axios.$post('/api/v1/console/login', data).then(function (res) {
+              if (res.data) {
+                if (res.data.message) {
+                  _ts.$message(res.data.message);
                   return false;
                 }
-                _ts.$store.commit('initLogin', res.user);
                 _ts.$router.push({
-                  name: 'home'
+                  name: 'index'
                 })
               }
             })

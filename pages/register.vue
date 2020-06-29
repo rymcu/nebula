@@ -61,9 +61,11 @@
           return false
         }
         let data = {
-          email: encodeURI(email)
+          email: email
         }
-        _ts.$axios.$post('/api/v1/console/get-email-code', data).then(response => {
+        _ts.$axios.$get('/api/v1/console/get-email-code', {
+          params: data
+        }).then(response => {
           if (response.data) {
             _ts.$message(response.data.message)
           }
@@ -78,10 +80,10 @@
               password: _ts.user.password,
               code: _ts.user.code
             }
-            _ts.$axios.$post('/console/register', _ts.qs.stringify(data)).then(function (res) {
-              if (res) {
-                _ts.$message(res.message);
-                if (res.flag && res.flag === 1) {
+            _ts.$axios.$post('/api/v1/console/register', data).then(function (res) {
+              if (res.data) {
+                _ts.$message(res.data.message);
+                if (res.data.flag && res.data.flag === 1) {
                   setTimeout(function () {
                     _ts.$router.push(
                       {
