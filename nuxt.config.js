@@ -1,6 +1,6 @@
 import appConfig from './config/app.config'
 import apiConfig from './config/api.config'
-import { isProdMode, isDevMode } from './environment'
+import {isProdMode, isDevMode} from './environment'
 
 
 export default {
@@ -32,13 +32,13 @@ export default {
   head: {
     title: appConfig.meta.title,
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'keywords', name: 'keywords', content: appConfig.meta.keywords },
-      { hid: 'description', name: 'description', content: appConfig.meta.description }
+      {charset: 'utf-8'},
+      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      {hid: 'keywords', name: 'keywords', content: appConfig.meta.keywords},
+      {hid: 'description', name: 'description', content: appConfig.meta.description}
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
     ]
   },
   /*
@@ -52,19 +52,18 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    '@/plugins/element-ui',
-    // '@/plugins/axios'
+    {src: '@/plugins/element-ui', ssr: true},
+    {src: '@/plugins/vditor', ssr: false}
   ],
   /*
   ** Nuxt.js dev-modules
   */
-  buildModules: [
-  ],
+  buildModules: [],
   /*
   ** Nuxt.js modules
   */
   modules: [
-    ['@nuxtjs/axios', { baseURL: apiConfig.BASE }]
+    ['@nuxtjs/axios', {baseURL: apiConfig.BASE}]
   ],
   /*
   ** Build configuration

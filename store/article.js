@@ -81,24 +81,24 @@ export const actions = {
     // const delay = fetchDelay(
     //   isBrowser
     // )
-    console.log(params)
-    if (isBrowser) {
-      Vue.nextTick(() => {
-        window.scrollTo(0, 300);
-      })
-    }
+    // if (isBrowser) {
+    //   Vue.nextTick(() => {
+    //     window.scrollTo(0, 300);
+    //   })
+    // }
     commit('updateDetailFetching', true)
-    commit('updateDetailData', {})
+    // commit('updateDetailData', {})
     return this.$axios
       .$get(`${ARTICLE_API_PATH}/article/${params.article_id}`)
       .then(response => {
-        commit('updateDetailData', response.data)
-        commit('updateDetailFetching', false)
-        // return new Promise(resolve => {
-        //   delay(() => {
-        //     resolve(response)
-        //   })
-        // })
+        return new Promise(resolve => {
+          commit('updateDetailData', response.data)
+          commit('updateDetailFetching', false)
+          resolve(response)
+          // delay(() => {
+          //   resolve(response)
+          // })
+        })
       })
       .catch(error => {
         commit('updateDetailFetching', false)

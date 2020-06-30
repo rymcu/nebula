@@ -78,6 +78,7 @@
             }
 
             _ts.$axios.$post('/api/v1/console/login', data).then(function (res) {
+              console.log(res);
               if (res.data) {
                 if (res.data.message) {
                   _ts.$message(res.data.message);

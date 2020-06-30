@@ -120,7 +120,7 @@
 <script>
   import Vue from 'vue';
   import { mapState } from 'vuex';
-  import VditorPreview from 'vditor/dist/method.min';
+
   export default {
     name: "ArticleDetail",
     validate({params, store}) {
@@ -140,6 +140,11 @@
         isFetching: state => state.article.detail.fetching,
         isMobile: state => state.global.isMobile,
       })
+    },
+    head () {
+      return {
+        title: this.article.articleTitle
+      }
     },
     data() {
       return {
@@ -188,21 +193,21 @@
     },
     mounted() {
       Vue.nextTick(() => {
-        const previewElement = document.getElementById("articleContent");
-        // //const outLineElement = document.getElementById("articleToC");
-        // VditorPreview.setContentTheme('light');
-        VditorPreview.codeRender(previewElement, 'zh_CN');
-        VditorPreview.highlightRender({"enable":true,"lineNumber":false,"style":"github"}, previewElement);
-        VditorPreview.mathRender(previewElement, {
-          math: {"engine":"KaTeX","inlineDigit":false,"macros":{}},
-        });
-        VditorPreview.mermaidRender(previewElement, ".language-mermaid");
-        VditorPreview.graphvizRender(previewElement);
-        VditorPreview.chartRender(previewElement);
-        VditorPreview.mindmapRender(previewElement);
-        VditorPreview.abcRender(previewElement);
-        VditorPreview.mediaRender(previewElement);
-        //VditorPreview.outlineRender(previewElement, outLineElement);
+          const previewElement = document.getElementById("articleContent");
+          // //const outLineElement = document.getElementById("articleToC");
+          // VditorPreview.setContentTheme('light');
+        Vue.VditorPreview.codeRender(previewElement, 'zh_CN');
+        Vue.VditorPreview.highlightRender({"enable":true,"lineNumber":false,"style":"github"}, previewElement);
+        Vue.VditorPreview.mathRender(previewElement, {
+            math: {"engine":"KaTeX","inlineDigit":false,"macros":{}},
+          });
+        Vue.VditorPreview.mermaidRender(previewElement, ".language-mermaid");
+        Vue.VditorPreview.graphvizRender(previewElement);
+        Vue.VditorPreview.chartRender(previewElement);
+        Vue.VditorPreview.mindmapRender(previewElement);
+        Vue.VditorPreview.abcRender(previewElement);
+        Vue.VditorPreview.mediaRender(previewElement);
+          //VditorPreview.outlineRender(previewElement, outLineElement);
       })
     }
 

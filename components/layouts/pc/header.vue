@@ -144,7 +144,6 @@
         let _ts = this;
         let activeMenu = _ts.$store.state.activeMenu;
         if (activeMenu !== item) {
-          this.$store.commit('setActiveMenu', item);
           if (item === 'topic') {
             _ts.$router.push(
               {
