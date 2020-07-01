@@ -52,7 +52,7 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    {src: '@/plugins/element-ui', ssr: true},
+    {src: '@/plugins/element-ui'},
     {src: '@/plugins/vditor', ssr: false}
   ],
   /*

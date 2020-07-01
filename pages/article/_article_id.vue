@@ -143,7 +143,41 @@
     },
     head () {
       return {
-        title: this.article.articleTitle
+        title: this.article.articleTitle||'RYMCU - 嵌入式知识学习交流平台',
+        meta: [
+          {
+            name: 'keywords',
+            content: this.article.articleTags || 'RYMCU'
+          },
+          {
+            name: 'description',
+            content: this.article.articlePreviewContent
+          },
+          {
+            name: 'site_name',
+            content: 'RYMCU'
+          },
+          {
+            name: 'url',
+            content: this.article.articlePermalink
+          },
+          {
+            name: 'og:title',
+            content: this.article.articleTitle + ' - RYMCU'
+          },
+          {
+            name: 'og:description',
+            content: this.article.articlePreviewContent
+          },
+          {
+            name: 'og:site_name',
+            content: 'RYMCU'
+          },
+          {
+            name: 'og:url',
+            content: this.article.articlePermalink
+          }
+        ]
       }
     },
     data() {
