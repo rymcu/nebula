@@ -1,3 +1,8 @@
+export const state = () => {
+  return {
+    activeMenu: 'index'
+  }
+}
 export const actions = {
   nuxtServerInit(store, {req}) {
     // 初始化时的全局任务

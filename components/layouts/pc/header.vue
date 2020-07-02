@@ -71,10 +71,10 @@
           </el-link>
         </el-col>
         <el-col v-else>
-          <nuxt-link to="login">
+          <nuxt-link to="/login">
             <el-link :underline="false" style="margin-left: 10px;">登录</el-link>
           </nuxt-link>
-          <nuxt-link to="register">
+          <nuxt-link to="/register">
             <el-link :underline="false" style="margin-left: 10px;">注册</el-link>
           </nuxt-link>
         </el-col>
@@ -91,16 +91,16 @@
         return this.$store.state.activeMenu;
       },
       isLogin() {
-        return this.$store.getters.isLogin;
+        return this.$store.getters['auth/isLogin'];
       },
       avatarURL() {
-        return this.$store.state.avatarURL;
+        return this.$store.state['auth/avatarURL'];
       },
       nickname() {
-        return this.$store.state.nickname;
+        return this.$store.state['auth/nickname'];
       },
       hasPermissions() {
-        return this.$store.getters.hasPermissions('blog_admin');
+        return this.$store.getters['auth/hasPermissions(\'blog_admin\')'];
       }
     },
     data() {
@@ -193,10 +193,10 @@
       },
       getUnreadNotifications() {
         let _ts = this;
-        _ts.axios.get('/notification/unread').then(function (res) {
+        _ts.$axios.$get('/api/v1/notification/unread').then(function (res) {
           if (res) {
-            _ts.$set(_ts, 'notifications', res.notifications);
-            _ts.$set(_ts, 'notificationNumbers', res.notifications.length == 0 ? "" : res.notifications.length);
+            _ts.$set(_ts, 'notifications', res.data.notifications);
+            _ts.$set(_ts, 'notificationNumbers', res.data.notifications.length == 0 ? "" : res.notifications.length);
           }
         })
       }

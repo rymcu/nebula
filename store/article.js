@@ -59,7 +59,7 @@ export const actions = {
   fetchList({commit}, params = {}) {
 
     // 清空已有数据
-    // commit('updateListData', getDefaultListData())
+    commit('updateListData', getDefaultListData())
     commit('updateListFetching', true)
 
     return this.$axios

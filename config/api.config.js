@@ -3,7 +3,7 @@ import { NODE_ENV } from '../environment'
 const apisMap = {
   development: {
     FE: 'http://localhost:3000',
-    BASE: 'http://localhost:8099/vertical',
+    BASE: 'https://rymcu.com/vertical-console',
     CDN: '',
     PROXY: '/proxy',
     SOCKET: 'http://localhost:3000',

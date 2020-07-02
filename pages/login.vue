@@ -52,6 +52,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   export default {
     name: "login",
     data() {
@@ -66,6 +67,11 @@
         forget: false,
         loading: false
       }
+    },
+    computed: {
+      ...mapState({
+        article: state => state.article.detail.data
+      })
     },
     methods: {
       login() {
@@ -84,6 +90,7 @@
                   _ts.$message(res.data.message);
                   return false;
                 }
+                _ts.$store.dispatch('auth/initLogin', res.data.user);
                 _ts.$router.push({
                   name: 'index'
                 })
