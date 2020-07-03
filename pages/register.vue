@@ -83,9 +83,9 @@
               code: _ts.user.code
             }
             _ts.$axios.$post('/api/v1/console/register', data).then(function (res) {
-              if (res.data) {
-                _ts.$message(res.data.message);
-                if (res.data.flag && res.data.flag === 1) {
+              if (res) {
+                _ts.$message(res.message);
+                if (res.flag && res.flag === 1) {
                   setTimeout(function () {
                     _ts.$router.push(
                       {

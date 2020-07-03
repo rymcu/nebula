@@ -52,6 +52,7 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    {src: '@/plugins/axios'},
     {src: '@/plugins/element-ui'},
     {src: '@/plugins/vditor', ssr: false}
   ],

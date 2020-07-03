@@ -226,7 +226,7 @@
             }
           })
         } else {
-          _ts.axios.get('/article/' + _ts.article.idArticle + '/share').then(function (res) {
+          _ts.$axios.$get('/api/v1/article/' + _ts.article.idArticle + '/share').then(function (res) {
             if (res) {
               _ts.$set(_ts, 'shareData', res);
               _ts.$set(_ts, 'isShare', true);
@@ -241,8 +241,8 @@
       }
     },
     mounted() {
+      this.$store.commit('setActiveMenu', 'articleDetail')
       Vue.nextTick(() => {
-        this.$store.commit('setActiveMenu', 'articleDetail')
         const previewElement = document.getElementById("articleContent");
         // //const outLineElement = document.getElementById("articleToC");
         // VditorPreview.setContentTheme('light');

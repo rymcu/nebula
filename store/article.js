@@ -66,7 +66,7 @@ export const actions = {
       .$get(`${ARTICLE_API_PATH}/articles`, {params})
       .then(response => {
         commit('updateListFetching', false)
-        commit('updateListData', response.data)
+        commit('updateListData', response)
         if (isBrowser) {
           Vue.nextTick(() => {
             window.scrollTo(0,0);
@@ -92,7 +92,7 @@ export const actions = {
       .$get(`${ARTICLE_API_PATH}/article/${params.article_id}`)
       .then(response => {
         return new Promise(resolve => {
-          commit('updateDetailData', response.data)
+          commit('updateDetailData', response)
           commit('updateDetailFetching', false)
           resolve(response)
           // delay(() => {

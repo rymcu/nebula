@@ -87,16 +87,16 @@
             }
 
             _ts.$axios.$post('/api/v1/console/login', data).then(function (res) {
-              if (res.data) {
-                if (res.data.message) {
-                  _ts.$message(res.data.message);
+              if (res) {
+                if (res.message) {
+                  _ts.$message(res.message);
                   return false;
                 }
                 let auth = {
-                  accessToken: res.data.user.token,
-                  nickname: res.data.user.nickname,
-                  avatarURL: res.data.user.avatarUrl,
-                  role: res.data.user.weights
+                  accessToken: res.user.token,
+                  nickname: res.user.nickname,
+                  avatarURL: res.user.avatarUrl,
+                  role: res.user.weights
                 }
                 _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
                 Cookie.set('auth', auth)
@@ -133,7 +133,7 @@
         let data = {
           email: email
         };
-        _ts.axios.post('/console/get-forget-password-email', _ts.qs.stringify(data)).then(function (res) {
+        _ts.axios.post('/console/get-forget-password-email', data).then(function (res) {
           _ts.loading = false;
           _ts.forget = false;
           if (res) {
