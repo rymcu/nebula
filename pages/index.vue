@@ -5,6 +5,7 @@
 </template>
 <script>
   import ArticleList from '~/components/archive/list'
+
   export default {
     name: 'Index',
     fetch({store}) {
@@ -24,6 +25,9 @@
       currentChangeArticle(page) {
         this.$store.dispatch('article/fetchList', {page: page})
       }
+    },
+    mounted() {
+      this.$store.commit('setActiveMenu', 'index')
     }
   }
 </script>

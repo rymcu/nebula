@@ -1,4 +1,3 @@
-
 export const meta = {
   title: 'RYMCU - 嵌入式知识学习交流平台',
   keywords: 'RYMCU,嵌入式,51,单片机,STM,STM8,STM32',
@@ -8,11 +7,9 @@ export const meta = {
   email: 'ronger@rymcu.com'
 }
 
-export const links = {
-}
+export const links = {}
 
-export const friendLinks = {
-}
+export const friendLinks = {}
 
 export const music = {
   id: '638949385'

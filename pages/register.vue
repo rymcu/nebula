@@ -69,7 +69,9 @@
           if (response.data) {
             _ts.$message(response.data.message)
           }
-        }).catch(error=>{ console.log(error) })
+        }).catch(error => {
+          console.log(error)
+        })
       },
       register() {
         let _ts = this;
@@ -107,6 +109,9 @@
           }
         )
       }
+    },
+    mounted() {
+      this.$store.commit('setActiveMenu', 'register')
     }
   }
 </script>

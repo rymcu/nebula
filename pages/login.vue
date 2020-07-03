@@ -52,9 +52,12 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import {mapState} from 'vuex';
+
+  const Cookie = process.client ? require('js-cookie') : undefined
   export default {
     name: "login",
+    middleware: 'notAuthenticated',
     data() {
       return {
         user: {
@@ -84,13 +87,19 @@
             }
 
             _ts.$axios.$post('/api/v1/console/login', data).then(function (res) {
-              console.log(res);
               if (res.data) {
                 if (res.data.message) {
                   _ts.$message(res.data.message);
                   return false;
                 }
-                _ts.$store.dispatch('auth/initLogin', res.data.user);
+                let auth = {
+                  accessToken: res.data.user.token,
+                  nickname: res.data.user.nickname,
+                  avatarURL: res.data.user.avatarUrl,
+                  role: res.data.user.weights
+                }
+                _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
+                Cookie.set('auth', auth)
                 _ts.$router.push({
                   name: 'index'
                 })
@@ -132,6 +141,9 @@
           }
         })
       }
+    },
+    mounted() {
+      this.$store.commit('setActiveMenu', 'login')
     }
   }
 </script>

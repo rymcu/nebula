@@ -1,4 +1,4 @@
-import { NODE_ENV } from '../environment'
+import {NODE_ENV} from '../environment'
 
 const apisMap = {
   development: {

@@ -13,12 +13,14 @@
                 </el-col>
                 <el-col :xs="9" :sm="11" :xl="11">
                   <div style="margin-left: 1rem;">
-                    <el-link @click="onRouter('user', article.articleAuthorName)" :underline="false" class="text-default" >{{ article.articleAuthorName }}</el-link>
+                    <el-link @click="onRouter('user', article.articleAuthorName)" :underline="false"
+                             class="text-default">{{ article.articleAuthorName }}
+                    </el-link>
                     <small class="d-block text-muted">{{ article.timeAgo }}</small>
                   </div>
                 </el-col>
                 <el-col :xs="12" :sm="12" :xl="12" v-if="isLogin" class="text-right">
-                  <el-dropdown trigger="click"  @command="handleCommand">
+                  <el-dropdown trigger="click" @command="handleCommand">
                     <el-link :underline="false"><i class="el-icon-more"></i></el-link>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item command="edit" v-if="hasPermissions">编辑</el-dropdown-item>
@@ -27,7 +29,8 @@
                   </el-dropdown>
                 </el-col>
                 <el-col class="text-right">
-                  <el-link :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span></el-link>
+                  <el-link :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
+                  </el-link>
                 </el-col>
                 <el-col style="margin: 1rem 0;">
                   <el-tag
@@ -49,29 +52,32 @@
                         <el-avatar :size="24" :src="portfolio.headImgUrl"></el-avatar>
                       </el-col>
                       <el-col :xs="20" :sm="20" :xl="20">
-                        <el-link @click="onRouter('portfolio', portfolio.idPortfolio)" :underline="false" class="text-default">{{ portfolio.portfolioTitle }}</el-link>
+                        <el-link @click="onRouter('portfolio', portfolio.idPortfolio)" :underline="false"
+                                 class="text-default">{{ portfolio.portfolioTitle }}
+                        </el-link>
                       </el-col>
                     </el-col>
                   </el-col>
                 </el-col>
-<!--                <el-col v-if="isShare" style="margin-bottom: 1rem;">-->
-<!--                  <el-input v-model="shareData.shareUrl">-->
-<!--                    <el-popover slot="append"-->
-<!--                                placement="bottom"-->
-<!--                                width="20"-->
-<!--                                trigger="hover">-->
-<!--                      <el-col>-->
-<!--                        <qrcode :value="shareWeiXin(shareData.shareUrl)" :options="{ width: 20 }"></qrcode>-->
-<!--                      </el-col>-->
-<!--                      <el-col class="text-center">-->
-<!--                        <span>扫码分享至微信</span>-->
-<!--                      </el-col>-->
-<!--                      <el-button slot="reference"><el-image style="width: 14px;height: 14px;" :src="weiXin" fit="cover"></el-image></el-button>-->
-<!--                    </el-popover>-->
-<!--                  </el-input>-->
-<!--                </el-col>-->
+                <!--                <el-col v-if="isShare" style="margin-bottom: 1rem;">-->
+                <!--                  <el-input v-model="shareData.shareUrl">-->
+                <!--                    <el-popover slot="append"-->
+                <!--                                placement="bottom"-->
+                <!--                                width="20"-->
+                <!--                                trigger="hover">-->
+                <!--                      <el-col>-->
+                <!--                        <qrcode :value="shareWeiXin(shareData.shareUrl)" :options="{ width: 20 }"></qrcode>-->
+                <!--                      </el-col>-->
+                <!--                      <el-col class="text-center">-->
+                <!--                        <span>扫码分享至微信</span>-->
+                <!--                      </el-col>-->
+                <!--                      <el-button slot="reference"><el-image style="width: 14px;height: 14px;" :src="weiXin" fit="cover"></el-image></el-button>-->
+                <!--                    </el-popover>-->
+                <!--                  </el-input>-->
+                <!--                </el-col>-->
               </el-row>
-              <div class="pt-7 pipe-content__reset vditor-reset" id="articleContent" v-html="article.articleContent" style="overflow: hidden;"></div>
+              <div class="pt-7 pipe-content__reset vditor-reset" id="articleContent" v-html="article.articleContent"
+                   style="overflow: hidden;"></div>
             </div>
           </div>
         </el-card>
@@ -83,25 +89,25 @@
         <el-col :xs="22" :sm="23" :xl="23" style="padding-left: 1rem;">
           <el-input @click.native="showComment" placeholder="请输入回帖内容"></el-input>
         </el-col>
-<!--        <el-col>-->
-<!--          <el-drawer-->
-<!--            :visible.sync="drawer"-->
-<!--            :direction="direction"-->
-<!--            size="40%">-->
-<!--            <el-col slot="title">-->
-<!--              <el-col>-->
-<!--                <el-avatar v-if="commentAuthorAvatar" :src="commentAuthorAvatar"></el-avatar>-->
-<!--                <span class="text-default" style="padding-left: 1rem;">{{ title }}</span>-->
-<!--              </el-col>-->
-<!--            </el-col>-->
-<!--            <el-col>-->
-<!--              <div id="contentEditor"></div>-->
-<!--            </el-col>-->
-<!--            <el-col style="margin-top: 1rem;padding-right:3rem;text-align: right;">-->
-<!--              <el-button type="primary" :loading="loading" @click="postComment">发布</el-button>-->
-<!--            </el-col>-->
-<!--          </el-drawer>-->
-<!--        </el-col>-->
+        <!--        <el-col>-->
+        <!--          <el-drawer-->
+        <!--            :visible.sync="drawer"-->
+        <!--            :direction="direction"-->
+        <!--            size="40%">-->
+        <!--            <el-col slot="title">-->
+        <!--              <el-col>-->
+        <!--                <el-avatar v-if="commentAuthorAvatar" :src="commentAuthorAvatar"></el-avatar>-->
+        <!--                <span class="text-default" style="padding-left: 1rem;">{{ title }}</span>-->
+        <!--              </el-col>-->
+        <!--            </el-col>-->
+        <!--            <el-col>-->
+        <!--              <div id="contentEditor"></div>-->
+        <!--            </el-col>-->
+        <!--            <el-col style="margin-top: 1rem;padding-right:3rem;text-align: right;">-->
+        <!--              <el-button type="primary" :loading="loading" @click="postComment">发布</el-button>-->
+        <!--            </el-col>-->
+        <!--          </el-drawer>-->
+        <!--        </el-col>-->
       </el-col>
       <el-col v-else class="text-center" style="margin-top: 1rem;">
         <el-button type="primary" size="medium" @click="gotoLogin">登录</el-button>
@@ -119,7 +125,7 @@
 
 <script>
   import Vue from 'vue';
-  import { mapState } from 'vuex';
+  import {mapState} from 'vuex';
 
   export default {
     name: "ArticleDetail",
@@ -139,11 +145,22 @@
         article: state => state.article.detail.data,
         isFetching: state => state.article.detail.fetching,
         isMobile: state => state.global.isMobile,
-      })
+        isLogin: state => state.oauth,
+        avatar: state => state.oauth?.avatarURL,
+      }),
+      hasPermissions() {
+        let account = this.$store.state.oauth?.nickname;
+        if (account) {
+          if (account === this.article.articleAuthor.userNickname) {
+            return true;
+          }
+        }
+        return this.$store.getters.hasPermissions('blog_admin');
+      }
     },
-    head () {
+    head() {
       return {
-        title: this.article.articleTitle||'RYMCU - 嵌入式知识学习交流平台',
+        title: this.article.articleTitle || 'RYMCU - 嵌入式知识学习交流平台',
         meta: [
           {
             name: 'keywords',
@@ -184,14 +201,12 @@
       return {
         isShow: true,
         loading: false,
-        isLogin: false,
         isShare: false,
         shareData: {},
-        avatar: ''
       }
     },
     methods: {
-      onRouter (name, data) {
+      onRouter(name, data) {
         this.$router.push(
           {
             name: name,
@@ -227,21 +242,22 @@
     },
     mounted() {
       Vue.nextTick(() => {
-          const previewElement = document.getElementById("articleContent");
-          // //const outLineElement = document.getElementById("articleToC");
-          // VditorPreview.setContentTheme('light');
+        this.$store.commit('setActiveMenu', 'articleDetail')
+        const previewElement = document.getElementById("articleContent");
+        // //const outLineElement = document.getElementById("articleToC");
+        // VditorPreview.setContentTheme('light');
         Vue.VditorPreview.codeRender(previewElement, 'zh_CN');
-        Vue.VditorPreview.highlightRender({"enable":true,"lineNumber":false,"style":"github"}, previewElement);
+        Vue.VditorPreview.highlightRender({"enable": true, "lineNumber": false, "style": "github"}, previewElement);
         Vue.VditorPreview.mathRender(previewElement, {
-            math: {"engine":"KaTeX","inlineDigit":false,"macros":{}},
-          });
+          math: {"engine": "KaTeX", "inlineDigit": false, "macros": {}},
+        });
         Vue.VditorPreview.mermaidRender(previewElement, ".language-mermaid");
         Vue.VditorPreview.graphvizRender(previewElement);
         Vue.VditorPreview.chartRender(previewElement);
         Vue.VditorPreview.mindmapRender(previewElement);
         Vue.VditorPreview.abcRender(previewElement);
         Vue.VditorPreview.mediaRender(previewElement);
-          //VditorPreview.outlineRender(previewElement, outLineElement);
+        //VditorPreview.outlineRender(previewElement, outLineElement);
       })
     }
 
@@ -250,6 +266,7 @@
 
 <style lang="scss">
   @import "~vditor/src/assets/scss/index.scss";
+
   .article__wrapper {
     max-width: 980px;
     margin: 0 auto;

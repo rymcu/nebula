@@ -63,7 +63,9 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    ['@nuxtjs/axios', {baseURL: apiConfig.BASE}]
+    ['@nuxtjs/axios', {baseURL: apiConfig.BASE}],
+    'js-cookie',
+    'cookieparser'
   ],
   /*
   ** Build configuration

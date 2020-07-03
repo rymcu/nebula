@@ -84,6 +84,7 @@
 </template>
 
 <script>
+  const Cookie = process.client ? require('js-cookie') : undefined
   export default {
     name: "PcHeader",
     computed: {
@@ -91,16 +92,16 @@
         return this.$store.state.activeMenu;
       },
       isLogin() {
-        return this.$store.getters['auth/isLogin'];
+        return this.$store.state.oauth;
       },
       avatarURL() {
-        return this.$store.state['auth/avatarURL'];
+        return this.$store.state.oauth?.avatarURL;
       },
       nickname() {
-        return this.$store.state['auth/nickname'];
+        return this.$store.state.oauth?.nickname;
       },
       hasPermissions() {
-        return this.$store.getters['auth/hasPermissions(\'blog_admin\')'];
+        return this.$store.getters.hasPermissions('blog_admin');
       }
     },
     data() {
@@ -184,7 +185,8 @@
           })
         }
         if (item === 'logout') {
-          _ts.$store.commit('logout');
+          Cookie.remove('auth')
+          _ts.$store.commit('setAuth', null)
           item = 'login';
         }
         _ts.$router.push({
@@ -193,12 +195,18 @@
       },
       getUnreadNotifications() {
         let _ts = this;
-        _ts.$axios.$get('/api/v1/notification/unread').then(function (res) {
-          if (res) {
-            _ts.$set(_ts, 'notifications', res.data.notifications);
-            _ts.$set(_ts, 'notificationNumbers', res.data.notifications.length == 0 ? "" : res.notifications.length);
-          }
-        })
+        if (_ts.isLogin) {
+          _ts.$axios.$get('/api/v1/notification/unread', {
+            headers: {
+              Authorization: _ts.$store.state.oauth?.accessToken
+            }
+          }).then(function (res) {
+            if (res) {
+              _ts.$set(_ts, 'notifications', res.data.notifications);
+              _ts.$set(_ts, 'notificationNumbers', res.data.notifications.length == 0 ? "" : res.data.notifications.length);
+            }
+          })
+        }
       }
     },
     mounted() {
