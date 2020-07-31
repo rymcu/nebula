@@ -74,7 +74,7 @@ export default {
   },
   proxy: [  //proxy配置
     ['/api', {
-      target:'https://rymcu.com/vertical-console/',  //api请求路径
+      target: apiConfig.BASE,  //api请求路径
       pathRewrite: { '^/api' : '/api/v1' }  //重定向请求路径，防止路由、api路径的冲突
     }]
   ],

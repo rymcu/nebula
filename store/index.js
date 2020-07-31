@@ -32,6 +32,7 @@ export const actions = {
     }
     const initFetchAppData = [
       // 内容数据
+      store.dispatch('topic/fetchList'),
       store.dispatch('article/fetchList')
     ]
     return Promise.all(initFetchAppData)

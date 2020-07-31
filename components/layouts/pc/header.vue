@@ -32,8 +32,8 @@
             @select="handleSelect"
           />
         </el-col>
-        <!--<el-col v-if="isLogin" :xs="0" :sm="8" :xl="6">-->
-        <el-col v-if="isLogin">
+        <!--<el-col v-if="user" :xs="0" :sm="8" :xl="6">-->
+        <el-col v-if="user">
           <el-link :underline="false" style="padding-left: 10px;padding-right: 10px;" href="/post-portfolio">创建作品集
           </el-link>
           <el-link :underline="false" style="padding-left: 10px;padding-right: 10px;" href="/post-article">发帖</el-link>
@@ -91,7 +91,7 @@
       getActiveMenu() {
         return this.$store.state.activeMenu;
       },
-      isLogin() {
+      user() {
         return this.$store.state.oauth;
       },
       avatarURL() {
@@ -115,7 +115,7 @@
       };
     },
     watch: {
-      isLogin: function () {
+      user: function () {
         this.getUnreadNotifications();
       }
     },
@@ -145,25 +145,23 @@
         let _ts = this;
         let activeMenu = _ts.$store.state.activeMenu;
         if (activeMenu !== item) {
-          if (item === 'topic') {
-            _ts.$router.push(
-              {
-                name: item,
-                params: {
-                  name: '51mcu'
+          switch (item) {
+            case 'topic':
+              _ts.$router.push({
+                path: '/topic/news'
+              })
+              break;
+            case 'github':
+              window.open("https://github.com/Hugh-rymcu");
+              return false;
+              break;
+            default:
+              _ts.$router.push(
+                {
+                  name: item
                 }
-              }
-            )
+              )
           }
-          if (item === 'github') {
-            window.open("https://github.com/Hugh-rymcu");
-            return false;
-          }
-          _ts.$router.push(
-            {
-              name: item
-            }
-          )
         }
       },
       handleSelect(item) {
@@ -171,31 +169,34 @@
       },
       handleCommand(item) {
         let _ts = this;
-        if (item === 'user') {
-          _ts.$router.push({
-            path: '/user/' + _ts.$store.state.nickname
-          })
+        switch (item) {
+          case 'user':
+            _ts.$router.push({
+              path: '/user/' + _ts.nickname
+            })
+            break;
+          case 'user-info':
+            _ts.$router.push({
+              name: 'account',
+              params: {
+                id: _ts.user.idUser
+              }
+            })
+            break;
+          case 'logout':
+            Cookie.remove('auth')
+            _ts.$store.commit('setAuth', null)
+            item = 'login';
+            break;
+          default:
+            _ts.$router.push({
+              name: item
+            })
         }
-        if (item === 'user-info') {
-          _ts.$router.push({
-            name: 'account',
-            params: {
-              id: _ts.$store.state.idUser
-            }
-          })
-        }
-        if (item === 'logout') {
-          Cookie.remove('auth')
-          _ts.$store.commit('setAuth', null)
-          item = 'login';
-        }
-        _ts.$router.push({
-          name: item
-        })
       },
       getUnreadNotifications() {
         let _ts = this;
-        if (_ts.isLogin) {
+        if (_ts.user) {
           _ts.$axios.$get('/api/notification/unread').then(function (res) {
             if (res) {
               _ts.$set(_ts, 'notifications', res.notifications);
@@ -207,8 +208,8 @@
     },
     mounted() {
       this.restaurants = this.loadAll();
-      let isLogin = this.isLogin;
-      if (isLogin) {
+      let user = this.user;
+      if (user) {
         this.getUnreadNotifications();
       }
     }
