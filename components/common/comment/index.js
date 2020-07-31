@@ -1,7 +1,7 @@
 /**
  * @file Comment box component / ES module
  * @module components/common/comment
- * @author Surmon <https://github.com/surmon-china>
+ * @author Ronger <https://github.com/ronger-x>
  */
 
 import Comment from './main'

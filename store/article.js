@@ -61,9 +61,15 @@ export const actions = {
     // 清空已有数据
     commit('updateListData', getDefaultListData())
     commit('updateListFetching', true)
+    let data = {
+      page: params.page,
+      topicUri: params.topic_uri
+    }
 
     return this.$axios
-      .$get(`${ARTICLE_API_PATH}/articles`, {params})
+      .$get(`${ARTICLE_API_PATH}/articles`, {
+        params: data
+      })
       .then(response => {
         commit('updateListFetching', false)
         commit('updateListData', response)

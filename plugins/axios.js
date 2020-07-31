@@ -1,7 +1,11 @@
+// const Cookie = require('js-cookie')
 export default function ({app, $axios, store, redirect}) {
   $axios.onRequest(config => {
-    if (!(config.url.indexOf('console') > -1)) {
-      config.headers['Authorization'] = store.state.oauth?.accessToken
+    let token = store.state.oauth?.accessToken;
+    if (token) {
+      if (!(config.url.indexOf('console') > -1)) {
+        config.headers['Authorization'] = store.state.oauth?.accessToken
+      }
     }
   })
   $axios.onResponse(response => {
@@ -16,24 +20,17 @@ export default function ({app, $axios, store, redirect}) {
       if (response.data.success) {
         resolve(response.data);
       } else {
-        if (response.data.code === 0) {
+        if (response.data.code === '0') {
           app.$message(message);
-        } else if (response.data.code === 401) {
-          store.commit('logout');
-          app.$router.push({
-            name: 'login'
-          })
-        } else if (response.data.code === 402) {
-          store.commit('logout');
-          app.$router.push({
-            name: 'login',
-            query: {
-              historyUrl: window.location.href
-            }
-          })
-        } else if (response.data.code === 404) {
+        } else if (response.data.code === '401') {
+          // Cookie.remove('auth')
+          store.commit('setAuth', null);
+        } else if (response.data.code === '402') {
+          // Cookie.remove('auth')
+          store.commit('setAuth', null);
+        } else if (response.data.code === '404') {
           app.$message('操作失败，请稍后再试......')
-        } else if (response.data.code === 500) {
+        } else if (response.data.code === '500') {
           app.$message('服务器正在开小差，请稍后再试......')
         }
       }
@@ -43,9 +40,9 @@ export default function ({app, $axios, store, redirect}) {
   $axios.onError(error => {
     const code = parseInt(error.response && error.response.status)
     if (code === 400) {
-      redirect('/400')
+      redirect('/400');
     } else {
-      console.log('网络异常')
+      console.log(error.data);
     }
   })
 }

@@ -1,7 +1,7 @@
 /**
  * @file 评论数据状态 / ES module
  * @module store/comment
- * @author Surmon <https://github.com/surmon-china>
+ * @author Ronger <https://github.com/ronger-x>
  */
 
 export const COMMENT_API_PATH = '/api/article/'

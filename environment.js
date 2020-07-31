@@ -1,7 +1,7 @@
 /**
  * @file Environment / ES module
  * @module environment
- * @author Surmon <https://github.com/surmon-china>
+ * @author Ronger <https://github.com/ronger-x>
  */
 
 export const environment = process.env
