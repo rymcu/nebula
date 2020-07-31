@@ -182,10 +182,7 @@
       onRouter(name, data) {
         this.$router.push(
           {
-            name: name,
-            params: {
-              id: data
-            }
+            path: `/${name}/${data}`
           }
         )
       },
