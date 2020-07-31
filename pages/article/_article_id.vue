@@ -19,7 +19,7 @@
                     <small class="d-block text-muted">{{ article.timeAgo }}</small>
                   </div>
                 </el-col>
-                <el-col :xs="12" :sm="12" :xl="12" v-if="isLogin" class="text-right">
+                <el-col :xs="12" :sm="12" :xl="12" v-if="user" class="text-right">
                   <el-dropdown trigger="click" @command="handleCommand">
                     <el-link :underline="false"><i class="el-icon-more"></i></el-link>
                     <el-dropdown-menu slot="dropdown">
@@ -82,39 +82,9 @@
           </div>
         </el-card>
       </el-col>
-      <el-col v-if="isLogin" style="margin-top: 1rem;">
-        <el-col :xs="2" :sm="1" :xl="1">
-          <el-avatar :src="avatar"></el-avatar>
-        </el-col>
-        <el-col :xs="22" :sm="23" :xl="23" style="padding-left: 1rem;">
-          <el-input @click.native="showComment" placeholder="请输入回帖内容"></el-input>
-        </el-col>
-        <!--        <el-col>-->
-        <!--          <el-drawer-->
-        <!--            :visible.sync="drawer"-->
-        <!--            :direction="direction"-->
-        <!--            size="40%">-->
-        <!--            <el-col slot="title">-->
-        <!--              <el-col>-->
-        <!--                <el-avatar v-if="commentAuthorAvatar" :src="commentAuthorAvatar"></el-avatar>-->
-        <!--                <span class="text-default" style="padding-left: 1rem;">{{ title }}</span>-->
-        <!--              </el-col>-->
-        <!--            </el-col>-->
-        <!--            <el-col>-->
-        <!--              <div id="contentEditor"></div>-->
-        <!--            </el-col>-->
-        <!--            <el-col style="margin-top: 1rem;padding-right:3rem;text-align: right;">-->
-        <!--              <el-button type="primary" :loading="loading" @click="postComment">发布</el-button>-->
-        <!--            </el-col>-->
-        <!--          </el-drawer>-->
-        <!--        </el-col>-->
-      </el-col>
-      <el-col v-else class="text-center" style="margin-top: 1rem;">
-        <el-button type="primary" size="medium" @click="gotoLogin">登录</el-button>
-        后发布评论
-      </el-col>
       <el-col>
-        <!--        <Comment :comments="article.articleComments" :reply="reply"></Comment>-->
+        <comment-box :fetching="isFetching" :user="user" :avatar="avatar" :title="article.articleTitle"
+        :post-id="routeArticleId"></comment-box>
       </el-col>
     </el-col>
     <el-col v-else>
@@ -137,7 +107,7 @@
         store
           .dispatch('article/fetchDetail', params)
           .catch(err => error({statusCode: 404})),
-        // store.dispatch('comment/fetchList', {post_id: params.article_id})
+        store.dispatch('comment/fetchList', {post_id: params.article_id})
       ])
     },
     computed: {
@@ -145,8 +115,8 @@
         article: state => state.article.detail.data,
         isFetching: state => state.article.detail.fetching,
         isMobile: state => state.global.isMobile,
-        isLogin: state => state.oauth,
-        avatar: state => state.oauth?.avatarURL,
+        user: state => state.oauth,
+        avatar: state => state.oauth?.avatarURL
       }),
       hasPermissions() {
         let account = this.$store.state.oauth?.nickname;
@@ -156,6 +126,9 @@
           }
         }
         return this.$store.getters.hasPermissions('blog_admin');
+      },
+      routeArticleId() {
+        return Number(this.$route.params.article_id)
       }
     },
     head() {
@@ -226,7 +199,7 @@
             }
           })
         } else {
-          _ts.$axios.$get('/api/v1/article/' + _ts.article.idArticle + '/share').then(function (res) {
+          _ts.$axios.$get('/api/article/' + _ts.article.idArticle + '/share').then(function (res) {
             if (res) {
               _ts.$set(_ts, 'shareData', res);
               _ts.$set(_ts, 'isShare', true);
@@ -241,7 +214,7 @@
       }
     },
     mounted() {
-      this.$store.commit('setActiveMenu', 'articleDetail')
+      this.$store.commit('setActiveMenu', 'articleDetail');
       Vue.nextTick(() => {
         const previewElement = document.getElementById("articleContent");
         // //const outLineElement = document.getElementById("articleToC");
@@ -258,6 +231,7 @@
         Vue.VditorPreview.abcRender(previewElement);
         Vue.VditorPreview.mediaRender(previewElement);
         //VditorPreview.outlineRender(previewElement, outLineElement);
+        window.scrollTo(0,0);
       })
     }
 

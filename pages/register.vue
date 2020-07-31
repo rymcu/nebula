@@ -63,7 +63,7 @@
         let data = {
           email: email
         }
-        _ts.$axios.$get('/api/v1/console/get-email-code', {
+        _ts.$axios.$get('/api/console/get-email-code', {
           params: data
         }).then(response => {
           if (response.data) {
@@ -82,7 +82,7 @@
               password: _ts.user.password,
               code: _ts.user.code
             }
-            _ts.$axios.$post('/api/v1/console/register', data).then(function (res) {
+            _ts.$axios.$post('/api/console/register', data).then(function (res) {
               if (res) {
                 _ts.$message(res.message);
                 if (res.flag && res.flag === 1) {

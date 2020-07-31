@@ -196,7 +196,7 @@
       getUnreadNotifications() {
         let _ts = this;
         if (_ts.isLogin) {
-          _ts.$axios.$get('/api/v1/notification/unread', {
+          _ts.$axios.$get('/api/notification/unread', {
             headers: {
               Authorization: _ts.$store.state.oauth?.accessToken
             }

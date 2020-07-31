@@ -86,7 +86,7 @@
               password: _ts.user.password
             }
 
-            _ts.$axios.$post('/api/v1/console/login', data).then(function (res) {
+            _ts.$axios.$post('/api/console/login', data).then(function (res) {
               if (res) {
                 if (res.message) {
                   _ts.$message(res.message);
@@ -96,6 +96,7 @@
                   accessToken: res.user.token,
                   nickname: res.user.nickname,
                   avatarURL: res.user.avatarUrl,
+                  idUser: res.user.idUser,
                   role: res.user.weights
                 }
                 _ts.$store.commit('setAuth', auth) // mutating to store for client rendering

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { isBrowser } from '~/environment';
 
-export const ARTICLE_API_PATH = '/api/v1/console'
+export const ARTICLE_API_PATH = '/api/console'
 
 const getDefaultListData = () => {
   return {

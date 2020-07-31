@@ -196,10 +196,10 @@
       getUnreadNotifications() {
         let _ts = this;
         if (_ts.isLogin) {
-          _ts.$axios.$get('/api/v1/notification/unread').then(function (res) {
+          _ts.$axios.$get('/api/notification/unread').then(function (res) {
             if (res) {
-              _ts.$set(_ts, 'notifications', res.data.notifications);
-              _ts.$set(_ts, 'notificationNumbers', res.data.notifications.length == 0 ? "" : res.data.notifications.length);
+              _ts.$set(_ts, 'notifications', res.notifications);
+              _ts.$set(_ts, 'notificationNumbers', res.notifications.length == 0 ? "" : res.notifications.length);
             }
           })
         }

@@ -2,7 +2,6 @@ import appConfig from './config/app.config'
 import apiConfig from './config/api.config'
 import {isProdMode, isDevMode} from './environment'
 
-
 export default {
   /*
   ** Nuxt rendering mode
@@ -13,7 +12,7 @@ export default {
   ** Render configuration
   */
   render: {
-    csp: true
+    csp: false
   },
   modern: true,
   dev: isDevMode,
@@ -52,9 +51,10 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    {src: '@/plugins/axios'},
-    {src: '@/plugins/element-ui'},
-    {src: '@/plugins/vditor', ssr: false}
+    {src: '~/plugins/extend'},
+    {src: '~/plugins/axios'},
+    {src: '~/plugins/element-ui'},
+    {src: '~/plugins/vditor', ssr: false}
   ],
   /*
   ** Nuxt.js dev-modules
@@ -64,9 +64,19 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    ['@nuxtjs/axios', {baseURL: apiConfig.BASE}],
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy',
     'js-cookie',
     'cookieparser'
+  ],
+  axios: {
+    proxy: true  // 开启proxy
+  },
+  proxy: [  //proxy配置
+    ['/api', {
+      target:'https://rymcu.com/vertical-console/',  //api请求路径
+      pathRewrite: { '^/api' : '/api/v1' }  //重定向请求路径，防止路由、api路径的冲突
+    }]
   ],
   /*
   ** Build configuration

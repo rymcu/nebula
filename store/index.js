@@ -3,7 +3,8 @@ const cookieparser = process.server ? require('cookieparser') : undefined
 export const state = () => {
   return {
     activeMenu: 'index',
-    oauth: null
+    oauth: null,
+    locale: 'zh_CN'
   }
 }
 
