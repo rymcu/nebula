@@ -1,7 +1,7 @@
 /**
  * @file 分类数据状态 / ES module
  * @module store/category
- * @author Surmon <https://github.com/surmon-china>
+ * @author Ronger <https://github.com/ronger-x>
  */
 
 export const TOPIC_API_PATH = '/api/topic'
@@ -24,8 +24,7 @@ export const mutations = {
 
 export const actions = {
   fetchList({ commit }, params) {
-    commit('updateFetching', true)
-    console.log(params)
+    commit('updateFetching', true);
     return this.$axios
       .$get(`${TOPIC_API_PATH}/topic-nav`)
       .then(response => {

@@ -1,5 +1,6 @@
 <template>
   <div class="topic-archive-page">
+    <topic-nav :currentTopic="defaultParams.topic_uri"></topic-nav>
     <article-list :articles="articles" @currentChange="currentChangeArticle"/>
   </div>
 </template>
@@ -13,6 +14,9 @@
       ArticleList
     },
     validate({ params, store }) {
+      if (params.topic_uri === 'news') {
+        return true;
+      }
       return params.topic_uri && store.state.topic.data.some(
         topic => topic.topicUri === params.topic_uri
       )
@@ -25,6 +29,9 @@
         return this.$store.state.article.list.data
       },
       currentTopic() {
+        if (this.$route.params.topic_uri === 'news') {
+          return true;
+        }
         return this.$store.state.topic.data.find(
           topic => topic.topicUri === this.$route.params.topic_uri
         )
@@ -42,6 +49,7 @@
     },
     mounted() {
       this.$store.commit('setActiveMenu', 'topic');
+      console.log(this.defaultParams)
     },
     created() {
       if (!this.currentTopic) {
