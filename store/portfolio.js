@@ -1,12 +1,11 @@
 import Vue from 'vue';
 import { isBrowser } from '~/environment';
 
-export const ARTICLE_API_PATH = '/api/article'
-export const BASE_API_PATH = '/api/console'
+export const PORTFOLIO_API_PATH = '/api/console'
 
 const getDefaultListData = () => {
   return {
-    articles: [],
+    portfolios: [],
     pagination: {}
   }
 }
@@ -20,12 +19,16 @@ export const state = () => {
     detail: {
       fetching: false,
       data: {}
+    },
+    articles: {
+      articles: [],
+      pagination: {}
     }
   }
 }
 
 export const mutations = {
-  // 文章列表
+  // 作品集列表
   updateListFetching(state, action) {
     state.list.fetching = action
   },
@@ -37,18 +40,19 @@ export const mutations = {
     state.list.data.pagination = action.pagination
   },
 
-  // 文章详情
+  // 作品集详情
   updateDetailFetching(state, action) {
     state.detail.fetching = action
   },
   updateDetailData(state, action) {
-    state.detail.data = action.article
+    state.detail.data = action.portfolio
   },
-  clearDetailData(state, action) {
-    state.detail.data = {}
+  updateArticleList(state, action) {
+    state.articles.articles = action.articles
+    state.articles.pagination = action.pagination
   },
 
-  // 更新文章阅读全文状态
+  // 更新作品集阅读全文状态
   updateDetailRenderedState(state, action) {
     Vue.set(
       state.detail.data,
@@ -59,34 +63,34 @@ export const mutations = {
 }
 
 export const actions = {
-  // 获取文章列表
+  // 获取作品集列表
   fetchList({commit}, params = {}) {
+
     // 清空已有数据
     commit('updateListData', getDefaultListData())
     commit('updateListFetching', true)
     let data = {
-      page: params.page || 1,
-      topicUri: params.topic_uri || ''
+      page: params.page,
+      topicUri: params.topic_uri
     }
 
-    console.log('data:', data)
-
     return this.$axios
-      .$get(`${BASE_API_PATH}/articles`, {
+      .$get(`${PORTFOLIO_API_PATH}/portfolios`, {
         params: data
       })
       .then(response => {
-        console.log('response', response);
-        commit('updateListFetching', false);
-        commit('updateListData', response);
+        commit('updateListFetching', false)
+        commit('updateListData', response)
+        if (isBrowser) {
+          Vue.nextTick(() => {
+            window.scrollTo(0,0);
+          })
+        }
       })
-      .catch(error => {
-        console.log(error);
-        commit('updateListFetching', false);
-      });
+      .catch(error => commit('updateListFetching', false))
   },
 
-  // 获取文章详情
+  // 获取作品集详情
   fetchDetail({ commit }, params = {}) {
     // const delay = fetchDelay(
     //   isBrowser
@@ -99,7 +103,7 @@ export const actions = {
     commit('updateDetailFetching', true)
     // commit('updateDetailData', {})
     return this.$axios
-      .$get(`${BASE_API_PATH}/article/${params.article_id}`)
+      .$get(`${PORTFOLIO_API_PATH}/portfolio/${params.portfolio_id}`)
       .then(response => {
         return new Promise(resolve => {
           commit('updateDetailData', response)
@@ -115,39 +119,20 @@ export const actions = {
         return Promise.reject(error)
       })
   },
-
-  // 获取文章详情
-  fetchPostDetail({ commit }, params = {}) {
-    // const delay = fetchDelay(
-    //   isBrowser
-    // )
-    // if (isBrowser) {
-    //   Vue.nextTick(() => {
-    //     window.scrollTo(0, 300);
-    //   })
-    // }
-
-    if (typeof params.article_id === 'undefined') {
-      commit('updateDetailData', getDefaultListData())
-      return;
-    }
+  fetchArticleList({commit}, params) {
     commit('updateDetailFetching', true)
-    // commit('updateDetailData', {})
     return this.$axios
-      .$get(`${ARTICLE_API_PATH}/detail/${params.article_id}`)
+      .$get(`${PORTFOLIO_API_PATH}/portfolio/${params.portfolio_id}/articles`, {
+        params: {
+          page: params.page
+        }
+      })
       .then(response => {
-        return new Promise(resolve => {
-          commit('updateDetailData', response)
-          commit('updateDetailFetching', false)
-          resolve(response)
-          // delay(() => {
-          //   resolve(response)
-          // })
-        })
+        commit('updateArticleList', response)
+        commit('updateDetailFetching', false)
       })
       .catch(error => {
         commit('updateDetailFetching', false)
-        return Promise.reject(error)
       })
   }
 }

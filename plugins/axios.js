@@ -42,7 +42,7 @@ export default function ({app, $axios, store, redirect}) {
     if (code === 400) {
       redirect('/400');
     } else {
-      console.log(error.data);
+      console.log(error, error.data);
     }
   })
 }

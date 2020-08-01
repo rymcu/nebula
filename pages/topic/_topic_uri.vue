@@ -7,13 +7,14 @@
 
 <script>
   import ArticleList from '~/components/archive/list'
+  import {mapState} from 'vuex';
 
   export default {
     name: "topicArticleList",
     components: {
       ArticleList
     },
-    validate({ params, store }) {
+    validate({params, store}) {
       if (params.topic_uri === 'news') {
         return true;
       }
@@ -21,13 +22,13 @@
         topic => topic.topicUri === params.topic_uri
       )
     },
-    fetch({ store, params }) {
+    fetch({store, params}) {
       return store.dispatch('article/fetchList', params)
     },
     computed: {
-      articles() {
-        return this.$store.state.article.list.data
-      },
+      ...mapState({
+        articles: state => state.article.list.data
+      }),
       currentTopic() {
         if (this.$route.params.topic_uri === 'news') {
           return true;
@@ -44,12 +45,11 @@
     },
     methods: {
       currentChangeArticle(page) {
-        this.$store.dispatch('article/fetchList', {page: page,topic: this.currentTopic})
+        this.$store.dispatch('article/fetchList', {page: page, topic_uri: this.defaultParams.topic_uri})
       }
     },
     mounted() {
       this.$store.commit('setActiveMenu', 'topic');
-      console.log(this.defaultParams)
     },
     created() {
       if (!this.currentTopic) {

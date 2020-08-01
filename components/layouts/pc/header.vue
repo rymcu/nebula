@@ -33,51 +33,54 @@
           />
         </el-col>
         <!--<el-col v-if="user" :xs="0" :sm="8" :xl="6">-->
-        <el-col v-if="user">
-          <el-link :underline="false" style="padding-left: 10px;padding-right: 10px;" href="/post-portfolio">创建作品集
-          </el-link>
-          <el-link :underline="false" style="padding-left: 10px;padding-right: 10px;" href="/post-article">发帖</el-link>
-          <el-link :underline="false" style="padding-left: 10px;padding-right: 10px;">
-            <el-dropdown trigger="click" @command="handleCommand">
-              <el-badge :value="notificationNumbers" class="item">
-                <el-link :underline="false" style="font-size: 1.4rem;" class="el-icon-bell"></el-link>
-              </el-badge>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="notification in notifications" :key="notification.idNotification"
-                                  command="notification">{{ notification.dataSummary }}
-                </el-dropdown-item>
-                <el-dropdown-item command="notification">查看所有消息</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </el-link>
-          <el-link :underline="false" style="margin-left: 10px;">
-            <el-dropdown trigger="click" @command="handleCommand">
-              <el-avatar v-if="avatarURL" size="small" :src="avatarURL"></el-avatar>
-              <el-avatar v-else size="small" src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="user" style="align-items: center;">
-                  <el-avatar class="mr-3" v-if="avatarURL" size="small" style="margin-top: 1rem;"
-                             :src="avatarURL"></el-avatar>
-                  <el-avatar class="mr-3" v-else size="small" style="margin-top: 1rem;"
-                             src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
-                  <el-link :underline="false" style="margin-left: 10px;margin-bottom: 1rem;">{{ nickname }}</el-link>
-                </el-dropdown-item>
-                <el-dropdown-item v-show="hasPermissions" command="admin-dashboard">系统管理</el-dropdown-item>
-                <el-dropdown-item command="user-info">资料与账号</el-dropdown-item>
-                <el-dropdown-item command="drafts">我的草稿</el-dropdown-item>
-                <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </el-link>
-        </el-col>
-        <el-col v-else>
-          <nuxt-link to="/login">
-            <el-link :underline="false" style="margin-left: 10px;">登录</el-link>
-          </nuxt-link>
-          <nuxt-link to="/register">
-            <el-link :underline="false" style="margin-left: 10px;">注册</el-link>
-          </nuxt-link>
-        </el-col>
+        <client-only>
+          <el-col v-if="user">
+            <el-link :underline="false" style="padding-left: 10px;padding-right: 10px;" href="/portfolio/post">创建作品集
+            </el-link>
+            <el-link :underline="false" style="padding-left: 10px;padding-right: 10px;" href="/article/post">发帖
+            </el-link>
+            <el-link :underline="false" style="padding-left: 10px;padding-right: 10px;">
+              <el-dropdown trigger="click" @command="handleCommand">
+                <el-badge :value="notificationNumbers" class="item">
+                  <el-link :underline="false" style="font-size: 1.4rem;" class="el-icon-bell"></el-link>
+                </el-badge>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item v-for="notification in notifications" :key="notification.idNotification"
+                                    command="notification">{{ notification.dataSummary }}
+                  </el-dropdown-item>
+                  <el-dropdown-item command="notification">查看所有消息</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-link>
+            <el-link :underline="false" style="margin-left: 10px;">
+              <el-dropdown trigger="click" @command="handleCommand">
+                <el-avatar v-if="avatarURL" size="small" :src="avatarURL"></el-avatar>
+                <el-avatar v-else size="small" src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="user" style="align-items: center;">
+                    <el-avatar class="mr-3" v-if="avatarURL" size="small" style="margin-top: 1rem;"
+                               :src="avatarURL"></el-avatar>
+                    <el-avatar class="mr-3" v-else size="small" style="margin-top: 1rem;"
+                               src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
+                    <el-link :underline="false" style="margin-left: 10px;margin-bottom: 1rem;">{{ nickname }}</el-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="hasPermissions" command="admin-dashboard">系统管理</el-dropdown-item>
+                  <el-dropdown-item command="user-info">资料与账号</el-dropdown-item>
+                  <el-dropdown-item command="drafts">我的草稿</el-dropdown-item>
+                  <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-link>
+          </el-col>
+          <el-col v-else>
+            <nuxt-link to="/login">
+              <el-link :underline="false" style="margin-left: 10px;">登录</el-link>
+            </nuxt-link>
+            <nuxt-link to="/register">
+              <el-link :underline="false" style="margin-left: 10px;">注册</el-link>
+            </nuxt-link>
+          </el-col>
+        </client-only>
       </el-col>
     </el-col>
   </el-row>

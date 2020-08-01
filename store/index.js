@@ -27,14 +27,17 @@ export const actions = {
         auth = JSON.parse(parsed.auth)
       } catch (err) {
         // No valid cookie found
+        console.log(err);
       }
       store.commit('setAuth', auth)
     }
+
     const initFetchAppData = [
       // 内容数据
       store.dispatch('topic/fetchList'),
       store.dispatch('article/fetchList')
     ]
+
     return Promise.all(initFetchAppData)
   }
 }

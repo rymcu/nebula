@@ -5,10 +5,10 @@
         <el-col class="card">
           <el-col class="card-body d-flex flex-column">
             <el-col :span="4" class="mr-3">
-              <a v-if="portfolio.headImgUrl">
+              <a v-show="portfolio.headImgUrl">
                 <el-image class="card-img-top" style="height: 10rem;" :src="portfolio.headImgUrl"></el-image>
               </a>
-              <a v-else>
+              <a v-show="!portfolio.headImgUrl">
                 <el-image class="card-img-top" style="height: 10rem;"
                           src="https://rymcu.com/vertical/article/1574441170152.jpg"></el-image>
               </a>
@@ -28,7 +28,7 @@
           </el-col>
         </el-col>
       </el-col>
-      <el-col v-if="!portfolios" class="text-center">
+      <el-col v-show="!portfolios" class="text-center">
         这里什么都没有!
       </el-col>
       <el-col>

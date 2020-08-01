@@ -1,10 +1,7 @@
 <template>
   <el-row class="pt-5">
-    <el-col v-if="isFetching">
-      加载中
-    </el-col>
-    <el-col v-else>
-      <el-col v-if="user" style="margin-top: 1rem;">
+    <el-col>
+      <el-col v-show="user" style="margin-top: 1rem;">
         <el-col :xs="2" :sm="1" :xl="1">
           <el-avatar :src="avatar"></el-avatar>
         </el-col>
@@ -18,7 +15,7 @@
             size="40%">
             <el-col slot="title">
               <el-col>
-                <el-avatar v-if="commentAuthorAvatar" :src="commentAuthorAvatar"></el-avatar>
+                <el-avatar v-show="commentAuthorAvatar" :src="commentAuthorAvatar"></el-avatar>
                 <span class="text-default" style="padding-left: 1rem;">{{ commentTitle }}</span>
               </el-col>
             </el-col>
@@ -31,7 +28,7 @@
           </el-drawer>
         </el-col>
       </el-col>
-      <el-col v-else class="text-center" style="margin-top: 1rem;">
+      <el-col v-show="!user" class="text-center" style="margin-top: 1rem;">
         <el-button type="primary" size="medium" @click="gotoLogin">登录</el-button>
         后发布评论
       </el-col>
@@ -39,18 +36,18 @@
         <el-col v-for="comment in comment.data" :key="comment.idComment">
           <el-card style="margin-bottom: 0.5rem;">
             <el-col :xs="3" :sm="1" :xl="1">
-              <el-avatar v-if="comment.commenter.userAvatarURL" :src="comment.commenter.userAvatarURL"></el-avatar>
-              <el-avatar v-else src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
+              <el-avatar v-show="comment.commenter.userAvatarURL" :src="comment.commenter.userAvatarURL"></el-avatar>
+              <el-avatar v-show="!comment.commenter.userAvatarURL" src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
             </el-col>
             <el-col :xs="21" :sm="23" :xl="23">
               <el-col style="margin-left: 1rem;">
-                <el-col v-if="comment.commentOriginalCommentId">
+                <el-col v-show="comment.commentOriginalCommentId">
                   <el-link @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
                            class="text-default">{{ comment.commenter.userNickname }}
                   </el-link>
                   <small class="text-default" style="margin: 0 0.2rem">回复了</small><span style="font-weight: bold;"> {{comment.commentOriginalAuthorNickname}}</span>
                 </el-col>
-                <el-col v-else>
+                <el-col v-show="!comment.commentOriginalCommentId">
                   <el-link @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
                            class="text-default">{{ comment.commenter.userNickname }}
                   </el-link>
@@ -147,6 +144,7 @@
         )
       },
       _initEditor (data) {
+        let _ts = this;
         let toolbar;
         if (window.innerWidth < 768) {
           toolbar = [
@@ -200,6 +198,9 @@
             enable: this.postId ? false : true,
             id: this.postId ? this.postId : '',
           },
+          after() {
+            _ts.contentEditor.setValue(data.value ? data.value : '');
+          },
           preview: {
             markdown: {
               toc: true,
@@ -212,7 +213,7 @@
                 return
               }
               // LazyLoadImage();
-              Vue.Vditor.highlightRender({style:'github'}, element, document);
+              // Vue.Vditor.highlightRender({style:'github'}, element, document);
             }
           },
           upload: {
@@ -242,8 +243,8 @@
               height: 200,
               placeholder: '', //this.$t('inputContent', this.$store.state.locale)
               resize: false,
+              value: ''
             });
-            _ts.contentEditor.setValue('');
           }, 500);
         }
       },
@@ -311,7 +312,6 @@
     },
     watch: {
       isFetching(isFetching) {
-        console.log(isFetching)
         if (isFetching) {
           this.cancelCommentReply()
         }

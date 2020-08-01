@@ -190,10 +190,7 @@
         let _ts = this;
         if (item === 'edit') {
           _ts.$router.push({
-            name: 'post-article',
-            query: {
-              id: _ts.article.idArticle
-            }
+            path: `/article/post/${_ts.article.idArticle}`
           })
         } else {
           _ts.$axios.$get('/api/article/' + _ts.article.idArticle + '/share').then(function (res) {

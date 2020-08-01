@@ -11,12 +11,10 @@ export const state = () => {
     fetching: false,
     data: [],
     articles: {
-      fetching: false,
       articles: [],
       pagination: {}
     },
     portfolios:  {
-      fetching: false,
       portfolios: [],
       pagination: {}
     }
@@ -52,6 +50,7 @@ export const actions = {
       })
   },
   fetchArticleList({commit}, params) {
+    commit('updateFetching', true);
     return this.$axios
       .$get(`${USER_API_PATH}/${params.nickname}/articles`, {
         params: {
@@ -67,6 +66,7 @@ export const actions = {
       })
   },
   fetchPortfolioList({commit}, params) {
+    commit('updateFetching', true);
     return this.$axios
       .$get(`${USER_API_PATH}/${params.nickname}/portfolios`, {
         params: {
