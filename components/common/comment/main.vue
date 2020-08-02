@@ -1,7 +1,7 @@
 <template>
   <el-row class="pt-5">
     <el-col>
-      <el-col v-show="user" style="margin-top: 1rem;">
+      <el-col v-if="user" style="margin-top: 1rem;">
         <el-col :xs="2" :sm="1" :xl="1">
           <el-avatar :src="avatar"></el-avatar>
         </el-col>
@@ -28,7 +28,7 @@
           </el-drawer>
         </el-col>
       </el-col>
-      <el-col v-show="!user" class="text-center" style="margin-top: 1rem;">
+      <el-col v-else class="text-center" style="margin-top: 1rem;">
         <el-button type="primary" size="medium" @click="gotoLogin">登录</el-button>
         后发布评论
       </el-col>
@@ -62,7 +62,7 @@
               <el-col :span="22" style="padding-left: 1rem;">
                 <el-link :underline="false" class="text-default">{{ comment.timeAgo }}</el-link>
               </el-col>
-              <el-col :span="2" class="text-right" style="margin-bottom: 0.5rem;">
+              <el-col :span="2" v-if="user" class="text-right" style="margin-bottom: 0.5rem;">
                 <el-link :underline="false" title="回复" @click.native="replyComment(comment)"><i
                   class="el-icon-s-comment"></i></el-link>
               </el-col>

@@ -36,7 +36,6 @@ export const mutations = {
     state.list.data.data.push(...action.data)
     state.list.data.pagination = action.pagination
   },
-
   // 文章详情
   updateDetailFetching(state, action) {
     state.detail.fetching = action
@@ -69,14 +68,11 @@ export const actions = {
       topicUri: params.topic_uri || ''
     }
 
-    console.log('data:', data)
-
     return this.$axios
       .$get(`${BASE_API_PATH}/articles`, {
         params: data
       })
       .then(response => {
-        console.log('response', response);
         commit('updateListFetching', false);
         commit('updateListData', response);
       })
@@ -85,7 +81,6 @@ export const actions = {
         commit('updateListFetching', false);
       });
   },
-
   // 获取文章详情
   fetchDetail({ commit }, params = {}) {
     // const delay = fetchDelay(

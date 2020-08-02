@@ -3,7 +3,7 @@ export default function ({app, $axios, store, redirect}) {
   $axios.onRequest(config => {
     let token = store.state.oauth?.accessToken;
     if (token) {
-      if (!(config.url.indexOf('console') > -1)) {
+      if (!(config.url.indexOf('console') > -1 || config.url.indexOf('comments') > -1)) {
         config.headers['Authorization'] = store.state.oauth?.accessToken
       }
     }
@@ -42,7 +42,7 @@ export default function ({app, $axios, store, redirect}) {
     if (code === 400) {
       redirect('/400');
     } else {
-      console.log(error, error.data);
+      console.log(error.data);
     }
   })
 }
