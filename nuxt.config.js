@@ -51,6 +51,7 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    {src: '~/plugins/avataaars/generator/generateAvatar'},
     {src: '~/plugins/extend'},
     {src: '~/plugins/axios'},
     {src: '~/plugins/element-ui'},

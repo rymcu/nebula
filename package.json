@@ -16,7 +16,9 @@
     "express": "^4.17.1",
     "js-cookie": "^2.2.1",
     "nuxt": "^2.14.0",
-    "vditor": "^3.4.1"
+    "save-svg-as-png": "^1.4.17",
+    "vditor": "^3.4.1",
+    "vuejs-avataaars": "^4.0.1"
   },
   "devDependencies": {
     "@nuxtjs/proxy": "^2.0.1",

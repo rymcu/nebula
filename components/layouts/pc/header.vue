@@ -155,7 +155,7 @@
               })
               break;
             case 'github':
-              window.open("https://github.com/Hugh-rymcu");
+              window.open("https://github.com/rymcu");
               return false;
               break;
             default:
@@ -180,10 +180,7 @@
             break;
           case 'user-info':
             _ts.$router.push({
-              name: 'account',
-              params: {
-                id: _ts.user.idUser
-              }
+              path: '/user/settings/account'
             })
             break;
           case 'logout':
@@ -210,7 +207,7 @@
       }
     },
     mounted() {
-      this.restaurants = this.loadAll();
+      // this.restaurants = this.loadAll();
       let user = this.user;
       if (user) {
         this.getUnreadNotifications();

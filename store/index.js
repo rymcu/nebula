@@ -4,7 +4,8 @@ export const state = () => {
   return {
     activeMenu: 'index',
     oauth: null,
-    locale: 'zh_CN'
+    locale: 'zh_CN',
+    uploadHeaders: ''
   }
 }
 
@@ -14,6 +15,9 @@ export const mutations = {
   },
   setActiveMenu (state, activeMenu) {
     state.activeMenu = activeMenu
+  },
+  setUploadHeaders(state, data){
+    state.uploadHeaders = data
   }
 }
 
