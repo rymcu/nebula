@@ -10,7 +10,7 @@
               </a>
               <a v-show="!portfolio.headImgUrl">
                 <el-image class="card-img-top" style="height: 10rem;"
-                          src="https://rymcu.com/vertical/article/1574441170152.jpg"></el-image>
+                          src="https://static.rymcu.com/article/1574441170152.jpg"></el-image>
               </a>
             </el-col>
             <el-col :span="18">

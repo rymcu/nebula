@@ -5,10 +5,10 @@
         <div v-if="user.userHomeBImgURL" class="card-header"
              :style="{backgroundImage:'url('+user.userHomeBImgURL+')', backgroundSize:'percentage', backgroundPosition:'50%'}"></div>
         <div v-else class="card-header"
-             :style="{backgroundImage:'url(https://rymcu.com/vertical/article/1574441651963.jpg)', backgroundSize:'cover', backgroundPosition:'50%'}"></div>
+             :style="{backgroundImage:'url(https://static.rymcu.com/article/1574441651963.jpg)', backgroundSize:'cover', backgroundPosition:'50%'}"></div>
         <div class="card-body text-center">
           <img v-if="user.avatarUrl" class="card-profile-img" :src="user.avatarUrl">
-          <img v-else class="card-profile-img" src="https://rymcu.com/vertical/article/1578475481946.png">
+          <img v-else class="card-profile-img" src="https://static.rymcu.com/article/1578475481946.png">
           <h3 class="mb-3">{{user.nickname}}</h3>
           <p class="mb-4" v-html="user.signature"></p>
         </div>

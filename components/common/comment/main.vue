@@ -38,7 +38,7 @@
             <el-col :xs="3" :sm="1" :xl="1">
               <el-avatar v-show="comment.commenter.userAvatarURL" :src="comment.commenter.userAvatarURL"></el-avatar>
               <el-avatar v-show="!comment.commenter.userAvatarURL"
-                         src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
+                         src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
             </el-col>
             <el-col :xs="21" :sm="23" :xl="23">
               <el-col style="margin-left: 1rem;">

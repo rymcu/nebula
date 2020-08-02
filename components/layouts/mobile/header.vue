@@ -53,13 +53,13 @@
           <el-link :underline="false" style="margin-left: 10px;">
             <el-dropdown trigger="click" @command="handleCommand">
               <el-avatar v-if="avatarURL" size="small" :src="avatarURL"></el-avatar>
-              <el-avatar v-else size="small" src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
+              <el-avatar v-else size="small" src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="user" style="align-items: center;">
                   <el-avatar class="mr-3" v-if="avatarURL" size="small" style="margin-top: 1rem;"
                              :src="avatarURL"></el-avatar>
                   <el-avatar class="mr-3" v-else size="small" style="margin-top: 1rem;"
-                             src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
+                             src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
                   <el-link :underline="false" style="margin-left: 10px;margin-bottom: 1rem;">{{ nickname }}</el-link>
                 </el-dropdown-item>
                 <el-dropdown-item v-show="hasPermissions" command="admin-dashboard">系统管理</el-dropdown-item>

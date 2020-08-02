@@ -21,7 +21,7 @@
                 <el-avatar v-if="article.articleAuthorAvatarUrl" size="medium"
                            :src="article.articleAuthorAvatarUrl"></el-avatar>
                 <el-avatar v-else size="medium"
-                           src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
+                           src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
               </el-col>
               <el-col :xs="20" :sm="20" :xl="20">
                 <div>

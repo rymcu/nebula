@@ -1,73 +1,68 @@
 <template>
   <el-row class="article__wrapper">
-    <el-col v-if="isShow">
-      <el-col>
-        <el-card>
-          <div class="card-body d-flex flex-column article">
-            <div class="article__item">
-              <h1 class="list__title" v-html="article.articleTitle"></h1>
-              <el-row class="pt-5">
-                <el-col :xs="3" :sm="1" :xl="1">
-                  <el-avatar v-if="article.articleAuthorAvatarUrl" :src="article.articleAuthorAvatarUrl"></el-avatar>
-                  <el-avatar v-else src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
-                </el-col>
-                <el-col :xs="9" :sm="11" :xl="11">
-                  <div style="margin-left: 1rem;">
-                    <el-link @click="onRouter('user', article.articleAuthorName)" :underline="false"
-                             class="text-default">{{ article.articleAuthorName }}
-                    </el-link>
-                    <small class="d-block text-muted">{{ article.timeAgo }}</small>
-                  </div>
-                </el-col>
-                <el-col :xs="12" :sm="12" :xl="12" v-if="user" class="text-right">
-                  <el-dropdown trigger="click" @command="handleCommand">
-                    <el-link :underline="false"><i class="el-icon-more"></i></el-link>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="edit" v-if="hasPermissions">编辑</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </el-col>
-                <el-col class="text-right">
-                  <el-link :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
+    <el-col>
+      <el-card>
+        <div class="card-body d-flex flex-column article">
+          <div class="article__item">
+            <h1 class="list__title" v-html="article.articleTitle"></h1>
+            <el-row class="pt-5">
+              <el-col :xs="3" :sm="1" :xl="1">
+                <el-avatar v-if="article.articleAuthorAvatarUrl" :src="article.articleAuthorAvatarUrl"></el-avatar>
+                <el-avatar v-else src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
+              </el-col>
+              <el-col :xs="9" :sm="11" :xl="11">
+                <div style="margin-left: 1rem;">
+                  <el-link @click="onRouter('user', article.articleAuthorName)" :underline="false"
+                           class="text-default">{{ article.articleAuthorName }}
                   </el-link>
+                  <small class="d-block text-muted">{{ article.timeAgo }}</small>
+                </div>
+              </el-col>
+              <el-col :xs="12" :sm="12" :xl="12" v-if="user" class="text-right">
+                <el-dropdown trigger="click" @command="handleCommand">
+                  <el-link :underline="false"><i class="el-icon-more"></i></el-link>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="edit" v-if="hasPermissions">编辑</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-col>
+              <el-col class="text-right">
+                <el-link :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
+                </el-link>
+              </el-col>
+              <el-col style="margin: 1rem 0;">
+                <el-tag
+                  style="margin-right: 0.5rem;"
+                  v-for="tag in article.tags"
+                  :key="tag.idTag"
+                  size="small"
+                  effect="plain">
+                  {{ tag.tagTitle }}
+                </el-tag>
+              </el-col>
+              <el-col v-if="article.portfolios && article.portfolios.length > 0">
+                <el-col>
+                  <h4>所属作品集</h4>
                 </el-col>
-                <el-col style="margin: 1rem 0;">
-                  <el-tag
-                    style="margin-right: 0.5rem;"
-                    v-for="tag in article.tags"
-                    :key="tag.idTag"
-                    size="small"
-                    effect="plain">
-                    {{ tag.tagTitle }}
-                  </el-tag>
-                </el-col>
-                <el-col v-if="article.portfolios && article.portfolios.length > 0">
-                  <el-col>
-                    <h4>所属作品集</h4>
-                  </el-col>
-                  <el-col style="padding: 1rem">
-                    <el-col v-for="portfolio in article.portfolios" :key="portfolio.idPortfolio" :span="8">
-                      <el-col :xs="3" :sm="3" :xl="3">
-                        <el-avatar :size="24" :src="portfolio.headImgUrl"></el-avatar>
-                      </el-col>
-                      <el-col :xs="20" :sm="20" :xl="20">
-                        <el-link @click="onRouter('portfolio', portfolio.idPortfolio)" :underline="false"
-                                 class="text-default">{{ portfolio.portfolioTitle }}
-                        </el-link>
-                      </el-col>
+                <el-col style="padding: 1rem">
+                  <el-col v-for="portfolio in article.portfolios" :key="portfolio.idPortfolio" :span="8">
+                    <el-col :xs="3" :sm="3" :xl="3">
+                      <el-avatar :size="24" :src="portfolio.headImgUrl"></el-avatar>
+                    </el-col>
+                    <el-col :xs="20" :sm="20" :xl="20">
+                      <el-link @click="onRouter('portfolio', portfolio.idPortfolio)" :underline="false"
+                               class="text-default">{{ portfolio.portfolioTitle }}
+                      </el-link>
                     </el-col>
                   </el-col>
                 </el-col>
-              </el-row>
-              <div class="pt-7 pipe-content__reset vditor-reset" id="articleContent" v-html="article.articleContent"
-                   style="overflow: hidden;"></div>
-            </div>
+              </el-col>
+            </el-row>
+            <div class="pt-7 pipe-content__reset vditor-reset" id="articleContent" v-html="article.articleContent"
+                 style="overflow: hidden;"></div>
           </div>
-        </el-card>
-      </el-col>
-    </el-col>
-    <el-col v-else>
-      <!--      <Component404></Component404>-->
+        </div>
+      </el-card>
     </el-col>
   </el-row>
 </template>
@@ -111,7 +106,6 @@
     },
     data() {
       return {
-        isShow: true,
         loading: false
       }
     },
