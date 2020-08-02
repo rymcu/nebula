@@ -62,7 +62,7 @@
         )
       },
       currentChange(page) {
-        this.$emit('currentChangePortfolios', page);
+        this.$emit('currentChange', page);
       }
     }
   }

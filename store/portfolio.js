@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import { isBrowser } from '~/environment';
 
-export const PORTFOLIO_API_PATH = '/api/console'
+export const BASE_API_PATH = '/api/console'
+export const PORTFOLIO_API_PATH = '/api/portfolio'
 
 const getDefaultListData = () => {
   return {
@@ -21,6 +22,10 @@ export const state = () => {
       data: {}
     },
     articles: {
+      articles: [],
+      pagination: {}
+    },
+    unbindArticles: {
       articles: [],
       pagination: {}
     }
@@ -51,6 +56,10 @@ export const mutations = {
     state.articles.articles = action.articles
     state.articles.pagination = action.pagination
   },
+  updateUnbindArticleList(state, action) {
+    state.unbindArticles.articles = action.articles
+    state.unbindArticles.pagination = action.pagination
+  },
 
   // 更新作品集阅读全文状态
   updateDetailRenderedState(state, action) {
@@ -75,7 +84,7 @@ export const actions = {
     }
 
     return this.$axios
-      .$get(`${PORTFOLIO_API_PATH}/portfolios`, {
+      .$get(`${BASE_API_PATH}/portfolios`, {
         params: data
       })
       .then(response => {
@@ -103,7 +112,7 @@ export const actions = {
     commit('updateDetailFetching', true)
     // commit('updateDetailData', {})
     return this.$axios
-      .$get(`${PORTFOLIO_API_PATH}/portfolio/${params.portfolio_id}`)
+      .$get(`${BASE_API_PATH}/portfolio/${params.portfolio_id}`)
       .then(response => {
         return new Promise(resolve => {
           commit('updateDetailData', response)
@@ -122,9 +131,9 @@ export const actions = {
   fetchArticleList({commit}, params) {
     commit('updateDetailFetching', true)
     return this.$axios
-      .$get(`${PORTFOLIO_API_PATH}/portfolio/${params.portfolio_id}/articles`, {
+      .$get(`${BASE_API_PATH}/portfolio/${params.portfolio_id}/articles`, {
         params: {
-          page: params.page
+          page: params.page || 1
         }
       })
       .then(response => {
@@ -133,6 +142,56 @@ export const actions = {
       })
       .catch(error => {
         commit('updateDetailFetching', false)
+      })
+  },
+  fetchUnBindArticleList({commit}, params) {
+    commit('updateDetailFetching', true)
+    return this.$axios
+      .$get(`${PORTFOLIO_API_PATH}/${params.portfolio_id}/unbind-articles`, {
+        params: {
+          page: params.page || 1,
+          searchText: params.searchText || ''
+        }
+      })
+      .then(response => {
+        commit('updateUnbindArticleList', response)
+        commit('updateDetailFetching', false)
+      })
+      .catch(error => {
+        commit('updateDetailFetching', false)
+      })
+  },
+  fetchPostDetail({ commit }, params = {}) {
+    // const delay = fetchDelay(
+    //   isBrowser
+    // )
+    // if (isBrowser) {
+    //   Vue.nextTick(() => {
+    //     window.scrollTo(0, 300);
+    //   })
+    // }
+
+    if (typeof params.portfolio_id === 'undefined') {
+      commit('updateDetailData', getDefaultListData())
+      return;
+    }
+    commit('updateDetailFetching', true)
+    // commit('updateDetailData', {})
+    return this.$axios
+      .$get(`${PORTFOLIO_API_PATH}/detail/${params.portfolio_id}`)
+      .then(response => {
+        return new Promise(resolve => {
+          commit('updateDetailData', response)
+          commit('updateDetailFetching', false)
+          resolve(response)
+          // delay(() => {
+          //   resolve(response)
+          // })
+        })
+      })
+      .catch(error => {
+        commit('updateDetailFetching', false)
+        return Promise.reject(error)
       })
   }
 }
