@@ -37,7 +37,8 @@
           <el-card style="margin-bottom: 0.5rem;">
             <el-col :xs="3" :sm="1" :xl="1">
               <el-avatar v-show="comment.commenter.userAvatarURL" :src="comment.commenter.userAvatarURL"></el-avatar>
-              <el-avatar v-show="!comment.commenter.userAvatarURL" src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
+              <el-avatar v-show="!comment.commenter.userAvatarURL"
+                         src="https://rymcu.com/vertical/article/1578475481946.png"></el-avatar>
             </el-col>
             <el-col :xs="21" :sm="23" :xl="23">
               <el-col style="margin-left: 1rem;">
@@ -143,7 +144,7 @@
           }
         )
       },
-      _initEditor (data) {
+      _initEditor(data) {
         let _ts = this;
         let toolbar;
         if (window.innerWidth < 768) {
@@ -308,6 +309,19 @@
       // 取消回复
       cancelCommentReply() {
         this.commentOriginalCommentId = 0
+      }
+    },
+    async mounted() {
+      let _ts = this;
+      _ts.$store.commit('setActiveMenu', 'post-article');
+      if (_ts.user) {
+        const responseData = await _ts.$axios.$get('/api/upload/token');
+        if (responseData) {
+          _ts.$set(_ts, 'tokenURL', {
+            token: responseData.uploadToken || '',
+            URL: responseData.uploadURL || '',
+          })
+        }
       }
     },
     watch: {
