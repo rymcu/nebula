@@ -195,7 +195,7 @@
                   _ts.$set(_ts, 'user', res.user);
                   _ts.$set(_ts, 'avatarUrl', res.user.avatarUrl);
                   _ts.$set(_ts, 'svgShow', false);
-                  // _ts.$store.commit('setUserInfo', res.user);
+                  _ts.$store.commit('setUserInfo', res.user);
                   _ts.$message.success('更新成功 !');
                 }
               }

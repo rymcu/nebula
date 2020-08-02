@@ -18,6 +18,10 @@ export const mutations = {
   },
   setUploadHeaders(state, data){
     state.uploadHeaders = data
+  },
+  setUserInfo(state, data) {
+    state.oauth.avatarURL = data.avatarUrl;
+    state.oauth.nickname = data.nickname;
   }
 }
 
