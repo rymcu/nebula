@@ -26,13 +26,13 @@
           </el-col>
         </el-col>
         <el-col v-else>
-          <el-col :xs="21" :sm="23" :xl="23">
+          <el-col :xs="20" :sm="20" :xl="20">
             <el-link :underline="false" style="font-size: 1.1em;" v-html="notification.dataSummary"></el-link>
             <el-col>{{ notification.createdTime }}</el-col>
           </el-col>
-          <el-col :xs="3" :sm="1" :xl="1" class="text-right" style="padding-right: 1rem;">
+          <el-col :xs="4" :sm="4" :xl="4" class="text-right" style="padding-right: 1rem;">
             <el-link v-if="notification.hasRead === '0'" :underline="false" @click="read(notification.idNotification)">
-              <i class="el-icon-check" style="font-weight: bold;"></i>
+              <i class="el-icon-check" style="font-weight: bold;"></i> 标记已读
             </el-link>
           </el-col>
         </el-col>
@@ -68,9 +68,9 @@
       },
       read(id) {
         let _ts = this;
-        this.$axios.$put('/api/notification/read/' + id).then(function () {
+        this.$axios.$put('/api/notification/read/' + id).then(function (res) {
           _ts.currentChange(1);
-        });
+        }).catch(error => console.log(error));
       },
       onRouter(notification) {
         if ('0' === notification.dataType) {
