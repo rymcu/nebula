@@ -34,7 +34,7 @@
       </el-col>
       <el-col style="margin-top: 1rem;">
         <el-col v-for="comment in comment.data" :key="comment.idComment">
-          <el-card style="margin-bottom: 0.5rem;">
+          <el-card style="margin-bottom: 0.5rem;" :id="'comment-' + comment.idComment">
             <el-col :xs="3" :sm="1" :xl="1">
               <el-avatar v-show="comment.commenter.userAvatarURL" :src="comment.commenter.userAvatarURL"></el-avatar>
               <el-avatar v-show="!comment.commenter.userAvatarURL"
@@ -323,6 +323,22 @@
           })
         }
       }
+
+      // 评论定位
+      Vue.nextTick(function () {
+        if (_ts.$route.hash) {
+          const element = document.getElementById(_ts.$route.hash.replace('#', ''));
+          if (element) {
+            let actualTop = element.offsetTop;
+            let current = element.offsetParent;
+            while (current !== null){
+              actualTop += current.offsetTop;
+              current = current.offsetParent;
+            }
+            window.scroll(0, actualTop);
+          }
+        }
+      })
     },
     watch: {
       isFetching(isFetching) {
