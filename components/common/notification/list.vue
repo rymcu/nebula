@@ -3,14 +3,14 @@
     <el-row>
       <el-col v-for="notification in notifications.notifications" :key="notification.idNotification">
         <el-col v-if="notification.dataType == 0">
-          <el-col :xs="9" :sm="11" :xl="11">
+          <el-col :xs="16" :sm="20" :xl="20">
             <el-link :underline="false" @click="onRouter(notification)" style="font-size: 1.1em;"
                      v-html="notification.dataSummary"></el-link>
             <el-col style="font-size: 12px;color: #7f828b;">{{ notification.createdTime }}</el-col>
           </el-col>
-          <el-col :xs="3" :sm="1" :xl="1" class="mr-3">
+          <el-col :xs="8" :sm="4" :xl="4" class="text-right" style="padding-right: 1rem;">
             <el-link v-if="notification.hasRead === '0'" :underline="false" @click="read(notification.idNotification)">
-              <i class="el-icon-check"></i>
+              <i class="el-icon-check"></i> 标记已读
             </el-link>
           </el-col>
         </el-col>
