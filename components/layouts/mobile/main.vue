@@ -6,7 +6,7 @@
     <el-main>
       <nuxt :nuxt-child-key="$route.name" />
     </el-main>
-    <el-footer>
+    <el-footer style="height: 6rem;">
       <footer-view/>
     </el-footer>
   </el-container>
@@ -41,7 +41,7 @@
     padding: 20px 0;
     background-attachment: fixed;
     min-height: 280px;
-    margin-bottom: 60px;
+    margin-bottom: 6rem;
     overflow-x: hidden;
   }
 

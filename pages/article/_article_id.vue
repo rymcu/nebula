@@ -46,8 +46,8 @@
                   <h4>所属作品集</h4>
                 </el-col>
                 <el-col style="padding: 1rem">
-                  <el-col v-for="portfolio in article.portfolios" :key="portfolio.idPortfolio" :span="8">
-                    <el-col :xs="3" :sm="3" :xl="3">
+                  <el-col v-for="portfolio in article.portfolios" :key="portfolio.idPortfolio" :xs="16" :xl="8">
+                    <el-col :xs="4" :sm="4" :xl="4">
                       <el-avatar :size="24" :src="portfolio.headImgUrl"></el-avatar>
                     </el-col>
                     <el-col :xs="20" :sm="20" :xl="20">

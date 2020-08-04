@@ -6,18 +6,7 @@
           <el-col :xs="9" :sm="11" :xl="11">
             <el-link :underline="false" @click="onRouter(notification)" style="font-size: 1.1em;"
                      v-html="notification.dataSummary"></el-link>
-            <el-col>{{ notification.createdTime }}</el-col>
-          </el-col>
-          <el-col :xs="3" :sm="1" :xl="1" class="mr-3">
-            <el-link v-if="notification.hasRead === '0'" :underline="false" @click="read(notification.idNotification)">
-              <i class="el-icon-check"></i>
-            </el-link>
-          </el-col>
-        </el-col>
-        <el-col v-else-if="notification.dataType == 1">
-          <el-col :xs="9" :sm="11" :xl="11">
-            <el-link :underline="false" style="font-size: 1.1em;" v-html="notification.dataSummary"></el-link>
-            <el-col>{{ notification.createdTime }}</el-col>
+            <el-col style="font-size: 12px;color: #7f828b;">{{ notification.createdTime }}</el-col>
           </el-col>
           <el-col :xs="3" :sm="1" :xl="1" class="mr-3">
             <el-link v-if="notification.hasRead === '0'" :underline="false" @click="read(notification.idNotification)">
@@ -26,14 +15,26 @@
           </el-col>
         </el-col>
         <el-col v-else>
-          <el-col :xs="20" :sm="20" :xl="20">
-            <el-link :underline="false" style="font-size: 1.1em;" v-html="notification.dataSummary"></el-link>
-            <el-col>{{ notification.createdTime }}</el-col>
+          <el-col :xs="4" :xl="2">
+            <el-avatar :src="notification.author.userAvatarURL"></el-avatar>
           </el-col>
-          <el-col :xs="4" :sm="4" :xl="4" class="text-right" style="padding-right: 1rem;">
-            <el-link v-if="notification.hasRead === '0'" :underline="false" @click="read(notification.idNotification)">
-              <i class="el-icon-check" style="font-weight: bold;"></i> 标记已读
-            </el-link>
+          <el-col :xs="20" :xl="22">
+            <el-col :xs="16" :sm="20" :xl="20">
+              <el-link :underline="false" @click="onRouter(notification)" style="font-size: 1.1em;"
+                       v-html="notification.dataTitle"></el-link>
+              <el-col style="font-size: 12px;color: #7f828b;">
+                {{ notification.createdTime }}
+              </el-col>
+              <el-col>
+                {{ notification.dataSummary }}
+              </el-col>
+            </el-col>
+            <el-col :xs="8" :sm="4" :xl="4" class="text-right" style="padding-right: 1rem;">
+              <el-link v-if="notification.hasRead === '0'" :underline="false"
+                       @click="read(notification.idNotification)">
+                <i class="el-icon-check" style="font-weight: bold;"></i> 标记已读
+              </el-link>
+            </el-col>
           </el-col>
         </el-col>
         <el-col>
@@ -68,19 +69,15 @@
       },
       read(id) {
         let _ts = this;
-        this.$axios.$put('/api/notification/read/' + id).then(function (res) {
+        this.$axios.$put('/api/notification/read/' + id).then(function () {
           _ts.currentChange(1);
         }).catch(error => console.log(error));
       },
       onRouter(notification) {
-        if ('0' === notification.dataType) {
-          if (notification.hasRead === '0') {
-            this.read(notification.idNotification);
-          }
-          this.$router.push({
-            path: '/article/' + notification.dataId
-          })
+        if (notification.hasRead === '0') {
+          this.read(notification.idNotification);
         }
+        window.location.href = notification.dataUrl;
       }
     }
   }

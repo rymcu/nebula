@@ -13,7 +13,10 @@ export const getters = {
 }
 
 export const mutations = {
-
+  // 设置是否移动端状态
+  updateMobileState(state, action) {
+  state.isMobile = action
+}
 }
 
 export const actions ={

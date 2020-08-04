@@ -24,13 +24,13 @@
     </el-col>
     <el-col>
       <el-col v-if="isAuthor" style="text-align: right;">
-        <el-col>
+        <el-col :xs="0" :xl="24">
           <el-link @click="managerPortfolio(portfolio.idPortfolio)" :underline="false" class="text-default">管理</el-link>
         </el-col>
       </el-col>
       <el-divider><i class="el-icon-loading"></i></el-divider>
       <el-col>
-        <article-list :articles="articles" @currentChange="currentChangeArticle"></article-list>
+          <article-list :articles="articles" @currentChange="currentChangeArticle"></article-list>
       </el-col>
     </el-col>
   </el-row>

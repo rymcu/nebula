@@ -23,7 +23,7 @@
                 <el-avatar v-else size="medium"
                            src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
               </el-col>
-              <el-col :xs="20" :sm="20" :xl="20">
+              <el-col :xs="16" :sm="16" :xl="16">
                 <div>
                   <el-link @click="onRouter('user', article.articleAuthorName)" :underline="false" class="text-default">
                     {{ article.articleAuthorName }}
