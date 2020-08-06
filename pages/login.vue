@@ -94,12 +94,17 @@
                 }
                 let auth = {
                   accessToken: res.user.token,
-                  nickname: res.user.nickname,
-                  avatarURL: res.user.avatarUrl,
                   idUser: res.user.idUser,
                   role: res.user.weights
                 }
+
+                let user = {
+                  nickname: res.user.nickname,
+                  avatarURL: res.user.avatarUrl
+                }
                 _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
+                localStorage.setItem('user', JSON.stringify(user))
+                _ts.$store.commit('setUser', user) // mutating to store for client rendering
                 Cookie.set('auth', auth)
                 _ts.$router.push({
                   name: 'index'
@@ -134,7 +139,7 @@
         let data = {
           email: email
         };
-        _ts.axios.post('/console/get-forget-password-email', data).then(function (res) {
+        _ts.$axios.$post('/api/console/get-forget-password-email', data).then(function (res) {
           _ts.loading = false;
           _ts.forget = false;
           if (res) {

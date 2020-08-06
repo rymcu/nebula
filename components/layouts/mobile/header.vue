@@ -72,6 +72,8 @@
 </template>
 
 <script>
+  import { isBrowser } from '~/environment'
+
   const Cookie = process.client ? require('js-cookie') : undefined
   export default {
     name: "MobileHeader",
@@ -83,10 +85,28 @@
         return this.$store.state.oauth;
       },
       avatarURL() {
-        return this.$store.state.oauth?.avatarURL;
+        let _ts = this;
+        if (isBrowser) {
+          if (!_ts.$store.state.userInfo) {
+            let user = localStorage.getItem('user');
+            if (user) {
+              _ts.$store.commit('setUser', JSON.parse(user))
+            }
+          }
+        }
+        return _ts.$store.state.userInfo?.avatarURL;
       },
       nickname() {
-        return this.$store.state.oauth?.nickname;
+        let _ts = this;
+        if (isBrowser) {
+          if (!_ts.$store.state.userInfo) {
+            let user = localStorage.getItem('user');
+            if (user) {
+              _ts.$store.commit('setUser', JSON.parse(user))
+            }
+          }
+        }
+        return _ts.$store.state.userInfo?.nickname;
       },
       hasPermissions() {
         return this.$store.getters.hasPermissions('blog_admin');

@@ -6,6 +6,7 @@ export const state = () => {
   return {
     activeMenu: 'index',
     oauth: null,
+    userInfo: null,
     locale: 'zh_CN',
     uploadHeaders: ''
   }
@@ -15,6 +16,9 @@ export const mutations = {
   setAuth (state, auth) {
     state.oauth = auth
   },
+  setUser (state, data) {
+    state.userInfo = data
+  },
   setActiveMenu (state, activeMenu) {
     state.activeMenu = activeMenu
   },
@@ -22,8 +26,8 @@ export const mutations = {
     state.uploadHeaders = data
   },
   setUserInfo(state, data) {
-    state.oauth.avatarURL = data.avatarUrl;
-    state.oauth.nickname = data.nickname;
+    state.userInfo.avatarURL = data.avatarUrl;
+    state.userInfo.nickname = data.nickname;
   }
 }
 
