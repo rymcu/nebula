@@ -11,6 +11,9 @@
           <img v-else class="card-profile-img" src="https://static.rymcu.com/article/1578475481946.png">
           <h3 class="mb-3">{{user.nickname}}</h3>
           <p class="mb-4" v-html="user.signature"></p>
+          <div v-if="oauth && oauth.idUser !== user.idUser">
+            <el-button @click="gotoChats">聊天</el-button>
+          </div>
         </div>
       </div>
     </el-col>
@@ -58,7 +61,8 @@
       ...mapState({
         user: state => state.user.data,
         articles: state => state.user.articles,
-        portfolios: state => state.user.portfolios
+        portfolios: state => state.user.portfolios,
+        oauth: state => state.oauth
       })
     },
     data() {
@@ -75,6 +79,12 @@
       },
       handleToggleTab(key) {
         this.$set(this, 'activeTab', key);
+      },
+      gotoChats() {
+        let _ts = this;
+        _ts.$router.push({
+          path: `/chats/${_ts.user.nickname}`
+        })
       }
     }
   }

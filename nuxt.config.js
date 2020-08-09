@@ -65,6 +65,7 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    '~/io',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     'js-cookie',

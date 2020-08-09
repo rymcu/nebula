@@ -76,9 +76,8 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import {mapState} from 'vuex'
-  import {isBrowser} from '~/environment'
+  import Vue from 'vue';
+  import {mapState} from 'vuex';
 
   export default {
     name: "Comment",
