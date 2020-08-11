@@ -145,6 +145,11 @@
             _ts.contentEditor.setValue(data.value ? data.value : '');
           },
           preview: {
+            hljs: {
+              enable: true,
+              lineNumber: true,
+              style: 'github'
+            },
             markdown: {
               toc: true,
             },

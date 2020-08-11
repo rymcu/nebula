@@ -199,7 +199,7 @@
         // //const outLineElement = document.getElementById("articleToC");
         // VditorPreview.setContentTheme('light');
         Vue.VditorPreview.codeRender(previewElement, 'zh_CN');
-        Vue.VditorPreview.highlightRender({"enable": true, "lineNumber": false, "style": "github"}, previewElement);
+        Vue.VditorPreview.highlightRender({"enable": true, "lineNumber": true, "style": "github"}, previewElement);
         Vue.VditorPreview.mathRender(previewElement, {
           math: {"engine": "KaTeX", "inlineDigit": false, "macros": {}},
         });
