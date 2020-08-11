@@ -62,6 +62,7 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex';
   import Avataaars from 'vuejs-avataaars';
   import saveSvg from 'save-svg-as-png';
 
@@ -72,13 +73,12 @@
       Avataaars
     },
     computed: {
-      uploadHeaders() {
-        let token = this.$store.state.uploadHeaders;
-        return {'X-Upload-Token': token}
-      },
-      idUser() {
-        return this.$store.state.oauth.idUser
-      }
+      ...mapState({
+        uploadHeaders: state => {
+          return {'X-Upload-Token': state.uploadHeaders}
+        },
+        idUser: state => state.oauth.idUser
+      })
     },
     data() {
       return {
@@ -119,6 +119,7 @@
         if (res && res.data && res.data.url) {
           let user = _ts.user;
           user.avatarUrl = res.data.url;
+          user.avatarType = '';
           _ts.$set(_ts, 'user', user);
           _ts.$set(_ts, 'svgShow', false);
           _ts.$set(_ts, 'avatarUrl', res.data.url);
