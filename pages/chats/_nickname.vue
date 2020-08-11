@@ -1,32 +1,38 @@
 <template>
-  <el-row class="wrapper">
-    <el-col>
-      <div id="contentEditor"></div>
-    </el-col>
-    <el-col style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-      <el-button type="primary" :loading="loading" @click="send">发送</el-button>
-    </el-col>
-    <el-col style="margin-top: 2rem;">
-      <el-col v-for="message in messages" :key="message.dataId">
-        <el-col v-if="message.from === user.nickname">
-          <el-col :span="22" style="text-align: right;">
-            <div class="from-message">{{message.content}}</div>
+  <client-only>
+    <el-row class="wrapper" v-if="user">
+      <el-col>
+        <div id="contentEditor"></div>
+      </el-col>
+      <el-col style="margin-top: 1rem;padding-right:3rem;text-align: right;">
+        <el-button type="primary" :loading="loading" @click="send">发送</el-button>
+      </el-col>
+      <el-col style="margin-top: 2rem;" id="messagesContent">
+        <el-col v-for="message in Array.prototype.reverse.call(messages)" :key="message.dataId">
+          <el-col v-if="message.from === user.nickname">
+            <el-col :span="22" style="text-align: right;">
+              <div class="from-message">
+                <div v-html="message.content"></div>
+              </div>
+            </el-col>
+            <el-col :span="2" style="text-align: right;">
+              <el-avatar :src="user.avatarURL"></el-avatar>
+            </el-col>
           </el-col>
-          <el-col :span="2" style="text-align: right;">
-            <el-avatar :src="user.avatarURL"></el-avatar>
-          </el-col>
-        </el-col>
-        <el-col v-else>
-          <el-col :span="2">
-            <el-avatar :src="to.avatarURL"></el-avatar>
-          </el-col>
-          <el-col :span="22" style="text-align: left;">
-            <div class="to-message">{{message.content}}</div>
+          <el-col v-else>
+            <el-col :span="2">
+              <el-avatar :src="to.avatarURL"></el-avatar>
+            </el-col>
+            <el-col :span="22" style="text-align: left;">
+              <div class="to-message">
+                <div v-html="message.content"></div>
+              </div>
+            </el-col>
           </el-col>
         </el-col>
       </el-col>
-    </el-col>
-  </el-row>
+    </el-row>
+  </client-only>
 </template>
 
 <script>
@@ -158,14 +164,14 @@
           placeholder: data.placeholder,
         })
       },
-      send() {
+      async send() {
         let _ts = this;
         const message = {
           to: _ts.to.nickname,
           from: _ts.user.nickname,
           dataType: 1,
           dataId: new Date().getTime(),
-          content: _ts.contentEditor.getValue()
+          content: await _ts.contentEditor.getHTML()
         }
         _ts.messages.push(message);
         _ts.contentEditor.setValue('')
@@ -175,6 +181,13 @@
     async mounted() {
       let _ts = this;
       _ts.$store.commit('setActiveMenu', 'post-article');
+
+      let to = {
+        nickname: _ts.$route.params?.nickname
+      }
+
+      _ts.$set(_ts, 'to', to);
+
       if (_ts.user) {
         const responseData = await _ts.$axios.$get('/api/upload/token');
         if (responseData) {
@@ -198,12 +211,6 @@
           });
         }, 500);
       }
-
-      let to = {
-        nickname: _ts.$route.params.nickname,
-        avatarURL: _ts.$route.params.avatarURL,
-      }
-      _ts.$set(_ts, 'to', to);
     }
   }
 </script>
@@ -213,7 +220,7 @@
 
   .from-message {
     float: right;
-    width: 200px;
+    width: auto;
     min-height: 40px;
     margin: 10px;
     background-color: skyblue;
@@ -231,7 +238,7 @@
 
   .to-message {
     float: left;
-    width: 200px;
+    width: auto;
     min-height: 40px;
     margin: 10px;
     background-color: skyblue;
