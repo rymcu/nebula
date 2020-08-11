@@ -1,4 +1,4 @@
-// const Cookie = require('js-cookie')
+const Cookie = require('js-cookie')
 export default function ({app, $axios, store, redirect}) {
   $axios.onRequest(config => {
     let token = store.state.oauth?.accessToken;
@@ -23,10 +23,10 @@ export default function ({app, $axios, store, redirect}) {
         if (response.data.code === '0') {
           app.$message(message);
         } else if (response.data.code === '401') {
-          // Cookie.remove('auth')
+          Cookie.remove('auth')
           store.commit('setAuth', null);
         } else if (response.data.code === '402') {
-          // Cookie.remove('auth')
+          Cookie.remove('auth')
           store.commit('setAuth', null);
         } else if (response.data.code === '404') {
           app.$message('操作失败，请稍后再试......')
