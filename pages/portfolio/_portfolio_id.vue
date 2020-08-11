@@ -61,10 +61,10 @@
         isFetching: state => state.portfolio.detail.fetching,
         isMobile: state => state.global.isMobile,
         user: state => state.oauth,
-        avatar: state => state.oauth?.avatarURL
+        avatar: state => state.userInfo?.avatarURL
       }),
       isAuthor() {
-        let account = this.$store.state.oauth?.nickname;
+        let account = this.$store.state.userInfo?.nickname;
         if (account) {
           if (account === this.portfolio.portfolioAuthor.userNickname) {
             return true;

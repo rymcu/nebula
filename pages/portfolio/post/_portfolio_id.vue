@@ -2,7 +2,7 @@
   <el-row class="wrapper">
     <el-col v-if="isEdit" style="margin-bottom: 1rem;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/portfolio-manager/' + idPortfolio }">{{ portfolio.portfolioTitle }}
+        <el-breadcrumb-item :to="{ path: '/portfolio/manager/' + idPortfolio }">{{ portfolio.portfolioTitle }}
         </el-breadcrumb-item>
         <el-breadcrumb-item>更新作品集</el-breadcrumb-item>
       </el-breadcrumb>
@@ -259,7 +259,7 @@
                 _ts.$message(res.message);
               } else {
                 _ts.$router.push({
-                  path: '/user/' + _ts.$store.state.oauth.nickname
+                  path: '/user/' + _ts.$store.state.userInfo?.nickname
                 })
               }
             }

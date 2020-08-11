@@ -41,7 +41,7 @@
     },
     methods: {
       share(url) {
-        let path = url + '?s=' + this.$store.state.oauth.nickname
+        let path = url + '?s=' + this.$store.state.userInfo?.nickname
         return path;
       }
     }

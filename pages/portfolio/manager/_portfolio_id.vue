@@ -69,7 +69,7 @@
         portfolio: state => state.portfolio.detail.data
       }),
       isAuthor() {
-        let account = this.$store.state.oauth?.nickname;
+        let account = this.$store.state.userInfo?.nickname;
         if (account) {
           if (account === this.portfolio.portfolioAuthorName) {
             return true;
@@ -84,6 +84,12 @@
           this.$router.push({
             path: data
           })
+        } else if (name === 'user') {
+          this.$router.push(
+            {
+              path: '/user/' + data
+            }
+          )
         } else {
           this.$router.push(
             {
