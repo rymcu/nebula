@@ -69,7 +69,7 @@ export const actions = {
 
     const initFetchAppData = [
       // 内容数据
-      store.dispatch('topic/fetchList'),
+      store.dispatch('topic/fetchNavList'),
       store.dispatch('article/fetchList')
     ]
 
