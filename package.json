@@ -12,6 +12,7 @@
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@nuxtjs/axios": "^5.12.0",
     "cookieparser": "^0.1.0",
+    "echarts": "^4.8.0",
     "element-ui": "^2.13.2",
     "express": "^4.17.1",
     "js-cookie": "^2.2.1",

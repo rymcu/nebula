@@ -1,6 +1,6 @@
 import appConfig from './config/app.config'
 import apiConfig from './config/api.config'
-import {isProdMode, isDevMode} from './environment'
+import {isDevMode} from './environment'
 
 export default {
   /*
