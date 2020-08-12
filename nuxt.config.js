@@ -1,6 +1,7 @@
 import appConfig from './config/app.config'
 import apiConfig from './config/api.config'
 import {isDevMode} from './environment'
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 export default {
   /*
@@ -86,5 +87,16 @@ export default {
   */
   build: {
     transpile: [/^element-ui/],
+    optimization: {
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000
+      }
+    },
+    extend(config, ctx) {
+      config.plugins.unshift(new LodashModuleReplacementPlugin())
+      // rules[2].use[0] is babel-loader
+      config.module.rules[2].use[0].options.plugins = ['lodash']
+    }
   }
 }

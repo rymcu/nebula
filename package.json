@@ -6,11 +6,13 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "analyze": "nuxt build -a"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@nuxtjs/axios": "^5.12.1",
+    "babel-plugin-lodash": "^3.3.4",
     "cookieparser": "^0.1.0",
     "echarts": "^4.8.0",
     "element-ui": "^2.13.2",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@nuxtjs/proxy": "^2.0.1",
+    "lodash-webpack-plugin": "^0.11.5",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.3"
   }
