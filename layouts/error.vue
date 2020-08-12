@@ -1,7 +1,10 @@
 <template>
   <div class="error">
     <div class="error-content">
-      <h1 class="error-code">{{ error.statusCode }}</h1>
+      <div>
+        <el-image class="error-image" :src="image"></el-image>
+        <div class="error-code">{{ error.statusCode }}</div>
+      </div>
       <div class="error-wrapper-message">
         <h2 class="error-message">{{ error.message || notFound }}</h2>
       </div>
@@ -19,10 +22,22 @@
     props: {
       error: Object
     },
+    computed: {
+      image() {
+        return this.images[Math.floor(Math.random()*5)];
+      }
+    },
     data() {
       return {
         notFound: '未找到你访问的界面',
-        backToHomePage: '返回主页'
+        backToHomePage: '返回主页',
+        images: [
+          'https://static.rymcu.com/article/1597244306764.png',
+          'https://static.rymcu.com/article/1597244962475.png',
+          'https://static.rymcu.com/article/1597245053282.png',
+          'https://static.rymcu.com/article/1597245075248.png',
+          'https://static.rymcu.com/article/1597246071981.png'
+        ]
       }
     }
   }
@@ -50,7 +65,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $module-bg;
+    background-color: $white;
 
     @keyframes error-item {
       0% {
@@ -69,6 +84,7 @@
       > .error-wrapper-message {
         color: $black-light;
         animation: error-item ease-out both .6s $transition-time-slow;
+        text-shadow: 5px 5px 5px #616161;
       }
 
       .link {
@@ -89,8 +105,26 @@
           font-family: 'webfont-bolder', DINRegular;
           font-weight: normal;
           margin-top: 0;
+          text-shadow: 5px 5px 5px #616161;
         }
       }
     }
+  }
+
+  .error-image {
+    width: 28rem;
+    animation: error-item ease-out both .6s $transition-time-slow;
+  }
+
+  .error-code {
+    text-transform: uppercase;
+    animation: error-item ease-out both .6s $transition-time-slow;
+    color: #616161;
+    font-size: 5em;
+    text-shadow: 5px 5px 5px #616161;
+  }
+
+  .link {
+    color: $black-light;
   }
 </style>
