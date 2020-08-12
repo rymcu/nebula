@@ -11,7 +11,7 @@
           </el-col>
           <el-col style="margin-bottom: .5rem;">
             <span class="text-default" style="padding-right: 1rem;">作者</span>
-            <el-link @click="onRouter('user', portfolio.portfolioAuthorName)" :underline="false" class="text-default">
+            <el-link rel="nofollow" @click="onRouter('user', portfolio.portfolioAuthorName)" :underline="false" class="text-default">
               <el-avatar :src="portfolio.portfolioAuthorAvatarUrl" :size="16"></el-avatar>
               {{ portfolio.portfolioAuthorName }}
             </el-link>
@@ -26,10 +26,10 @@
       <el-col>
         <el-col style="text-align: right;">
           <el-col>
-            <el-link @click="onRouter('post-portfolio',portfolio.idPortfolio)" :underline="false" class="text-default"
+            <el-link rel="nofollow" @click="onRouter('post-portfolio',portfolio.idPortfolio)" :underline="false" class="text-default"
                      style="margin-right: 1rem;">编辑
             </el-link>
-            <el-link @click="showBindArticleDialog(portfolio.idPortfolio)" :underline="false" class="text-default"
+            <el-link rel="nofollow" @click="showBindArticleDialog(portfolio.idPortfolio)" :underline="false" class="text-default"
                      style="margin-right: 1rem;">添加文章
             </el-link>
           </el-col>

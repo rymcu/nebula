@@ -4,7 +4,7 @@
       <el-col v-for="article in articles.articles" :key="article.idArticle" style="padding-bottom: 1rem;">
         <el-card>
           <div class="card-body d-flex flex-column">
-            <el-link @click="onRouter('article',article.articleLink)" :underline="false" style="margin-bottom: .5rem;">
+            <el-link rel="nofollow" @click="onRouter('article',article.articleLink)" :underline="false" style="margin-bottom: .5rem;">
               <h4 v-html="article.articleTitle"></h4>
             </el-link>
             <el-tag
@@ -25,14 +25,14 @@
               </el-col>
               <el-col :xs="16" :sm="16" :xl="16">
                 <div>
-                  <el-link @click="onRouter('user', article.articleAuthorName)" :underline="false" class="text-default">
+                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthorName)" :underline="false" class="text-default">
                     {{ article.articleAuthorName }}
                   </el-link>
                   <small class="d-block text-muted">{{ article.timeAgo }}</small>
                 </div>
               </el-col>
               <el-col class="text-right">
-                <el-link :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
+                <el-link rel="nofollow" :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
                 </el-link>
               </el-col>
             </el-row>

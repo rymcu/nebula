@@ -15,7 +15,7 @@
             </el-col>
             <el-col :span="18">
               <h4 class="article-header-md">
-                <el-link @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false"
+                <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false"
                          v-html="portfolio.portfolioTitle"></el-link>
               </h4>
               <div class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</div>

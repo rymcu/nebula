@@ -10,7 +10,7 @@
         <el-table-column
           label="文章标题">
           <template slot-scope="scope">
-            <el-link type="primary" @click.native="onRouter('article', scope.row.idArticle)" :underline="false">{{
+            <el-link rel="nofollow" type="primary" @click.native="onRouter('article', scope.row.idArticle)" :underline="false">{{
               scope.row.articleTitle }}
             </el-link>
           </template>

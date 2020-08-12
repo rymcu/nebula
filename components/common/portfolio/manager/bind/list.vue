@@ -3,7 +3,7 @@
     <el-col v-for="article in articles.articles" :key="article.idArticle" style="padding-top: 1rem;">
       <el-card>
         <div class="card-body d-flex flex-column">
-          <el-link :underline="false" style="margin-bottom: .5rem;">
+          <el-link rel="nofollow" :underline="false" style="margin-bottom: .5rem;">
             <h4 v-html="article.articleTitle"></h4>
           </el-link>
           <div class="text-muted article-summary-md">{{ article.articlePreviewContent }}</div>

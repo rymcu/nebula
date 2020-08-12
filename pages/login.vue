@@ -12,7 +12,7 @@
           <el-input type="password" v-model="user.password" autocomplete="off" show-password></el-input>
         </el-form-item>
         <el-form-item>
-          <el-link style="float: right;" :underline="false" @click="forgetPassword">忘记密码</el-link>
+          <el-link rel="nofollow" style="float: right;" :underline="false" @click="forgetPassword">忘记密码</el-link>
         </el-form-item>
         <el-form-item>
           <el-button style="width: 60%;" type="primary" @click="login">立即登录</el-button>

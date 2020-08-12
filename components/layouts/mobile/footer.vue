@@ -9,10 +9,10 @@
         <el-col class="row align-items-center">
           <el-col class="col-auto">
             Copyright © 2020
-            <el-link :underline="false" href="/" style="vertical-align: baseline;"><span>{{ systemName }}</span>
+            <el-link rel="nofollow" :underline="false" href="/" style="vertical-align: baseline;"><span>{{ systemName }}</span>
             </el-link>
             .
-            <el-link :underline="false" href="http://www.beian.miit.gov.cn/" style="vertical-align: baseline;"><span>{{ beiAn }}</span>
+            <el-link rel="nofollow" :underline="false" href="http://www.beian.miit.gov.cn/" style="vertical-align: baseline;"><span>{{ beiAn }}</span>
             </el-link>
           </el-col>
         </el-col>

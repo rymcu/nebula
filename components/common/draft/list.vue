@@ -2,7 +2,7 @@
   <el-row>
     <el-col v-for="article in articles.articles" :key="article.idArticle">
       <el-col>
-        <el-link @click="onRouter(article.articleLink)" :underline="false">
+        <el-link rel="nofollow" @click="onRouter(article.articleLink)" :underline="false">
           <h2 v-html="article.articleTitle"></h2>
         </el-link>
       </el-col>

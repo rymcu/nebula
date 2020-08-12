@@ -18,7 +18,7 @@
           <el-col :span="20">
             <el-col>
               <el-col>
-                <el-link @click="onRouter('admin-topic-tag',topic)" :underline="false"><h4>{{ topic.topicTitle }}</h4>
+                <el-link rel="nofollow" @click="onRouter('admin-topic-tag',topic)" :underline="false"><h4>{{ topic.topicTitle }}</h4>
                 </el-link>
               </el-col>
               <el-col>

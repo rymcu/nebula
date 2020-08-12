@@ -10,7 +10,7 @@
         </el-col>
         <el-col style="margin-bottom: .5rem;">
           <span class="text-default" style="padding-right: 1rem;">作者</span>
-          <el-link @click="onRouter('user', portfolio.portfolioAuthorName)" :underline="false" class="text-default">
+          <el-link rel="nofollow" @click="onRouter('user', portfolio.portfolioAuthorName)" :underline="false" class="text-default">
             <el-avatar :src="portfolio.portfolioAuthorAvatarUrl" :size="16"></el-avatar>
             {{ portfolio.portfolioAuthorName }}
           </el-link>
@@ -25,7 +25,7 @@
     <el-col>
       <el-col v-if="isAuthor" style="text-align: right;">
         <el-col :xs="0" :xl="24">
-          <el-link @click="managerPortfolio(portfolio.idPortfolio)" :underline="false" class="text-default">管理</el-link>
+          <el-link rel="nofollow" @click="managerPortfolio(portfolio.idPortfolio)" :underline="false" class="text-default">管理</el-link>
         </el-col>
       </el-col>
       <el-divider><i class="el-icon-loading"></i></el-divider>

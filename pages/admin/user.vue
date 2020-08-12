@@ -29,7 +29,7 @@
           width="180"
           prop="nickname">
           <template slot-scope="scope">
-            <el-link type="primary" @click="onRouter('user', scope.row.nickname)" :underline="false">{{
+            <el-link rel="nofollow" type="primary" @click="onRouter('user', scope.row.nickname)" :underline="false">{{
               scope.row.nickname }}
             </el-link>
           </template>

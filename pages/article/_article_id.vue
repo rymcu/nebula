@@ -12,7 +12,7 @@
               </el-col>
               <el-col :xs="9" :sm="11" :xl="11">
                 <div style="margin-left: 1rem;">
-                  <el-link @click="onRouter('user', article.articleAuthorName)" :underline="false"
+                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthorName)" :underline="false"
                            class="text-default">{{ article.articleAuthorName }}
                   </el-link>
                   <small class="d-block text-muted">{{ article.timeAgo }}</small>
@@ -20,7 +20,7 @@
               </el-col>
               <el-col :xs="12" :sm="12" :xl="12" v-if="user" class="text-right">
                 <el-dropdown trigger="click" @command="handleCommand">
-                  <el-link :underline="false"><i class="el-icon-more"></i></el-link>
+                  <el-link rel="nofollow" :underline="false"><i class="el-icon-more"></i></el-link>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="edit" v-if="hasPermissions">编辑</el-dropdown-item>
                     <el-dropdown-item command="share">分享</el-dropdown-item>
@@ -28,7 +28,7 @@
                 </el-dropdown>
               </el-col>
               <el-col class="text-right">
-                <el-link :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
+                <el-link rel="nofollow" :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
                 </el-link>
               </el-col>
               <el-col style="margin: 1rem 0;">
@@ -51,7 +51,7 @@
                       <el-avatar :size="24" :src="portfolio.headImgUrl"></el-avatar>
                     </el-col>
                     <el-col :xs="20" :sm="20" :xl="20">
-                      <el-link @click="onRouter('portfolio', portfolio.idPortfolio)" :underline="false"
+                      <el-link rel="nofollow" @click="onRouter('portfolio', portfolio.idPortfolio)" :underline="false"
                                class="text-default">{{ portfolio.portfolioTitle }}
                       </el-link>
                     </el-col>
