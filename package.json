@@ -10,22 +10,22 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
-    "@nuxtjs/axios": "^5.12.0",
+    "@nuxtjs/axios": "^5.12.1",
     "cookieparser": "^0.1.0",
     "echarts": "^4.8.0",
     "element-ui": "^2.13.2",
     "express": "^4.17.1",
     "js-cookie": "^2.2.1",
-    "nuxt": "^2.14.0",
+    "nuxt": "^2.14.1",
     "save-svg-as-png": "^1.4.17",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "vditor": "^3.4.1",
+    "vditor": "^3.4.6",
     "vuejs-avataaars": "^4.0.1"
   },
   "devDependencies": {
     "@nuxtjs/proxy": "^2.0.1",
     "node-sass": "^4.14.1",
-    "sass-loader": "^9.0.2"
+    "sass-loader": "^9.0.3"
   }
 }
