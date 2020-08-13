@@ -155,6 +155,7 @@
         Vue.VditorPreview.mindmapRender(previewElement);
         Vue.VditorPreview.abcRender(previewElement);
         Vue.VditorPreview.mediaRender(previewElement);
+        Vue.VditorPreview.lazyLoadImageRender(previewElement);
         //VditorPreview.outlineRender(previewElement, outLineElement);
         window.scrollTo(0,0);
       })
