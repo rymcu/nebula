@@ -1,10 +1,9 @@
 <template>
   <el-row justify="space-between" type="flex">
     <el-col :span="24">
-      <el-col :xs="8" :sm="4" :md="4" :xl="3" style="padding-top: 1rem;">
+      <el-col :xs="8" :sm="4" :md="4" :xl="3" style="padding-top: .5rem;">
         <a class="navbar-brand" href="/" rel="nofollow">
           <img src="@/assets/rymcu.png" alt="RYMCU" class="navbar-brand-img">
-          <span>RYMCU</span>
         </a>
       </el-col>
       <el-col :xs="16" :sm="8" :md="6" :xl="3" style="padding-top: 1rem;">
