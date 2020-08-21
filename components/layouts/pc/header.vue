@@ -1,10 +1,9 @@
 <template>
   <el-row justify="space-between" type="flex">
     <el-col>
-      <el-col :xs="8" :sm="4" :md="4" :xl="3" style="padding-top: 1rem;">
+      <el-col :xs="8" :sm="4" :md="4" :xl="3" style="padding-top: .5rem;text-align: left;">
         <a rel="nofollow" class="navbar-brand" href="/">
           <img src="@/assets/rymcu.png" alt="RYMCU" class="navbar-brand-img">
-          <span>RYMCU</span>
         </a>
       </el-col>
       <el-col :xs="0" :sm="12" :md="14" :xl="18" style="text-align: center;">
@@ -34,7 +33,7 @@
         </el-col>
         <!--<el-col v-if="user" :xs="0" :sm="8" :xl="6">-->
         <client-only>
-          <el-col v-if="user">
+          <el-col v-if="user" style="text-align: right;">
             <el-link rel="nofollow" :underline="false" style="padding-left: 10px;padding-right: 10px;" href="/portfolio/post">创建作品集
             </el-link>
             <el-link rel="nofollow" :underline="false" style="padding-left: 10px;padding-right: 10px;" href="/article/post">发帖
@@ -72,7 +71,7 @@
               </el-dropdown>
             </el-link>
           </el-col>
-          <el-col v-else>
+          <el-col v-else style="text-align: right;">
             <nuxt-link to="/login">
               <el-link rel="nofollow" :underline="false" style="margin-left: 10px;">登录</el-link>
             </nuxt-link>
@@ -246,14 +245,13 @@
     font-weight: 600;
     padding: 0;
     transition: .3s opacity;
-    line-height: 2rem;
+    line-height: 3rem;
   }
 
   .navbar-brand-img {
-    height: 2rem;
-    line-height: 2rem;
-    vertical-align: bottom;
-    margin-right: .5rem;
+    height: 3rem;
+    line-height: 3rem;
+    vertical-align: top;
     width: auto;
   }
 </style>
