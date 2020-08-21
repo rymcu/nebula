@@ -158,8 +158,7 @@
   .icon-rymcu {
     margin: 0 auto;
     display: block;
-    height: 100px;
-    width: 100px;
+    height: 4rem;
   }
 
   .verify .verify-wrap {
