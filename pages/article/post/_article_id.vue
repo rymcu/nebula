@@ -304,10 +304,7 @@
             localStorage.removeItem('article-tags');
             _ts.contentEditor.setValue('');
             _ts.$router.push({
-              name: 'draft',
-              params: {
-                id: res.id
-              }
+              path: `/draft/${res.id}`
             })
           }
         })
