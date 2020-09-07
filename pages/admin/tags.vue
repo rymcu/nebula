@@ -47,7 +47,7 @@
   import {mapState} from 'vuex';
 
   export default {
-    name: "tag",
+    name: "tags",
     fetch({store, params, error}) {
       return Promise.all([
         store
@@ -58,7 +58,7 @@
     computed: {
       ...mapState({
         tags: state => state.tag.list.data.tags,
-        pagination: state => state.topic.list.data.pagination
+        pagination: state => state.tag.list.data.pagination
       })
     },
     methods: {
@@ -93,28 +93,19 @@
           page: page
         })
       },
-      onRouter(item,data) {
-        this.$router.push({
-          name: item,
-          params: data
-        })
-      },
       createTag() {
         this.$router.push({
-          name: 'admin-tag-post'
+          path: '/admin/tag/post/'
         })
       },
       updateTag(id) {
         this.$router.push({
-          name: 'admin-tag-post',
-          params: {
-            id: id
-          }
+          path: '/admin/tag/post/' + id
         })
       }
     },
     mounted() {
-      this.$store.commit("setActiveMenu", "admin-tag");
+      this.$store.commit("setActiveMenu", "admin-tags");
     }
   }
 </script>
