@@ -18,7 +18,9 @@
           <el-col :span="20">
             <el-col>
               <el-col>
-                <el-link rel="nofollow" @click="onRouter('admin-topic-tag',topic)" :underline="false"><h4>{{ topic.topicTitle }}</h4>
+                <el-link rel="nofollow" @click="onRouter('admin-topic-detail',topic.topicUri)" :underline="false"><h4>{{
+                    topic.topicTitle
+                  }}</h4>
                 </el-link>
               </el-col>
               <el-col>
@@ -36,7 +38,7 @@
   import {mapState} from 'vuex';
 
   export default {
-    name: "topic",
+    name: "topics",
     fetch({store, params, error}) {
       return Promise.all([
         store
@@ -53,8 +55,7 @@
     methods: {
       onRouter(item, data) {
         this.$router.push({
-          name: item,
-          params: data
+          path: '/admin/topic/' + data
         })
       },
       createTopic() {
@@ -65,7 +66,7 @@
       }
     },
     mounted() {
-      this.$store.commit("setActiveMenu", "admin-topic");
+      this.$store.commit("setActiveMenu", "admin-topics");
     }
   }
 </script>

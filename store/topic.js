@@ -13,6 +13,12 @@ const getDefaultListData = () => {
     pagination: {}
   }
 }
+const getDefaultTagsData = () => {
+  return {
+    tags: [],
+    pagination: {}
+  }
+}
 
 export const state = () => {
   return {
@@ -21,6 +27,14 @@ export const state = () => {
     list: {
       fetching: false,
       data: getDefaultListData()
+    },
+    detail: {
+      fetching: false,
+      data: {}
+    },
+    tags: {
+      fetching: false,
+      data: getDefaultTagsData()
     }
   }
 }
@@ -37,6 +51,18 @@ export const mutations = {
   },
   updateNavData(state, action) {
     state.data = action
+  },
+  updateDetailFetching(state, action) {
+    state.detail.fetching = action
+  },
+  updateDetailData(state, action) {
+    state.detail.data = action
+  },
+  updateTopicTagsFetching(state, action) {
+    state.tags.fetching = action
+  },
+  updateTopicTagsData(state, action) {
+    state.tags.data = action
   }
 }
 
@@ -72,6 +98,44 @@ export const actions = {
       })
       .catch(error => {
         commit('updateFetching', false)
+      })
+  },
+  fetchDetail({ commit }, params) {
+    commit('updateDetailFetching', true);
+    return this.$axios
+      .$get(`${ADMIN_API_PATH}/topic/${params.topic_uri}`)
+      .then(response => {
+        commit('updateDetailData', response)
+        commit('updateDetailFetching', false)
+      })
+      .catch(error => {
+        commit('updateDetailFetching', false)
+      })
+  },
+  fetchTopicTags({ commit }, params) {
+    commit('updateTopicTagsFetching', true);
+    return this.$axios
+      .$get(`${ADMIN_API_PATH}/topic/${params.topic_uri}/tags?page=${params.page}`)
+      .then(response => {
+        commit('updateTopicTagsData', response)
+        commit('updateTopicTagsFetching', false)
+      })
+      .catch(error => {
+        commit('updateTopicTagsFetching', false)
+      })
+  },
+  fetchUnBindTags({ commit }, params) {
+    commit('updateTopicTagsFetching', true);
+    return this.$axios
+      .$get(`${ADMIN_API_PATH}/topic/unbind-topic-tags`, {
+        params: params
+      })
+      .then(response => {
+        commit('updateTopicTagsData', response)
+        commit('updateTopicTagsFetching', false)
+      })
+      .catch(error => {
+        commit('updateTopicTagsFetching', false)
       })
   }
 }
