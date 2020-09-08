@@ -109,7 +109,6 @@ export default {
   },
   mounted() {
     let _ts = this;
-    console.log(_ts.topic);
     if (!_ts.topic.idTopic) {
       _ts.$axios.$get('/api/admin/topic/detail/' + _ts.$route.params.topic_id).then(function (res) {
         _ts.$store.commit('topic/updateDetailData', res)
