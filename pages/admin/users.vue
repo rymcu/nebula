@@ -45,6 +45,11 @@
           prop="createdTime">
         </el-table-column>
         <el-table-column
+          label="最后登录时间"
+          width="180"
+          prop="lastLoginTime">
+        </el-table-column>
+        <el-table-column
           label="状态"
           width="180"
           prop="status">
