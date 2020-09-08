@@ -10,19 +10,19 @@
             <i class="el-icon-s-data"></i>
             <span slot="title">Dashboard</span>
           </el-menu-item>
-          <el-menu-item index="admin-user">
+          <el-menu-item index="admin-users">
             <i class="el-icon-s-custom"></i>
             <span slot="title">用户管理</span>
           </el-menu-item>
-          <el-menu-item index="admin-role">
+          <el-menu-item index="admin-roles">
             <i class="el-icon-s-check"></i>
             <span slot="title">角色管理</span>
           </el-menu-item>
-          <el-menu-item index="admin-topic">
+          <el-menu-item index="admin-topics">
             <i class="el-icon-postcard"></i>
             <span slot="title">专题管理</span>
           </el-menu-item>
-          <el-menu-item index="admin-tag">
+          <el-menu-item index="admin-tags">
             <i class="el-icon-postcard"></i>
             <span slot="title">标签管理</span>
           </el-menu-item>

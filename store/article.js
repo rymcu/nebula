@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { isBrowser } from '~/environment';
 
 export const ARTICLE_API_PATH = '/api/article'
 export const BASE_API_PATH = '/api/console'
