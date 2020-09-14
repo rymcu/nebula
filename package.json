@@ -11,18 +11,18 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
-    "@nuxtjs/axios": "^5.12.1",
+    "@nuxtjs/axios": "^5.12.2",
     "babel-plugin-lodash": "^3.3.4",
     "cookieparser": "^0.1.0",
-    "echarts": "^4.8.0",
+    "echarts": "^4.9.0",
     "element-ui": "^2.13.2",
     "express": "^4.17.1",
     "js-cookie": "^2.2.1",
-    "nuxt": "^2.14.1",
+    "nuxt": "^2.14.5",
     "save-svg-as-png": "^1.4.17",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "vditor": "^3.4.6",
+    "vditor": "^3.5.3",
     "vuejs-avataaars": "^4.0.1"
   },
   "devDependencies": {
