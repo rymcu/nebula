@@ -177,16 +177,18 @@
           });
         });
       },
-      handleSizeChange(page) {
+      handleSizeChange(pageSize) {
         let _ts = this;
         _ts.$store.dispatch('admin/fetchRoles', {
-          page: page
+          page: _ts.pagination.currentPage,
+          rows: pageSize
         })
       },
       handleCurrentChange(page) {
         let _ts = this;
         _ts.$store.dispatch('admin/fetchRoles', {
-          page: page
+          page: page,
+          rows: _ts.pagination.pageSize
         })
       }
     }

@@ -42,9 +42,14 @@ export const actions = {
     commit('updateUsersData', getDefaultUsersData())
     commit('updateFetching', true)
 
+    let data = {
+      page: params.page || 1,
+      rows: params.rows || 10
+    }
+
     return this.$axios
       .$get(`${ADMIN_API_PATH}/users`, {
-        params: params
+        params: data
       })
       .then(response => {
         commit('updateFetching', false);
@@ -60,9 +65,14 @@ export const actions = {
     commit('updateRolesData', getDefaultRolesData())
     commit('updateFetching', true)
 
+    let data = {
+      page: params.page || 1,
+      rows: params.rows || 10
+    }
+
     return this.$axios
       .$get(`${ADMIN_API_PATH}/roles`, {
-        params: params
+        params: data
       })
       .then(response => {
         commit('updateFetching', false);
