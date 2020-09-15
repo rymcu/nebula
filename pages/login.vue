@@ -146,7 +146,7 @@
         let data = {
           email: email
         };
-        _ts.$axios.$post('/api/console/get-forget-password-email', data).then(function (res) {
+        _ts.$axios.$get('/api/console/get-forget-password-email', data).then(function (res) {
           _ts.loading = false;
           _ts.forget = false;
           if (res) {
