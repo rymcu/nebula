@@ -20,7 +20,7 @@
         </el-form-item>
         <el-form-item label="验证码" prop="code" :rules="[{ required: true, message: '请输入验证码', trigger: 'blur' }]">
           <el-input v-model="user.code" maxlength="6" autocomplete="off">
-            <el-button type="email" size="small" slot="append" @click="sendCode">发送验证码</el-button>
+            <el-button type="email" size="small" slot="append" @click="sendCode" :loading="loading">{{loadText}}</el-button>
           </el-input>
         </el-form-item>
         <el-form-item>
@@ -50,12 +50,16 @@
           code: '',
           password: '',
           confirmPassword: ''
-        }
+        },
+        loading: false,
+        loadText: '发送验证码',
+        timeClock: null
       }
     },
     methods: {
       sendCode() {
         let _ts = this;
+        _ts.timerHandler();
         let email = _ts.user.email;
         if (!email) {
           return false
@@ -72,6 +76,20 @@
         }).catch(error => {
           console.log(error)
         })
+      },
+      timerHandler() {
+        let _ts = this;
+        _ts.$set(_ts, 'loading', true);
+        let times = 60;
+        _ts.timeClock = setInterval(function (){
+          times --;
+          _ts.$set(_ts, 'loadText', times + 's');
+          if (times == 0) {
+            clearInterval(_ts.timeClock);
+            _ts.$set(_ts, 'loading', false);
+            _ts.$set(_ts, 'loadText', '发送验证码');
+          }
+        },1000)
       },
       register() {
         let _ts = this;
