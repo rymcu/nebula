@@ -38,7 +38,7 @@ export default {
     forgetPassword() {
       let _ts = this;
       if (_ts.form.password !== _ts.form.confirmPassword) {
-        _ts.$message('');
+        _ts.$message('两次输入的密码不一致!');
         return false;
       }
       let data = {
