@@ -24,7 +24,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button style="width: 60%;" type="primary" @click="register">立即注册</el-button>
+          <el-button style="width: 60%;" type="primary" @click="register" :loading="registerLoading">立即注册</el-button>
           <el-button style="width: 32%;" @click="login">登录</el-button>
         </el-form-item>
       </el-form>
@@ -51,6 +51,7 @@
           password: '',
           confirmPassword: ''
         },
+        registerLoading: false,
         loading: false,
         loadText: '发送验证码',
         timeClock: null
@@ -70,20 +71,21 @@
         _ts.$axios.$get('/api/console/get-email-code', {
           params: data
         }).then(response => {
-          if (response.data) {
-            _ts.$message(response.data.message)
+          if (response.message) {
+            _ts.$message(response.message);
           }
         }).catch(error => {
-          console.log(error)
+          console.log(error);
+          _ts.$message("邮件发送失败,请检查邮箱是否正确!");
         })
       },
       timerHandler() {
         let _ts = this;
         _ts.$set(_ts, 'loading', true);
-        let times = 60;
+        let times = 30;
         _ts.timeClock = setInterval(function (){
           times --;
-          _ts.$set(_ts, 'loadText', times + 's');
+          _ts.$set(_ts, 'loadText', times + ' s');
           if (times == 0) {
             clearInterval(_ts.timeClock);
             _ts.$set(_ts, 'loading', false);
@@ -95,12 +97,17 @@
         let _ts = this;
         _ts.$refs.user.validate((valid) => {
           if (valid) {
+            _ts.$set(_ts, 'registerLoading', true);
+            setTimeout(function () {
+              _ts.$set(_ts, 'registerLoading', false);
+            }, 10000);
             let data = {
               email: _ts.user.email,
               password: _ts.user.password,
               code: _ts.user.code
             }
             _ts.$axios.$post('/api/console/register', data).then(function (res) {
+              _ts.$set(_ts, 'registerLoading', false);
               if (res) {
                 _ts.$message(res.message);
                 if (res.flag && res.flag === 1) {

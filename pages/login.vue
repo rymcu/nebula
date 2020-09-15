@@ -15,7 +15,7 @@
           <el-link rel="nofollow" style="float: right;" :underline="false" @click="forgetPassword">忘记密码</el-link>
         </el-form-item>
         <el-form-item>
-          <el-button style="width: 60%;" type="primary" @click="login">立即登录</el-button>
+          <el-button style="width: 60%;" type="primary" @click="login" :loading="loginLoading">立即登录</el-button>
           <el-button style="width: 32%;" @click="register">注册</el-button>
         </el-form-item>
       </el-form>
@@ -68,7 +68,8 @@
           email: ''
         },
         forget: false,
-        loading: false
+        loading: false,
+        loginLoading: false
       }
     },
     computed: {
@@ -81,12 +82,18 @@
         let _ts = this;
         _ts.$refs.user.validate((valid) => {
           if (valid) {
+            _ts.$set(_ts, 'loginLoading', true);
+            setTimeout(function () {
+              _ts.$set(_ts, 'loginLoading', false);
+            }, 10000);
+
             let data = {
               account: _ts.user.account,
               password: _ts.user.password
             }
 
             _ts.$axios.$post('/api/console/login', data).then(function (res) {
+              _ts.$set(_ts, 'loginLoading', false);
               if (res) {
                 if (res.message) {
                   _ts.$message(res.message);
