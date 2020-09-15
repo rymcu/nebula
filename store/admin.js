@@ -43,7 +43,9 @@ export const actions = {
     commit('updateFetching', true)
 
     return this.$axios
-      .$get(`${ADMIN_API_PATH}/users`)
+      .$get(`${ADMIN_API_PATH}/users`, {
+        params: params
+      })
       .then(response => {
         commit('updateFetching', false);
         commit('updateUsersData', response);
@@ -59,7 +61,9 @@ export const actions = {
     commit('updateFetching', true)
 
     return this.$axios
-      .$get(`${ADMIN_API_PATH}/roles`)
+      .$get(`${ADMIN_API_PATH}/roles`, {
+        params: params
+      })
       .then(response => {
         commit('updateFetching', false);
         commit('updateRolesData', response);
