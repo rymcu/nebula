@@ -119,7 +119,7 @@
         if (res && res.data && res.data.url) {
           let user = _ts.user;
           user.avatarUrl = res.data.url;
-          user.avatarType = '';
+          user.avatarType = '0';
           _ts.$set(_ts, 'user', user);
           _ts.$set(_ts, 'svgShow', false);
           _ts.$set(_ts, 'avatarUrl', res.data.url);
@@ -149,6 +149,7 @@
             } else {
               _ts.$set(_ts, 'user', res.user);
               _ts.$set(_ts, 'avatarUrl', res.user.avatarUrl);
+              _ts.$set(_ts, 'svgShow', false);
             }
           }
         })

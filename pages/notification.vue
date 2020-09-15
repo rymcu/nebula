@@ -13,6 +13,7 @@
 
   export default {
     name: "Notification",
+    middleware: 'authenticated',
     components: {
       NotificationList
     },
