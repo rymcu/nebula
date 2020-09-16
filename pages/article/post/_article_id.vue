@@ -231,7 +231,7 @@
             localStorage.removeItem('article-tags');
             _ts.contentEditor.setValue('');
             _ts.$router.push({
-              name: 'home'
+              name: 'index'
             })
           })
         }).catch(() => {
