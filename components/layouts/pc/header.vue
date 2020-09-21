@@ -14,7 +14,7 @@
               <el-menu-item index="index">首页</el-menu-item>
               <el-menu-item index="topic">专题</el-menu-item>
               <el-menu-item index="github">开源代码</el-menu-item>
-              <el-menu-item index="open-source">资料下载</el-menu-item>
+<!--              <el-menu-item index="open-source">资料下载</el-menu-item>-->
             </el-menu>
           </el-col>
         </el-row>
@@ -180,7 +180,7 @@
             default:
               _ts.$router.push(
                 {
-                  name: item
+                  path: '/'
                 }
               )
           }

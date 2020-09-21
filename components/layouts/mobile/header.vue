@@ -165,7 +165,7 @@
             default:
               _ts.$router.push(
                 {
-                  name: item
+                  path: '/'
                 }
               )
           }
