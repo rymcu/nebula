@@ -11,10 +11,12 @@
           <img v-else class="card-profile-img" src="https://static.rymcu.com/article/1578475481946.png">
           <h3 class="mb-3">{{ user.nickname }}</h3>
           <p class="mb-4" v-html="user.signature"></p>
-          <div v-if="oauth && oauth.idUser !== user.idUser">
-            <el-button type="primary" v-if="isFollow" @click="cancelFollowUser(user.idUser)">取消关注</el-button>
-            <el-button type="primary" v-else @click="followUser(user.idUser)">关注</el-button>
-            <el-button @click="gotoChats">聊天</el-button>
+          <div v-if="oauth">
+            <div v-if="oauth.idUser !== user.idUser">
+              <el-button type="primary" v-if="isFollow" @click="cancelFollowUser(user.idUser)">取消关注</el-button>
+              <el-button type="primary" v-else @click="followUser(user.idUser)">关注</el-button>
+              <el-button @click="gotoChats">聊天</el-button>
+            </div>
           </div>
           <div v-else>
             <el-button type="primary" @click="login">关注</el-button>
