@@ -23,6 +23,7 @@
                   <el-link rel="nofollow" :underline="false"><i class="el-icon-more"></i></el-link>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="edit" v-if="hasPermissions">编辑</el-dropdown-item>
+                    <el-dropdown-item command="editTag" v-if="isAdmin">编辑标签</el-dropdown-item>
                     <el-dropdown-item command="share">分享</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -72,6 +73,15 @@
       <comment-box :fetching="isFetching" :user="user" :avatar="avatar" :title="article.articleTitle"
                    :post-id="routeArticleId"></comment-box>
     </el-col>
+    <el-col>
+      <el-dialog :visible.sync="dialogVisible">
+        <edit-tags
+          :idArticle="article.idArticle"
+          :tags="article.articleTags"
+          @closeDialog="closeTagsDialog">
+        </edit-tags>
+      </el-dialog>
+    </el-col>
   </el-row>
 </template>
 
@@ -79,11 +89,13 @@
   import Vue from 'vue';
   import {mapState} from 'vuex';
   import ShareBox from '~/components/widget/share';
+  import EditTags from '~/components/widget/tags';
 
   export default {
     name: "ArticleDetail",
     components: {
-      ShareBox
+      ShareBox,
+      EditTags
     },
     validate({params, store}) {
       return params.article_id && !isNaN(Number(params.article_id))
@@ -111,6 +123,9 @@
             return true;
           }
         }
+        return this.$store.getters.hasPermissions('blog_admin');
+      },
+      isAdmin() {
         return this.$store.getters.hasPermissions('blog_admin');
       },
       routeArticleId() {
@@ -160,6 +175,7 @@
       return {
         loading: false,
         isShare: false,
+        dialogVisible: false,
         shareData: {},
       }
     },
@@ -177,6 +193,8 @@
           _ts.$router.push({
             path: `/article/post/${_ts.article.idArticle}`
           })
+        } else if (item === 'editTag') {
+          _ts.$set(_ts, 'dialogVisible', true);
         } else {
           _ts.$axios.$get('/api/article/' + _ts.article.idArticle + '/share').then(function (res) {
             if (res) {
@@ -190,6 +208,10 @@
         this.$router.push({
           name: 'login'
         })
+      },
+      closeTagsDialog() {
+        this.$set(this, 'dialogVisible', false);
+        this.$store.dispatch('article/fetchDetail', this.$route.params)
       }
     },
     mounted() {
