@@ -249,7 +249,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          _ts.$axios.$delete('/portfolio/delete', {
+          _ts.$axios.$delete('/api/portfolio/delete', {
             params: {
               idPortfolio: _ts.idPortfolio
             }
