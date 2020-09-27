@@ -18,16 +18,13 @@
         <el-col style="margin-bottom: .5rem;">
           <span class="text-default" style="padding-right: 1rem;">文章</span> {{portfolio.articleNumber}}篇
         </el-col>
-        <el-col style="margin-bottom: .5rem;" v-html="portfolio.portfolioDescription">
+        <el-col v-if="isAuthor" style="margin-top: .5rem;text-align: left;">
+          <el-button @click="managerPortfolio(portfolio.idPortfolio)" plain>管理</el-button>
         </el-col>
+        <el-col style="margin-bottom: .5rem;" v-html="portfolio.portfolioDescription"></el-col>
       </el-col>
     </el-col>
     <el-col>
-      <el-col v-if="isAuthor" style="text-align: right;">
-        <el-col :xs="0" :xl="24">
-          <el-link rel="nofollow" @click="managerPortfolio(portfolio.idPortfolio)" :underline="false" class="text-default">管理</el-link>
-        </el-col>
-      </el-col>
       <el-divider><i class="el-icon-loading"></i></el-divider>
       <el-col>
           <article-list :articles="articles" @currentChange="currentChangeArticle"></article-list>
