@@ -33,9 +33,17 @@
                     # {{ tag.tagTitle }}
                   </el-tag>
                 </el-col>
-                <el-col :span="12" style="text-align: right;">
+                <el-col v-if="user" :span="12" style="text-align: right;">
+                  <template v-if="user.idUser !== article.articleAuthorId">
+                    <el-button size="mini" v-if="isFollow" @click="cancelFollowUser(article.articleAuthorId)">取消关注</el-button>
+                    <el-button size="mini" v-else @click="followUser(article.articleAuthorId)">关注</el-button>
+                  </template>
                   <el-button size="mini" v-if="hasPermissions" @click="handleCommand('edit')">编辑文章</el-button>
                   <el-button size="mini" v-if="isAdmin" @click="handleCommand('editTags')">编辑标签</el-button>
+                  <el-button size="mini" @click="handleCommand('share')">分享</el-button>
+                </el-col>
+                <el-col v-else :span="12" style="text-align: right;">
+                  <el-button size="mini" @click="gotoLogin">关注</el-button>
                   <el-button size="mini" @click="handleCommand('share')">分享</el-button>
                 </el-col>
               </el-col>
@@ -173,6 +181,7 @@
         loading: false,
         isShare: false,
         dialogVisible: false,
+        isFollow: false,
         shareData: {},
       }
     },
@@ -196,12 +205,17 @@
           if (_ts.isShare) {
             _ts.$set(_ts, 'isShare', false);
           } else {
-            _ts.$axios.$get('/api/article/' + _ts.article.idArticle + '/share').then(function (res) {
-              if (res) {
-                _ts.$set(_ts, 'shareData', res);
-                _ts.$set(_ts, 'isShare', true);
-              }
-            });
+            if (_ts.user) {
+              _ts.$axios.$get('/api/article/' + _ts.article.idArticle + '/share').then(function (res) {
+                if (res) {
+                  _ts.$set(_ts, 'shareData', res);
+                  _ts.$set(_ts, 'isShare', true);
+                }
+              });
+            } else {
+              _ts.$set(_ts, 'shareData', {shareUrl: _ts.article.articlePermalink});
+              _ts.$set(_ts, 'isShare', true);
+            }
           }
         }
       },
@@ -213,6 +227,32 @@
       closeTagsDialog() {
         this.$set(this, 'dialogVisible', false);
         this.$store.dispatch('article/fetchDetail', this.$route.params)
+      },
+      followUser(idUser) {
+        let _ts = this;
+        if (_ts.user) {
+          _ts.$axios.$post('/api/follow', {
+            followingId: idUser,
+            followingType: 0
+          }).then(function (res) {
+            _ts.$set(_ts, 'isFollow', res);
+          })
+        } else {
+          _ts.gotoLogin()
+        }
+      },
+      cancelFollowUser(idUser) {
+        let _ts = this;
+        if (_ts.user) {
+          _ts.$axios.$post('/api/follow/cancel-follow', {
+            followingId: idUser,
+            followingType: 0
+          }).then(function (res) {
+            _ts.$set(_ts, 'isFollow', res);
+          })
+        } else {
+          _ts.gotoLogin()
+        }
       }
     },
     mounted() {
