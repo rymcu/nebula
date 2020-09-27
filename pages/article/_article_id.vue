@@ -256,7 +256,8 @@
       }
     },
     mounted() {
-      this.$store.commit('setActiveMenu', 'articleDetail');
+      let _ts = this;
+      _ts.$store.commit('setActiveMenu', 'articleDetail');
       Vue.nextTick(() => {
         const previewElement = document.getElementById("articleContent");
         // //const outLineElement = document.getElementById("articleToC");
@@ -276,6 +277,17 @@
         //VditorPreview.outlineRender(previewElement, outLineElement);
         window.scrollTo(0, 0);
       })
+
+      if (_ts.user) {
+        _ts.$axios.$get('/api/follow/is-follow', {
+          params: {
+            followingId: _ts.article.articleAuthorId,
+            followingType: 0
+          }
+        }).then(function (res) {
+          _ts.$set(_ts, 'isFollow', res);
+        })
+      }
     }
 
   }
