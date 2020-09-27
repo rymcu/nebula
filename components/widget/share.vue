@@ -7,7 +7,7 @@
                     width="20"
                     trigger="hover">
           <el-col>
-            <qrcode :value="share(url)" :options="{ width: 20 }"></qrcode>
+            <qrcode :value="url" :options="{ width: 20 }"></qrcode>
           </el-col>
           <el-col class="text-center">
             <span>扫码分享至微信</span>
@@ -37,12 +37,6 @@
     data() {
       return {
         wx: wx
-      }
-    },
-    methods: {
-      share(url) {
-        let path = url + '?s=' + this.$store.state.userInfo?.nickname
-        return path;
       }
     }
   }
