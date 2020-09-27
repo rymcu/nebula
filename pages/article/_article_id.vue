@@ -19,28 +19,25 @@
                 </div>
               </el-col>
               <el-col :xs="12" :sm="12" :xl="12" v-if="user" class="text-right">
-                <el-dropdown trigger="click" @command="handleCommand">
-                  <el-link rel="nofollow" :underline="false"><i class="el-icon-more"></i></el-link>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="edit" v-if="hasPermissions">编辑</el-dropdown-item>
-                    <el-dropdown-item command="editTag" v-if="isAdmin">编辑标签</el-dropdown-item>
-                    <el-dropdown-item command="share">分享</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </el-col>
-              <el-col class="text-right">
                 <el-link rel="nofollow" :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
                 </el-link>
               </el-col>
               <el-col style="margin: 1rem 0;">
-                <el-tag
-                  style="margin-right: 0.5rem;"
-                  v-for="tag in article.tags"
-                  :key="tag.idTag"
-                  size="small"
-                  effect="plain">
-                  {{ tag.tagTitle }}
-                </el-tag>
+                <el-col :span="12">
+                  <el-tag
+                    style="margin-right: 0.5rem;"
+                    v-for="tag in article.tags"
+                    :key="tag.idTag"
+                    size="small"
+                    effect="plain">
+                    # {{ tag.tagTitle }}
+                  </el-tag>
+                </el-col>
+                <el-col :span="12" style="text-align: right;">
+                  <el-button size="mini" v-if="hasPermissions" @click="handleCommand('edit')">编辑文章</el-button>
+                  <el-button size="mini" v-if="isAdmin" @click="handleCommand('editTags')">编辑标签</el-button>
+                  <el-button size="mini" @click="handleCommand('share')">分享</el-button>
+                </el-col>
               </el-col>
               <el-col v-if="article.portfolios && article.portfolios.length > 0">
                 <el-col>
@@ -196,12 +193,16 @@
         } else if (item === 'editTag') {
           _ts.$set(_ts, 'dialogVisible', true);
         } else {
-          _ts.$axios.$get('/api/article/' + _ts.article.idArticle + '/share').then(function (res) {
-            if (res) {
-              _ts.$set(_ts, 'shareData', res);
-              _ts.$set(_ts, 'isShare', true);
-            }
-          });
+          if (_ts.isShare) {
+            _ts.$set(_ts, 'isShare', false);
+          } else {
+            _ts.$axios.$get('/api/article/' + _ts.article.idArticle + '/share').then(function (res) {
+              if (res) {
+                _ts.$set(_ts, 'shareData', res);
+                _ts.$set(_ts, 'isShare', true);
+              }
+            });
+          }
         }
       },
       gotoLogin() {
