@@ -7,8 +7,8 @@
       </el-breadcrumb>
     </el-col>
     <el-col style="margin: .5rem;">
-      <el-button size="small" @click="createTag">创建标签</el-button>
-      <el-button size="small" @click="cleanUnusedTag">清除未使用标签</el-button>
+      <el-button size="small" @click="createTag" plain>创建标签</el-button>
+      <el-button size="small" @click="cleanUnusedTag" plain>清除未使用标签</el-button>
     </el-col>
     <el-col v-for="tag in tags" :key="tag.idTag">
       <el-card style="margin: .5rem;">
@@ -25,7 +25,7 @@
           </el-col>
         </el-col>
         <el-col :span="3" class="text-right">
-          <el-button size="small" @click="updateTag(tag.idTag)">管理</el-button>
+          <el-button size="small" @click="updateTag(tag.idTag)" plain>管理</el-button>
         </el-col>
         <el-col style="margin-bottom: .8rem">{{ tag.tagDescription }}</el-col>
       </el-card>

@@ -13,14 +13,14 @@
           <p class="mb-4" v-html="user.signature"></p>
           <div v-if="oauth">
             <div v-if="oauth.idUser !== user.idUser">
-              <el-button type="primary" v-if="isFollow" @click="cancelFollowUser(user.idUser)">取消关注</el-button>
-              <el-button type="primary" v-else @click="followUser(user.idUser)">关注</el-button>
-              <el-button @click="gotoChats">聊天</el-button>
+              <el-button type="primary" v-if="isFollow" @click="cancelFollowUser(user.idUser)" plain>取消关注</el-button>
+              <el-button type="primary" v-else @click="followUser(user.idUser)" plain>关注</el-button>
+              <el-button @click="gotoChats" plain>聊天</el-button>
             </div>
           </div>
           <div v-else>
-            <el-button type="primary" @click="login">关注</el-button>
-            <el-button @click="login">聊天</el-button>
+            <el-button type="primary" @click="login" plain>关注</el-button>
+            <el-button @click="login" plain>聊天</el-button>
           </div>
         </div>
       </div>

@@ -23,13 +23,13 @@
               <div id="contentEditor"></div>
             </el-col>
             <el-col style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-              <el-button type="primary" :loading="loading" @click="postComment">发布</el-button>
+              <el-button type="primary" :loading="loading" @click="postComment" plain>发布</el-button>
             </el-col>
           </el-drawer>
         </el-col>
       </el-col>
       <el-col v-else class="text-center" style="margin-top: 1rem;">
-        <el-button type="primary" size="medium" @click="gotoLogin">登录</el-button>
+        <el-button type="primary" size="medium" @click="gotoLogin" plain>登录</el-button>
         后发布评论
       </el-col>
       <el-col style="margin-top: 1rem;">

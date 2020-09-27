@@ -7,7 +7,7 @@
       </el-breadcrumb>
     </el-col>
     <el-col>
-      <el-button type="primary" @click="showAddDialog">添加角色</el-button>
+      <el-button type="primary" @click="showAddDialog" plain>添加角色</el-button>
       <el-table
         :data="roles"
         style="width: 100%;margin-top: 1rem;">
@@ -43,11 +43,11 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" plain>编辑</el-button>
             <el-button v-if="scope.row.status == 1" size="mini" type="primary"
-                       @click="toggleStatus(scope.$index, scope.row)">启用
+                       @click="toggleStatus(scope.$index, scope.row)" plain>启用
             </el-button>
-            <el-button v-else size="mini" type="danger" @click="toggleStatus(scope.$index, scope.row)">禁用</el-button>
+            <el-button v-else size="mini" type="danger" @click="toggleStatus(scope.$index, scope.row)" plain>禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -77,8 +77,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="updateRole">确 定</el-button>
+          <el-button @click="dialogVisible = false" plain>取 消</el-button>
+          <el-button type="primary" @click="updateRole" plain>确 定</el-button>
         </div>
       </el-dialog>
     </el-col>

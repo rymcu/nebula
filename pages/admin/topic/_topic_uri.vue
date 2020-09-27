@@ -47,7 +47,7 @@
             </el-col>
           </el-col>
           <el-col :span="3" class="text-right">
-            <el-button size="small" @click="unbindTopicTag(tag.idTag)">取消关联</el-button>
+            <el-button size="small" @click="unbindTopicTag(tag.idTag)" plain>取消关联</el-button>
           </el-col>
           <el-col style="margin-bottom: .8rem">{{ tag.tagDescription }}</el-col>
         </el-card>

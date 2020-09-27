@@ -15,8 +15,8 @@
           <el-link rel="nofollow" style="float: right;" :underline="false" @click="forgetPassword">忘记密码</el-link>
         </el-form-item>
         <el-form-item>
-          <el-button style="width: 60%;" type="primary" @click="login" :loading="loginLoading">立即登录</el-button>
-          <el-button style="width: 32%;" @click="register">注册</el-button>
+          <el-button style="width: 60%;" type="primary" @click="login" :loading="loginLoading" plain>立即登录</el-button>
+          <el-button style="width: 32%;" @click="register" plain>注册</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -43,8 +43,8 @@
           <el-input v-model="forgetForm.email" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center;">
-          <el-button :loading="loading" @click.native="sendEmailCode" type="success">发送</el-button>
-          <el-button :loading="loading" @click.native="hideForgetPasswordDialog">取消</el-button>
+          <el-button :loading="loading" @click.native="sendEmailCode" type="success" plain>发送</el-button>
+          <el-button :loading="loading" @click.native="hideForgetPasswordDialog" plain>取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>

@@ -20,12 +20,12 @@
         </el-form-item>
         <el-form-item label="验证码" prop="code" :rules="[{ required: true, message: '请输入验证码', trigger: 'blur' }]">
           <el-input v-model="user.code" maxlength="6" autocomplete="off">
-            <el-button type="email" size="small" slot="append" @click="sendCode" :loading="loading">{{loadText}}</el-button>
+            <el-button type="email" size="small" slot="append" @click="sendCode" :loading="loading" plain>{{loadText}}</el-button>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button style="width: 60%;" type="primary" @click="register" :loading="registerLoading">立即注册</el-button>
-          <el-button style="width: 32%;" @click="login">登录</el-button>
+          <el-button style="width: 60%;" type="primary" @click="register" :loading="registerLoading" plain>立即注册</el-button>
+          <el-button style="width: 32%;" @click="login" plain>登录</el-button>
         </el-form-item>
       </el-form>
     </el-col>

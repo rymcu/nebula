@@ -29,7 +29,7 @@
             </el-col>
           </el-col>
           <el-col :span="3" class="text-right">
-            <el-button size="small" @click="bindTopicTag(tag.idTag)">关联</el-button>
+            <el-button size="small" @click="bindTopicTag(tag.idTag)" plain>关联</el-button>
           </el-col>
           <el-col style="margin-bottom: .8rem">{{ tag.tagDescription }}</el-col>
         </el-card>

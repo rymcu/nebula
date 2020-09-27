@@ -61,11 +61,11 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleRole(scope.$index, scope.row)">授权</el-button>
+            <el-button size="mini" @click="handleRole(scope.$index, scope.row)" plain>授权</el-button>
             <el-button v-if="scope.row.status == 1" size="mini" type="primary"
-                       @click="toggleStatus(scope.$index, scope.row)">启用
+                       @click="toggleStatus(scope.$index, scope.row)" plain>启用
             </el-button>
-            <el-button v-else size="mini" type="danger" @click="toggleStatus(scope.$index, scope.row)">禁用</el-button>
+            <el-button v-else size="mini" type="danger" @click="toggleStatus(scope.$index, scope.row)" plain>禁用</el-button>
           </template>
         </el-table-column>
       </el-table>

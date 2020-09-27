@@ -7,7 +7,7 @@
       </el-breadcrumb>
     </el-col>
     <el-col style="margin: .5rem;">
-      <el-button size="small" @click="createTopic">创建专题</el-button>
+      <el-button size="small" @click="createTopic" plain>创建专题</el-button>
     </el-col>
     <el-col :span="8" style="margin-bottom: .5rem;" v-for="topic in topics" :key="topic.idTopic">
       <el-card>

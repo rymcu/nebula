@@ -35,7 +35,7 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </div>
           </el-upload>
-          <el-button style="margin-top: 1rem;" type="primary" round @click="genAvatar">随机</el-button>
+          <el-button style="margin-top: 1rem;" type="primary" round @click="genAvatar" plain>随机</el-button>
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="user.nickname" @blur="checkNickname"></el-input>
@@ -54,7 +54,7 @@
           <el-input type="textarea" v-model="user.signature"></el-input>
         </el-form-item>
         <el-form-item style="text-align: right;">
-          <el-button type="primary" round @click="updateUserInfo">保存</el-button>
+          <el-button type="primary" round @click="updateUserInfo" plain>保存</el-button>
         </el-form-item>
       </el-form>
     </el-col>

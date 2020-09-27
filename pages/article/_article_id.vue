@@ -35,16 +35,16 @@
                 </el-col>
                 <el-col v-if="user" :span="12" style="text-align: right;">
                   <template v-if="user.idUser !== article.articleAuthorId">
-                    <el-button size="mini" v-if="isFollow" @click="cancelFollowUser(article.articleAuthorId)">取消关注</el-button>
-                    <el-button size="mini" v-else @click="followUser(article.articleAuthorId)">关注</el-button>
+                    <el-button size="mini" v-if="isFollow" @click="cancelFollowUser(article.articleAuthorId)" plain>取消关注</el-button>
+                    <el-button size="mini" v-else @click="followUser(article.articleAuthorId)" plain>关注</el-button>
                   </template>
-                  <el-button size="mini" v-if="hasPermissions" @click="handleCommand('edit')">编辑文章</el-button>
-                  <el-button size="mini" v-if="isAdmin" @click="handleCommand('editTags')">编辑标签</el-button>
-                  <el-button size="mini" @click="handleCommand('share')">分享</el-button>
+                  <el-button size="mini" v-if="hasPermissions" @click="handleCommand('edit')" plain>编辑文章</el-button>
+                  <el-button size="mini" v-if="isAdmin" @click="handleCommand('editTag')" plain>编辑标签</el-button>
+                  <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
                 </el-col>
                 <el-col v-else :span="12" style="text-align: right;">
-                  <el-button size="mini" @click="gotoLogin">关注</el-button>
-                  <el-button size="mini" @click="handleCommand('share')">分享</el-button>
+                  <el-button size="mini" @click="gotoLogin" plain>关注</el-button>
+                  <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
                 </el-col>
               </el-col>
               <el-col v-if="article.portfolios && article.portfolios.length > 0">

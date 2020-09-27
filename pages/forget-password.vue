@@ -16,7 +16,7 @@
           <el-input type="password" v-model="form.confirmPassword" autocomplete="off" show-password></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button style="width: 60%;" type="primary" @click="forgetPassword">提交</el-button>
+          <el-button style="width: 60%;" type="primary" @click="forgetPassword" plain>提交</el-button>
         </el-form-item>
       </el-form>
     </el-col>

@@ -62,7 +62,7 @@
           <div id="contentEditor"></div>
         </el-form-item>
         <el-form-item class="text-right">
-          <el-button @click="updateTopic" :loading="loading">提交</el-button>
+          <el-button @click="updateTopic" :loading="loading" plain>提交</el-button>
         </el-form-item>
       </el-form>
     </el-col>

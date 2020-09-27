@@ -5,7 +5,7 @@
         <div id="contentEditor"></div>
       </el-col>
       <el-col style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-        <el-button type="primary" :loading="loading" @click="send">发送</el-button>
+        <el-button type="primary" :loading="loading" @click="send" plain>发送</el-button>
       </el-col>
       <el-col style="margin-top: 2rem;" id="messagesContent">
         <el-col v-for="message in Array.prototype.reverse.call(messages)" :key="message.dataId">

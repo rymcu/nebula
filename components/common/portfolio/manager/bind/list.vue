@@ -8,7 +8,7 @@
           </el-link>
           <div class="text-muted article-summary-md">{{ article.articlePreviewContent }}</div>
           <el-col class="text-right" style="padding: 1rem;">
-            <el-button @click="bindArticle(article.idArticle)" :loading="loading">添加至作品集</el-button>
+            <el-button @click="bindArticle(article.idArticle)" :loading="loading" plain>添加至作品集</el-button>
           </el-col>
         </div>
       </el-card>

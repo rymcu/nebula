@@ -21,8 +21,8 @@
       </el-select>
     </el-col>
     <el-col style="text-align: center;">
-      <el-button type="primary" style="margin-top: 1rem;" @click="saveTags">保存</el-button>
-      <el-button style="margin-top: 1rem;" @click="$emit('closeDialog')">取消</el-button>
+      <el-button type="primary" style="margin-top: 1rem;" @click="saveTags" plain>保存</el-button>
+      <el-button style="margin-top: 1rem;" @click="$emit('closeDialog')" plain>取消</el-button>
     </el-col>
   </el-row>
 </template>

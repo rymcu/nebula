@@ -33,14 +33,14 @@
       </el-select>
     </el-col>
     <el-col v-if="!isEdit" style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-      <el-button :loading="doLoading" @click="saveArticle">保存草稿</el-button>
-      <el-button type="primary" :loading="doLoading" @click="postArticle">发布</el-button>
+      <el-button :loading="doLoading" @click="saveArticle" plain>保存草稿</el-button>
+      <el-button type="primary" :loading="doLoading" @click="postArticle" plain>发布</el-button>
     </el-col>
     <el-col v-else style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-      <el-button type="danger" :loading="doLoading" @click="deleteArticle">删除</el-button>
-      <el-button v-if="articleStatus === '1'" :loading="doLoading" @click="saveArticle">保存草稿</el-button>
-      <el-button v-if="articleStatus === '0'" :loading="doLoading" type="primary" @click="postArticle">更新</el-button>
-      <el-button v-else type="primary" :loading="doLoading" @click="postArticle">发布</el-button>
+      <el-button type="danger" :loading="doLoading" @click="deleteArticle" plain>删除</el-button>
+      <el-button v-if="articleStatus === '1'" :loading="doLoading" @click="saveArticle" plain>保存草稿</el-button>
+      <el-button v-if="articleStatus === '0'" :loading="doLoading" type="primary" @click="postArticle" plain>更新</el-button>
+      <el-button v-else type="primary" :loading="doLoading" @click="postArticle" plain>发布</el-button>
     </el-col>
   </el-row>
 </template>
