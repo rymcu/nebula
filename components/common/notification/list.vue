@@ -14,8 +14,20 @@
             </el-link>
           </el-col>
         </el-col>
+        <el-col v-else-if="notification.dataType == '-1'">
+          <el-col :xs="16" :sm="20" :xl="20">
+            <el-link rel="nofollow" :underline="false" style="font-size: 1.1em;"
+                     v-html="notification.dataSummary"></el-link>
+            <el-col style="font-size: 12px;color: #7f828b;">{{ notification.createdTime }}</el-col>
+          </el-col>
+          <el-col :xs="8" :sm="4" :xl="4" class="text-right" style="padding-right: 1rem;">
+            <el-link rel="nofollow" v-if="notification.hasRead === '0'" :underline="false" @click="read(notification.idNotification)">
+              <i class="el-icon-check"></i> 标记已读
+            </el-link>
+          </el-col>
+        </el-col>
         <el-col v-else>
-          <el-col :xs="4" :xl="2">
+          <el-col v-if="notification.author" :xs="4" :xl="2">
             <el-avatar :src="notification.author.userAvatarURL"></el-avatar>
           </el-col>
           <el-col :xs="20" :xl="22">
