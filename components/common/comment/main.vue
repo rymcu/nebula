@@ -44,21 +44,31 @@
               <el-col style="margin-left: 1rem;">
                 <el-col v-show="comment.commentOriginalCommentId">
                   <el-col :span="16">
-                  <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
-                           class="text-default">{{ comment.commenter.userNickname }}
-                  </el-link>
-                  <small class="text-default" style="margin: 0 0.2rem">回复了</small><span style="font-weight: bold;"> {{comment.commentOriginalAuthorNickname}}</span>
+                    <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
+                             class="text-default">{{ comment.commenter.userNickname }}
+                    </el-link>
+                    <small class="text-default" style="margin: 0 0.2rem">回复了</small><span style="font-weight: bold;"> {{comment.commentOriginalAuthorNickname}}</span>
                   </el-col>
                   <el-col :span="8" class="text-right" style="padding-right: 1rem;">
                     <el-link rel="nofollow" :underline="false" title="查看原评论"
                              @click.native="toggleShowOriginalComment(comment.commentOriginalCommentId)"><i
                       class="el-icon-reading"></i> 查看原评论</el-link>
+                    <el-tag v-show="isAuthor(comment.commentAuthorId)" size="mini" effect="plain" style="margin-left: 5px;">
+                       作者
+                    </el-tag>
                   </el-col>
                 </el-col>
                 <el-col v-show="!comment.commentOriginalCommentId">
-                  <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
-                           class="text-default">{{ comment.commenter.userNickname }}
-                  </el-link>
+                  <el-col :span="16">
+                    <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
+                             class="text-default">{{ comment.commenter.userNickname }}
+                    </el-link>
+                  </el-col>
+                  <el-col :span="8" class="text-right" style="padding-right: 1rem;">
+                    <el-tag v-show="isAuthor(comment.commentAuthorId)" size="mini" effect="plain" style="margin-left: 5px;">
+                      作者
+                    </el-tag>
+                  </el-col>
                 </el-col>
               </el-col>
               <el-col style="padding: 1rem;">
@@ -105,6 +115,10 @@
       },
       user: {
         type: Object,
+        default: false
+      },
+      authorId: {
+        type: Number,
         default: false
       },
       avatar: {
@@ -335,6 +349,9 @@
         } else {
           ele.style.display = 'none';
         }
+      },
+      isAuthor(commentAuthorId) {
+        return this.authorId === commentAuthorId;
       }
     },
     async mounted() {

@@ -76,7 +76,7 @@
     </el-col>
     <el-col>
       <comment-box :fetching="isFetching" :user="user" :avatar="avatar" :title="article.articleTitle"
-                   :post-id="routeArticleId"></comment-box>
+                   :post-id="routeArticleId" :authorId="article.articleAuthorId"></comment-box>
     </el-col>
     <el-col>
       <el-dialog :visible.sync="dialogVisible">
