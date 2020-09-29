@@ -32,9 +32,9 @@
         <el-button type="primary" size="medium" @click="gotoLogin" plain>登录</el-button>
         后发布评论
       </el-col>
-      <el-col style="margin-top: 1rem;">
+      <el-col>
         <el-col v-for="comment in comment.data" :key="comment.idComment">
-          <el-card style="margin-bottom: 0.5rem;" :id="'comment-' + comment.idComment">
+          <el-card style="margin-top: 1rem;" :id="'comment-' + comment.idComment">
             <el-col :xs="3" :sm="1" :xl="1">
               <el-avatar v-show="comment.commenter.userAvatarURL" :src="comment.commenter.userAvatarURL"></el-avatar>
               <el-avatar v-show="!comment.commenter.userAvatarURL"
@@ -43,32 +43,49 @@
             <el-col :xs="21" :sm="23" :xl="23">
               <el-col style="margin-left: 1rem;">
                 <el-col v-show="comment.commentOriginalCommentId">
+                  <el-col :span="16">
                   <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
                            class="text-default">{{ comment.commenter.userNickname }}
                   </el-link>
                   <small class="text-default" style="margin: 0 0.2rem">回复了</small><span style="font-weight: bold;"> {{comment.commentOriginalAuthorNickname}}</span>
+                  </el-col>
+                  <el-col :span="8" class="text-right" style="padding-right: 1rem;">
+                    <el-link rel="nofollow" :underline="false" title="查看原评论"
+                             @click.native="toggleShowOriginalComment(comment.commentOriginalCommentId)"><i
+                      class="el-icon-reading"></i> 查看原评论</el-link>
+                  </el-col>
                 </el-col>
                 <el-col v-show="!comment.commentOriginalCommentId">
                   <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
                            class="text-default">{{ comment.commenter.userNickname }}
                   </el-link>
                 </el-col>
-
               </el-col>
               <el-col style="padding: 1rem;">
                 <el-col>
                   <span v-html="comment.commentContent"></span>
                 </el-col>
               </el-col>
-              <el-col :span="22" style="padding-left: 1rem;">
+              <el-col :span="16" style="padding-left: 1rem;">
                 <el-link rel="nofollow" :underline="false" class="text-default">{{ comment.timeAgo }}</el-link>
               </el-col>
-              <el-col :span="2" v-if="user" class="text-right" style="margin-bottom: 0.5rem;">
-                <el-link rel="nofollow" :underline="false" title="回复" @click.native="replyComment(comment)"><i
-                  class="el-icon-s-comment"></i></el-link>
+              <el-col :span="8" v-if="user" class="text-right" style="margin-bottom: 0.5rem;">
+                <el-link rel="nofollow" :underline="false" title="评论" @click.native="replyComment(comment)"><i
+                  class="el-icon-s-comment"></i> 评论</el-link>
               </el-col>
             </el-col>
           </el-card>
+          <el-col :id="'original-' + comment.commentOriginalCommentId" style="background-color: #d9d9d9;padding-left: 1.5rem;
+            margin-top: 0.3rem;border-radius: 0.5rem;cursor: pointer;display: none;">
+            <el-col v-show="comment.commentOriginalCommentId" :span="2">
+              <p>
+                <span>{{comment.commentOriginalAuthorNickname}} :</span>
+              </p>
+            </el-col>
+            <el-col :span="20">
+              <div v-html="comment.commentOriginalContent"></div>
+            </el-col>
+          </el-col>
         </el-col>
       </el-col>
     </el-col>
@@ -310,6 +327,14 @@
       // 取消回复
       cancelCommentReply() {
         this.commentOriginalCommentId = 0
+      },
+      toggleShowOriginalComment(commentId) {
+        let ele = document.getElementById('original-' + commentId);
+        if (ele.style.display === 'none') {
+          ele.style.display = 'block';
+        } else {
+          ele.style.display = 'none';
+        }
       }
     },
     async mounted() {
