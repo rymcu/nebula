@@ -1,4 +1,3 @@
 User-agent: *
-Disallow: /api/
-Disallow: /admin/
-Disallow: /draft/
+Disallow: /admin
+Disallow: /draft
