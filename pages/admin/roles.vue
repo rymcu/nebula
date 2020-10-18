@@ -122,7 +122,7 @@
         let _ts = this;
         _ts.$set(_ts, 'dialogVisible', true);
         _ts.$set(_ts, 'title', '编辑角色信息');
-        _ts.$set(_ts, 'role', roles);
+        _ts.$set(_ts, 'role', role);
       },
       updateRole() {
         let _ts = this;
@@ -144,20 +144,20 @@
       toggleStatus(index, role) {
         let _ts = this;
         let title, status;
-        if (roles.status == 0) {
+        if (role.status == 0) {
           title = '禁用';
           status = 1;
         } else {
           title = '启用';
           status = 0;
         }
-        _ts.$confirm('确定' + title + '角色 ' + roles.name + '?', '提示', {
+        _ts.$confirm('确定' + title + '角色 ' + role.name + '?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           _ts.$axios.$patch('/api/admin/role/update-status', {
-            idRole: roles.idRole,
+            idRole: role.idRole,
             status: status
           }).then(function (res) {
             if (res && res.message) {

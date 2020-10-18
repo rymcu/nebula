@@ -135,8 +135,8 @@
       },
       handleRole(index, user) {
         let _ts = this;
-        _ts.$set(_ts, 'idUser', users.idUser);
-        _ts.$axios.$get('/api/admin/user/' + users.idUser + '/role')
+        _ts.$set(_ts, 'idUser', user.idUser);
+        _ts.$axios.$get('/api/admin/user/' + user.idUser + '/role')
           .then(function (res) {
             _ts.$set(_ts, 'dialogVisible', true);
             _ts.$set(_ts, 'idRole', res[0].idRole);
@@ -145,20 +145,20 @@
       toggleStatus(index, user) {
         let _ts = this;
         let title, status;
-        if (users.status == 0) {
+        if (user.status == 0) {
           title = '禁用';
           status = 1;
         } else {
           title = '启用';
           status = 0;
         }
-        _ts.$confirm('确定' + title + '用户' + users.nickname + '(' + users.account + ')?', '提示', {
+        _ts.$confirm('确定' + title + '用户' + user.nickname + '(' + user.account + ')?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           _ts.$axios.$patch('/api/admin/user/update-status', {
-            idUser: users.idUser,
+            idUser: user.idUser,
             status: status
           }).then(function (res) {
             if (res && res.message) {
