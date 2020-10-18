@@ -121,7 +121,7 @@ export default {
           'insert-after',
           '|',
           'upload',
-          'record',
+          // 'record',
           'table',
           '|',
           'undo',
