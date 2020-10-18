@@ -10,11 +10,11 @@ const apisMap = {
     GRAVATAR: '/proxy/static.rymcu.com/avatar'
   },
   production: {
-    FE: 'https://rymcu.com',
-    BASE: 'https://rymcu.com',
+    FE: 'http://120.26.175.127',
+    BASE: 'http://120.26.175.127',
     CDN: 'https://cdn.rymcu.com',
     PROXY: 'https://cdn.rymcu.com/proxy',
-    SOCKET: 'https://rymcu.com',
+    SOCKET: 'http://120.26.175.127',
     GRAVATAR: 'https://static.rymcu.com/avatar'
   }
 }
