@@ -1,6 +1,7 @@
 import appConfig from './config/app.config'
 import apiConfig from './config/api.config'
 import {isDevMode} from './environment'
+
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 export default {
@@ -8,7 +9,7 @@ export default {
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode
   */
-  mode: 'universal',
+  ssr: true,
   /*
   ** Render configuration
   */
@@ -96,6 +97,7 @@ export default {
     extend(config, ctx) {
       config.plugins.unshift(new LodashModuleReplacementPlugin())
       // rules[2].use[0] is babel-loader
+      config.module.rules.push({ test: /\.txt$/, use: 'raw-loader' })
       config.module.rules[2].use[0].options.plugins = ['lodash']
     }
   }
