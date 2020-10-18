@@ -41,8 +41,9 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination v-show="articles.pagination.total > 10" v-model="articles.pagination"
+          <el-pagination v-show="articles.pagination.total > articles.pagination.pageSize" v-model="articles.pagination"
                          layout="prev, pager, next"
+                         :page-size="articles.pagination.pageSize"
                          :current-page="articles.pagination.currentPage"
                          :total="articles.pagination.total"
                          @current-change="currentChange">
