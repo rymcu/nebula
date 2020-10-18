@@ -18,17 +18,18 @@
     "element-ui": "^2.13.2",
     "express": "^4.17.1",
     "js-cookie": "^2.2.1",
-    "nuxt": "^2.14.5",
+    "nuxt": "^2.14.7",
+    "raw-loader": "^4.0.2",
     "save-svg-as-png": "^1.4.17",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
-    "vditor": "^3.5.3",
+    "socket.io-client": "^2.3.1",
+    "vditor": "^3.5.5",
     "vuejs-avataaars": "^4.0.1"
   },
   "devDependencies": {
     "@nuxtjs/proxy": "^2.0.1",
     "lodash-webpack-plugin": "^0.11.5",
-    "node-sass": "^4.14.1",
+    "node-sass": "^4.12.0",
     "sass-loader": "^9.0.3"
   }
 }
