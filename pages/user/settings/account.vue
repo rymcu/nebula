@@ -97,6 +97,7 @@
         svgShow: false,
         tokenURL: {
           URL: '',
+          linkToImageURL: '',
           token: ''
         },
         avatarUrl: '',

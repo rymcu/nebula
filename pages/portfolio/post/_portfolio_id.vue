@@ -93,6 +93,7 @@
         loading: false,
         tokenURL: {
           URL: '',
+          linkToImageURL: '',
           token: ''
         },
         headImgUrl: '',
@@ -102,51 +103,45 @@
     methods: {
       _initEditor(data) {
         let _ts = this;
-        let toolbar;
-        if (window.innerWidth < 768) {
-          toolbar = [
-            'emoji',
-            'headings',
-            'bold',
-            'italic',
-            'strike',
-            'link',
-            '|',
-            'list',
-            'ordered-list',
-            'check',
-            'outdent',
-            'indent',
-            '|',
-            'quote',
-            'line',
-            'code',
-            'inline-code',
-            'insert-before',
-            'insert-after',
-            '|',
-            'upload',
-            'record',
-            'table',
-            '|',
-            'undo',
-            'redo',
-            '|',
-            'edit-mode',
-            'content-theme',
-            'code-theme',
-            {
-              name: 'more',
-              toolbar: [
-                'fullscreen',
-                'both',
-                'format',
-                'preview',
-                'info',
-                'help',
-              ],
-            }]
-        }
+
+        let toolbar = [
+          'emoji',
+          'headings',
+          'bold',
+          'italic',
+          'strike',
+          'link',
+          '|',
+          'list',
+          'ordered-list',
+          'check',
+          'outdent',
+          'indent',
+          '|',
+          'quote',
+          'line',
+          'code',
+          'inline-code',
+          'insert-before',
+          'insert-after',
+          '|',
+          'upload',
+          'record',
+          'table',
+          '|',
+          'undo',
+          'redo',
+          '|',
+          'edit-mode',
+          {
+            name: 'more',
+            toolbar: [
+              'fullscreen',
+              'both',
+              'preview',
+              'info'
+            ],
+          }]
         return new Vue.Vditor(data.id, {
           toolbar,
           mode: 'sv',
@@ -179,9 +174,11 @@
           upload: {
             max: 10 * 1024 * 1024,
             url: this.tokenURL.URL,
-            linkToImgUrl: this.tokenURL.URL,
+            linkToImgUrl: this.tokenURL.linkToImageURL,
             token: this.tokenURL.token,
-            filename: name => name.replace(/\?|\\|\/|:|\||<|>|\*|\[|\]|\s+/g, '-')
+            filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
+            replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
+            replace('/\\s/g', '')
           },
           height: data.height,
           counter: 102400,
@@ -279,8 +276,9 @@
         if (res) {
           _ts.$store.commit('setUploadHeaders', res.uploadToken);
           _ts.$set(_ts, 'tokenURL', {
-            token: res.uploadToken || '',
-            URL: res.uploadURL || '',
+            token: responseData.uploadToken || '',
+            URL: responseData.uploadURL || '',
+            linkToImageURL: responseData.linkToImageURL || ''
           })
         }
       });

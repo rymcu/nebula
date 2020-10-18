@@ -86,6 +86,7 @@ export default {
     return {
       tokenURL: {
         URL: '',
+        linkToImageURL: '',
         token: ''
       },
       tagIconPath: '',
@@ -97,9 +98,8 @@ export default {
   methods: {
     _initEditor(data) {
       let _ts = this;
-      let toolbar;
-      if (window.innerWidth < 768) {
-        toolbar = [
+
+        let toolbar = [
           'emoji',
           'headings',
           'bold',
@@ -128,20 +128,15 @@ export default {
           'redo',
           '|',
           'edit-mode',
-          'content-theme',
-          'code-theme',
           {
             name: 'more',
             toolbar: [
               'fullscreen',
               'both',
-              'format',
               'preview',
-              'info',
-              'help',
+              'info'
             ],
           }]
-      }
       return new Vue.Vditor(data.id, {
         toolbar,
         mode: 'sv',
@@ -179,9 +174,11 @@ export default {
         upload: {
           max: 10 * 1024 * 1024,
           url: this.tokenURL.URL,
-          linkToImgUrl: this.tokenURL.URL,
+          linkToImgUrl: this.tokenURL.linkToImageURL,
           token: this.tokenURL.token,
-          filename: name => name.replace(/\?|\\|\/|:|\||<|>|\*|\[|\]|\s+/g, '-')
+          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
+          replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
+          replace('/\\s/g', '')
         },
         height: data.height,
         counter: 102400,
@@ -248,8 +245,9 @@ export default {
       if (res) {
         _ts.$store.commit('setUploadHeaders', res.uploadToken);
         _ts.$set(_ts, 'tokenURL', {
-          token: res.uploadToken || '',
-          URL: res.uploadURL || '',
+          token: responseData.uploadToken || '',
+          URL: responseData.uploadURL || '',
+          linkToImageURL: responseData.linkToImageURL || ''
         })
       }
     });
