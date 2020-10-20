@@ -33,7 +33,7 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination v-show="portfolios.pagination.total > 10" v-model="portfolios.pagination"
+          <el-pagination :hide-on-single-page="true" v-model="portfolios.pagination"
                          layout="prev, pager, next"
                          :current-page="portfolios.pagination.currentPage"
                          :total="portfolios.pagination.total"

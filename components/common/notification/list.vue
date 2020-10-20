@@ -55,7 +55,7 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination v-show="notifications.pagination.total > 10" v-model="notifications.pagination"
+          <el-pagination :hide-on-single-page="true" v-model="notifications.pagination"
                          layout="prev, pager, next"
                          :current-page="notifications.pagination.currentPage"
                          :total="notifications.pagination.total"

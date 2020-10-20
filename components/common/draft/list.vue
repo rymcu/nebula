@@ -18,7 +18,7 @@
     </el-col>
     <el-col>
       <div class="vertical-container text-center">
-        <el-pagination v-show="articles.pagination.total > 10" v-model="articles.pagination"
+        <el-pagination :hide-on-single-page="true" v-model="articles.pagination"
                        layout="prev, pager, next"
                        :current-page="articles.pagination.currentPage"
                        :total="articles.pagination.total"

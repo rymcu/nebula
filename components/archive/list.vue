@@ -41,11 +41,13 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination v-show="articles.pagination.total > articles.pagination.pageSize" v-model="articles.pagination"
+          <el-pagination :hide-on-single-page="true" v-model="articles.pagination"
                          layout="prev, pager, next"
                          :page-size="articles.pagination.pageSize"
                          :current-page="articles.pagination.currentPage"
                          :total="articles.pagination.total"
+                         prev-text="上一页"
+                         next-text="下一页"
                          @current-change="currentChange">
           </el-pagination>
         </div>
