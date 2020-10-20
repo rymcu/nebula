@@ -9,9 +9,9 @@
       </el-col>
       <el-col :span="12" style="text-align: left;">
         <el-link class="footer-link" rel="nofollow" :underline="false" href="/guides/markdown" style="vertical-align: baseline;"><span>Markdown 教程</span></el-link>
-        <el-link class="footer-link" rel="nofollow" :underline="false" href="/" style="vertical-align: baseline;"><span>社区规章</span></el-link>
-        <el-link class="footer-link" rel="nofollow" :underline="false" href="/" style="vertical-align: baseline;"><span>意见反馈</span></el-link>
-        <el-link class="footer-link" rel="nofollow" :underline="false" href="/" style="vertical-align: baseline;"><span>关于我们</span></el-link>
+        <el-link class="footer-link" rel="nofollow" :underline="false" href="/article/20" style="vertical-align: baseline;"><span>社区规章</span></el-link>
+        <el-link class="footer-link" rel="nofollow" :underline="false" href="mailto:support@rymcu.com" style="vertical-align: baseline;"><span>意见反馈</span></el-link>
+        <el-link class="footer-link" rel="nofollow" :underline="false" href="/article/115" style="vertical-align: baseline;"><span>关于我们</span></el-link>
       </el-col>
       <el-col :span="12" style="text-align: right;">
         <el-col>
