@@ -11,6 +11,10 @@ jobs:
           node-version: "14"
       - run: npm install
       - run: npm run build
+      -  uses: kielabokkie/ssh-key-and-known-hosts-action@v1.0.3
+         with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+          ssh-host: ${{ secrets.REMOTE_HOST }}
       - uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
