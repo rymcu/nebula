@@ -11,10 +11,16 @@ jobs:
           node-version: "14"
       - run: npm install
       - run: npm run build
-      - uses: easingthemes/ssh-deploy@v2.1.5
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          SOURCE: ".nuxt/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
+      - uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: ".nuxt"
+          target: ${{ secrets.REMOTE_TARGET}}
+      - uses: MrSquaare/ssh-setup-action@v1.0.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          private-key: ${{ secrets.SERVER_SSH_KEY }}
+      - run: ~/build.sh
