@@ -19,8 +19,11 @@ jobs:
           port: ${{ secrets.PORT }}
           source: ".nuxt"
           target: ${{ secrets.REMOTE_TARGET}}
-      - uses: MrSquaare/ssh-setup-action@v1.0.0
+      - uses: docker://evaneos/ssh-action:0.1.0
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          private-key: ${{ secrets.SERVER_SSH_KEY }}
-      - run: ~/build.sh
+          host: ${{ secrets.REMOTE_HOST }} 
+          private-key: ${{ secrets.SERVER_SSH_KEY }} 
+          user: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.PORT }}
+          password: ${{ secrets.PASSWORD }}
+          commands: ~/build.sh
