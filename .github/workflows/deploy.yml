@@ -21,7 +21,7 @@ jobs:
           target: ${{ secrets.REMOTE_TARGET}}
       - uses: docker://evaneos/ssh-action:0.1.0
         with:
-          host: ${{ secrets.REMOTE_HOST }} 
+          hosts: ${{ secrets.REMOTE_HOST }} 
           private-key: ${{ secrets.SERVER_SSH_KEY }} 
           user: ${{ secrets.REMOTE_USER }}
           port: ${{ secrets.PORT }}
