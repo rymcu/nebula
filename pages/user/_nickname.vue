@@ -29,18 +29,26 @@
       <el-row type="flex" justify="center">
         <el-col>
           <el-menu :default-active="activeTab" mode="horizontal" @select="handleToggleTab"
-                   style="padding-left: calc(50vw - 4.8rem);">
+                   style="padding-left: calc(50vw - 11rem);">
             <el-menu-item index="0">文章</el-menu-item>
             <el-menu-item index="1">作品集</el-menu-item>
+            <el-menu-item index="2">关注用户</el-menu-item>
+            <el-menu-item index="3">粉丝</el-menu-item>
           </el-menu>
         </el-col>
       </el-row>
     </el-col>
-    <el-col v-if="activeTab === '0'">
+    <el-col v-if="activeTab === '0'" class="tab-content">
       <article-list :articles="articles" @currentChange="currentChangeArticle"></article-list>
     </el-col>
-    <el-col v-else>
+    <el-col v-else-if="activeTab === '1'" class="tab-content">
       <portfolio-list :portfolios="portfolios" @currentChange="currentChangePortfolio"></portfolio-list>
+    </el-col>
+    <el-col v-else-if="activeTab === '2'" class="tab-content">
+      <user-list :users="followings" @currentChange="currentChangeFollowing"></user-list>
+    </el-col>
+    <el-col v-else-if="activeTab === '3'" class="tab-content">
+      <user-list :users="followers" @currentChange="currentChangeFollower"></user-list>
     </el-col>
   </el-row>
 </template>
@@ -49,10 +57,11 @@
 import {mapState} from 'vuex';
 import ArticleList from "~/components/archive/list";
 import PortfolioList from "~/components/common/portfolio/list";
+import UserList from "~/components/common/user/list";
 
 export default {
   name: "User",
-  components: {ArticleList, PortfolioList},
+  components: {ArticleList, PortfolioList, UserList},
   validate({params, store}) {
     return params.nickname
   },
@@ -62,7 +71,9 @@ export default {
         .dispatch('user/fetchDetail', params)
         .catch(err => error({statusCode: 404})),
       store.dispatch('user/fetchArticleList', params),
-      store.dispatch('user/fetchPortfolioList', params)
+      store.dispatch('user/fetchPortfolioList', params),
+      store.dispatch('user/fetchFollowerList', params),
+      store.dispatch('user/fetchFollowingList', params)
     ])
   },
   computed: {
@@ -70,6 +81,8 @@ export default {
       user: state => state.user.data,
       articles: state => state.user.articles,
       portfolios: state => state.user.portfolios,
+      followers: state => state.user.followers,
+      followings: state => state.user.followings,
       oauth: state => state.oauth
     })
   },
@@ -85,6 +98,12 @@ export default {
     },
     currentChangePortfolio(page) {
       this.$store.dispatch('user/fetchPortfolioList', {page: page, nickname: this.$route.params.nickname})
+    },
+    currentChangeFollowing(page) {
+      this.$store.dispatch('user/fetchFollowingList', {page: page, nickname: this.$route.params.nickname})
+    },
+    currentChangeFollower(page) {
+      this.$store.dispatch('user/fetchFollowerList', {page: page, nickname: this.$route.params.nickname})
     },
     handleToggleTab(key) {
       this.$set(this, 'activeTab', key);
@@ -270,5 +289,9 @@ h3, .h3 {
 .el-col-6 {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
+}
+
+.tab-content {
+  min-height: 50vh;
 }
 </style>

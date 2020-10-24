@@ -17,6 +17,14 @@ export const state = () => {
     portfolios:  {
       portfolios: [],
       pagination: {}
+    },
+    followers:  {
+      users: [],
+      pagination: {}
+    },
+    followings:  {
+      users: [],
+      pagination: {}
     }
   }
 }
@@ -33,6 +41,12 @@ export const mutations = {
   },
   updatePortfolioList(state, action) {
     state.portfolios = action
+  },
+  updateFollowerList(state, action) {
+    state.followers = action
+  },
+  updateFollowingList(state, action) {
+    state.followings = action
   }
 }
 
@@ -75,6 +89,46 @@ export const actions = {
       })
       .then(response => {
         commit('updatePortfolioList', response)
+        commit('updateFetching', false)
+      })
+      .catch(error => {
+        commit('updateFetching', false)
+      })
+  },
+  fetchFollowerList({commit}, params) {
+    commit('updateFetching', true);
+    commit('updateFollowerList', {
+      users: [],
+      pagination: {}
+    })
+    return this.$axios
+      .$get(`${USER_API_PATH}/${params.nickname}/followers`, {
+        params: {
+          page: params.page
+        }
+      })
+      .then(response => {
+        commit('updateFollowerList', response)
+        commit('updateFetching', false)
+      })
+      .catch(error => {
+        commit('updateFetching', false)
+      })
+  },
+  fetchFollowingList({commit}, params) {
+    commit('updateFetching', true);
+    commit('updateFollowingList', {
+      users: [],
+      pagination: {}
+    })
+    return this.$axios
+      .$get(`${USER_API_PATH}/${params.nickname}/followings`, {
+        params: {
+          page: params.page
+        }
+      })
+      .then(response => {
+        commit('updateFollowingList', response)
         commit('updateFetching', false)
       })
       .catch(error => {
