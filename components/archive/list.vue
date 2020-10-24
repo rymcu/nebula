@@ -13,7 +13,7 @@
               :key="tag.idTag"
               size="mini"
               effect="plain">
-              {{ tag.tagTitle }}
+              # {{ tag.tagTitle }}
             </el-tag>
             <div class="text-muted article-summary-md">{{ article.articlePreviewContent }}</div>
             <el-row class="pt-5">
