@@ -1,0 +1,29 @@
+name: deploy
+on: [release]
+jobs:
+  build:
+    name: building
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: "14"
+      - run: npm install
+      - run: npm run build
+      - uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: ".nuxt,config,io,static,environment.js,nuxt.config.js,package.json"
+          target: ${{ secrets.REMOTE_TARGET}}
+      - uses: docker://evaneos/ssh-action:0.1.0
+        with:
+          hosts: ${{ secrets.REMOTE_HOST }} 
+          private-key: ${{ secrets.SERVER_SSH_KEY }} 
+          user: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.PORT }}
+          password: ${{ secrets.PASSWORD }}
+          commands: ~/build.sh
