@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/vue-fontawesome": "^2.0.0",
     "@nuxtjs/axios": "^5.12.2",
     "babel-plugin-lodash": "^3.3.4",
     "cookieparser": "^0.1.0",
     "echarts": "^4.9.0",
-    "element-ui": "^2.13.2",
+    "element-ui": "^2.14.0",
     "express": "^4.17.1",
     "js-cookie": "^2.2.1",
     "nuxt": "^2.14.7",
@@ -23,7 +27,8 @@
     "save-svg-as-png": "^1.4.17",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.1",
-    "vditor": "^3.5.5",
+    "vditor": "^3.6.0",
+    "vue-cropperjs": "^4.1.0",
     "vuejs-avataaars": "^4.0.1"
   },
   "devDependencies": {
