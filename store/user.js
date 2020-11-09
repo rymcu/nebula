@@ -10,6 +10,7 @@ export const state = () => {
   return {
     fetching: false,
     data: [],
+    userExtend: {},
     articles: {
       articles: [],
       pagination: {}
@@ -36,6 +37,9 @@ export const mutations = {
   updateDetailData(state, action) {
     state.data = action
   },
+  updateUserExtendData(state, action) {
+    state.userExtend = action
+  },
   updateArticleList(state, action) {
     state.articles = action
   },
@@ -57,6 +61,18 @@ export const actions = {
       .$get(`${USER_API_PATH}/${params.nickname}`)
       .then(response => {
         commit('updateDetailData', response)
+        commit('updateFetching', false)
+      })
+      .catch(error => {
+        commit('updateFetching', false)
+      })
+  },
+  fetchUserExtend({ commit }, params) {
+    commit('updateFetching', true);
+    return this.$axios
+      .$get(`${USER_API_PATH}/${params.nickname}/user-extend`)
+      .then(response => {
+        commit('updateUserExtendData', response)
         commit('updateFetching', false)
       })
       .catch(error => {

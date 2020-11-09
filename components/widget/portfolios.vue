@@ -45,7 +45,7 @@
 export default {
   name: "portfolios",
   props: {
-    portfolios: []
+    portfolios: Array
   },
   data() {
     return {

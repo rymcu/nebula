@@ -8,7 +8,19 @@
           @select="handleSelectMenu">
           <el-menu-item index="account">
             <i class="el-icon-s-data"></i>
-            <span slot="title">资料与账号</span>
+            <span slot="title">基本信息</span>
+          </el-menu-item>
+          <el-menu-item index="avatar">
+            <i class="el-icon-picture-outline-round"></i>
+            <span slot="title">我的头像</span>
+          </el-menu-item>
+          <el-menu-item index="security">
+            <i class="el-icon-unlock"></i>
+            <span slot="title">账户安全</span>
+          </el-menu-item>
+          <el-menu-item index="notification">
+            <i class="el-icon-bell"></i>
+            <span slot="title">通知方式</span>
           </el-menu-item>
         </el-menu>
       </el-col>

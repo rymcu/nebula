@@ -64,8 +64,8 @@
                     <el-link rel="nofollow" :underline="false" style="margin-left: 10px;margin-bottom: 1rem;">{{ nickname }}</el-link>
                   </el-dropdown-item>
                   <el-dropdown-item v-if="hasPermissions" command="admin-dashboard">系统管理</el-dropdown-item>
-                  <el-dropdown-item command="user-info">资料与账号</el-dropdown-item>
                   <el-dropdown-item command="drafts">我的草稿</el-dropdown-item>
+                  <el-dropdown-item command="user-info">设置</el-dropdown-item>
                   <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>

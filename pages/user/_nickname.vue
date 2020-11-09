@@ -11,6 +11,13 @@
           <img v-else class="card-profile-img" src="https://static.rymcu.com/article/1578475481946.png">
           <h3 class="mb-3">{{ user.nickname }}</h3>
           <p class="mb-4" v-html="user.signature"></p>
+          <div v-if="userExtend" style="margin-bottom: 1rem;">
+            <el-link v-if="userExtend.blog" class="user-link" title="博客" :underline="false" :href="userExtend.blog" target="_blank"><font-awesome-icon :icon="['fas', 'link']"></font-awesome-icon></el-link>
+            <el-link v-if="userExtend.github" class="user-link" title="github" :underline="false" :href="'https://github.com/' + userExtend.github" target="_blank"><font-awesome-icon :icon="['fab', 'github']"></font-awesome-icon></el-link>
+            <el-link v-if="userExtend.weibo" class="user-link" title="微博" :underline="false" :href="'https://weibo.com/n/' + userExtend.weibo" target="_blank"><font-awesome-icon :icon="['fab', 'weibo']"></font-awesome-icon></el-link>
+            <el-link v-if="userExtend.weixin" class="user-link" title="微信" :underline="false" :href="userExtend.weixin"><font-awesome-icon :icon="['fab', 'weixin']" target="_blank"></font-awesome-icon></el-link>
+            <el-link v-if="userExtend.qq" class="user-link" title="QQ" :underline="false" :href="userExtend.qq"><font-awesome-icon :icon="['fab', 'qq']" target="_blank"></font-awesome-icon></el-link>
+          </div>
           <div v-if="oauth">
             <div v-if="oauth.idUser !== user.idUser">
               <el-button type="primary" v-if="isFollow" @click="cancelFollowUser(user.idUser)" plain>取消关注</el-button>
@@ -70,6 +77,7 @@ export default {
       store
         .dispatch('user/fetchDetail', params)
         .catch(err => error({statusCode: 404})),
+      store.dispatch('user/fetchUserExtend', params),
       store.dispatch('user/fetchArticleList', params),
       store.dispatch('user/fetchPortfolioList', params),
       store.dispatch('user/fetchFollowerList', params),
@@ -79,6 +87,7 @@ export default {
   computed: {
     ...mapState({
       user: state => state.user.data,
+      userExtend: state => state.user.userExtend,
       articles: state => state.user.articles,
       portfolios: state => state.user.portfolios,
       followers: state => state.user.followers,
@@ -293,5 +302,10 @@ h3, .h3 {
 
 .tab-content {
   min-height: 50vh;
+}
+
+.user-link {
+  font-size: 24px;
+  margin: 0 0.5rem;
 }
 </style>
