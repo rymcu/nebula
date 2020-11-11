@@ -276,9 +276,9 @@
         if (res) {
           _ts.$store.commit('setUploadHeaders', res.uploadToken);
           _ts.$set(_ts, 'tokenURL', {
-            token: responseData.uploadToken || '',
-            URL: responseData.uploadURL || '',
-            linkToImageURL: responseData.linkToImageURL || ''
+            token: res.uploadToken || '',
+            URL: res.uploadURL || '',
+            linkToImageURL: res.linkToImageURL || ''
           })
         }
       });
