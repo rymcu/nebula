@@ -18,11 +18,6 @@ export const mutations = {
   },
   setUser (state, data) {
     state.userInfo = data
-    let user = {
-      nickname: data.nickname,
-      avatarURL: data.avatarUrl
-    }
-    localStorage.setItem('user', JSON.stringify(user))
   },
   setActiveMenu (state, activeMenu) {
     state.activeMenu = activeMenu
@@ -33,6 +28,11 @@ export const mutations = {
   setUserInfo(state, data) {
     state.userInfo.avatarURL = data.avatarUrl;
     state.userInfo.nickname = data.nickname;
+    let user = {
+      nickname: data.nickname,
+      avatarURL: data.avatarUrl
+    }
+    localStorage.setItem('user', JSON.stringify(user))
   }
 }
 
