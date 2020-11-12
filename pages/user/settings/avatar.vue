@@ -77,8 +77,6 @@ import Avataaars from 'vuejs-avataaars';
 import saveSvg from 'save-svg-as-png';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
-import logo from "~/static/1600076600968.png"
-
 
 const {generateRandomAvatar} = require('~/plugins/avataaars/generator/generateAvatar');
 export default {
@@ -112,8 +110,7 @@ export default {
       },
       cropImg: '',
       data: null,
-      autoCrop: true,
-      imgSrc: logo
+      autoCrop: true
     }
   },
   mounted() {
