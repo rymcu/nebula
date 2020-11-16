@@ -18,7 +18,7 @@
             <i class="el-icon-unlock"></i>
             <span slot="title">账户安全</span>
           </el-menu-item>
-          <el-menu-item index="notification">
+          <el-menu-item v-show="false" index="notification">
             <i class="el-icon-bell"></i>
             <span slot="title">通知方式</span>
           </el-menu-item>
