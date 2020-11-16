@@ -1,6 +1,9 @@
 <template>
   <el-row>
     <el-col>
+      <h1>我的头像</h1>
+    </el-col>
+    <el-col>
       <el-form :model="user" ref="user" label-width="100px">
         <el-form-item>
           <el-row>
@@ -31,19 +34,16 @@
             <el-col :span="24" style="margin-top: 2rem;">
               <el-upload
                 class="avatar-uploader"
-                :action="tokenURL.URL"
+                action=""
                 :multiple="true"
-                :with-credentials="true"
-                :headers="uploadHeaders"
                 :show-file-list="false"
-                :data="uploadOption"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
                 <div v-show="false">
                   <Avataaars
                     id="avatarSvg"
                     style="width: 16rem; height: 16rem;"
-                    :avatarStyle='avatar.acatarStyle'
+                    :avatarStyle='avatar.avatarStyle'
                     :topType='avatar.topType'
                     :accessoriesType='avatar.accessoriesType'
                     :hairColor='avatar.hairColor'
@@ -99,36 +99,13 @@ export default {
     return {
       user: {},
       loading: false,
-      tokenURL: {
-        URL: '',
-        linkToImageURL: '',
-        token: ''
-      },
       avatarUrl: '',
       avatar: {},
-      fileList: [],
-      uploadOption: {
-        type: 0
-      },
       cropImg: '',
       data: null,
       autoCrop: true,
       imgSrc: logo
     }
-  },
-  mounted() {
-    let _ts = this;
-    this.$store.commit('setActiveMenu', 'avatar');
-    this.$axios.$get('/api/upload/simple/token').then(function (res) {
-      if (res) {
-        _ts.$store.commit('setUploadHeaders', res.uploadToken);
-        _ts.$set(_ts, 'tokenURL', {
-          token: res.uploadToken || '',
-          URL: res.uploadURL || '',
-        })
-      }
-    });
-    this.getData();
   },
   methods: {
     genAvatar() {
@@ -157,7 +134,6 @@ export default {
         user.avatarType = '0';
         _ts.$set(_ts, 'user', user);
         _ts.$set(_ts, 'avatarUrl', res.data.url);
-        _ts.$refs.cropper.replace(res.data.url);
       } else {
         _ts.$message.error('上传失败!');
       }
@@ -166,14 +142,17 @@ export default {
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 2;
-
       if (!(isJPG || isPNG)) {
-        this.$message.error('上传图标只能是 JPG 或者 PNG 格式!');
+
+        this.$message.error('上传头像只能是 JPG 或者 PNG 格式!');
+        return false;
       }
       if (!isLt2M) {
-        this.$message.error('上传图标大小不能超过 2MB!');
+        this.$message.error('上传头像大小不能超过 2MB!');
+        return false;
       }
-      return (isJPG || isPNG) && isLt2M;
+      this.fileToBase64(file);
+      return false;
     },
     getData() {
       let _ts = this;
@@ -185,6 +164,7 @@ export default {
             _ts.$set(_ts, 'user', res.user);
             _ts.$set(_ts, 'avatarUrl', res.user.avatarUrl);
             _ts.$refs.cropper.replace(res.user.avatarUrl);
+            // _ts.webImageToBase64(res.user.avatarUrl);
           }
         }
       })
@@ -199,7 +179,7 @@ export default {
         this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
       } catch (e) {
         _ts.$message.error('图片获取失败 !');
-        return ;
+        return;
       }
       let user = _ts.user;
       user.avatarType = 1;
@@ -226,7 +206,56 @@ export default {
           _ts.$message.error('数据异常 !');
         }
       });
+    },
+    fileToBase64(file) {
+      let _ts = this;
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        _ts.$set(_ts, 'avatarUrl', this.result);
+        _ts.$refs.cropper.replace(this.result);
+      }
+    },
+    compress(img, width, height, ratio) {
+      // img可以是dataURL或者图片url
+      /*	如果宽度大于 750 图片太大 等比压缩 	*/
+      if (width > 750) {
+        let ratio = width / height;
+        width = 750;
+        height = 750 / ratio;
+      }
+      let canvas, ctx, img64;
+      canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+
+
+      ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+      /* canvas.toDataURL(mimeType（图片的类型）, qualityArgument（图片质量）) */
+      img64 = canvas.toDataURL("image/jpeg", ratio);
+
+      return img64; // 压缩后的base64串
+    },
+    webImageToBase64(url) {
+      let _ts = this;
+      let c = document.createElement("canvas");
+      let cxt = c.getContext("2d");
+      let img = new Image();
+      img.setAttribute("crossOrigin", '*');
+      img.onload = function () {
+        c.width = this.width;
+        c.height = this.height;
+        cxt.drawImage(img, 0, 0, this.width, this.height) // 在canvas上绘制图片
+        let dataURL = _ts.compress(img, this.width, this.height, 0.8);
+        console.log(dataURL)
+      }
+      img.src = url;
     }
+  },
+  mounted() {
+    this.$store.commit('setActiveMenu', 'avatar');
+    this.getData();
   }
 }
 </script>

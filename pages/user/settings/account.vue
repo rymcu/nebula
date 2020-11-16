@@ -2,6 +2,9 @@
   <client-only>
     <el-row>
       <el-col>
+        <h1>基本信息</h1>
+      </el-col>
+      <el-col>
         <el-form :model="user" :rules="rules" ref="user" label-width="100px">
           <el-form-item label="昵称" prop="nickname">
             <el-input v-model="user.nickname" @blur="checkNickname"></el-input>
@@ -17,7 +20,7 @@
             <el-input type="textarea" v-model="user.signature"></el-input>
           </el-form-item>
           <el-form-item style="text-align: right;">
-            <el-button type="primary" round @click="updateUserInfo" plain>保存</el-button>
+            <el-button type="primary" round plain @click="updateUserInfo">保存</el-button>
           </el-form-item>
         </el-form>
         <el-form :model="userExtend" ref="userExtend" label-width="100px">
@@ -44,7 +47,7 @@
             </el-input>
           </el-form-item>
           <el-form-item style="text-align: right;">
-            <el-button type="primary" round @click="updateUserExtend" plain>保存</el-button>
+            <el-button type="primary" round plain @click="updateUserExtend">保存</el-button>
           </el-form-item>
         </el-form>
       </el-col>
