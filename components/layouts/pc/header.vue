@@ -13,7 +13,7 @@
                      @select="handleSelectMenu">
               <el-menu-item index="index">首页</el-menu-item>
               <el-menu-item index="topic">专题</el-menu-item>
-              <el-menu-item index="github">开源代码</el-menu-item>
+<!--              <el-menu-item index="github">开源代码</el-menu-item>-->
 <!--              <el-menu-item index="open-source">资料下载</el-menu-item>-->
             </el-menu>
           </el-col>
@@ -56,7 +56,7 @@
                 <el-avatar v-if="avatarURL" size="small" :src="avatarURL"></el-avatar>
                 <el-avatar v-else size="small" src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="user" style="align-items: center;">
+                  <el-dropdown-item style="align-items: center;">
                     <el-avatar class="mr-3" v-if="avatarURL" size="small" style="margin-top: 1rem;"
                                :src="avatarURL"></el-avatar>
                     <el-avatar class="mr-3" v-else size="small" style="margin-top: 1rem;"
@@ -64,6 +64,7 @@
                     <el-link rel="nofollow" :underline="false" style="margin-left: 10px;margin-bottom: 1rem;">{{ nickname }}</el-link>
                   </el-dropdown-item>
                   <el-dropdown-item v-if="hasPermissions" command="admin-dashboard">系统管理</el-dropdown-item>
+                  <el-dropdown-item command="user">个人中心</el-dropdown-item>
                   <el-dropdown-item command="drafts">我的草稿</el-dropdown-item>
                   <el-dropdown-item command="user-info">设置</el-dropdown-item>
                   <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
