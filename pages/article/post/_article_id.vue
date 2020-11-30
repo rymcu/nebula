@@ -150,6 +150,7 @@
             },
             markdown: {
               toc: true,
+              autoSpace: true
             },
             math: {
               inlineDigit: true

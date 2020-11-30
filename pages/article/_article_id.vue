@@ -258,7 +258,7 @@ export default {
       Vue.VditorPreview.mathRender(previewElement, {
         math: {"engine": "KaTeX", "inlineDigit": false, "macros": {}},
       });
-      Vue.VditorPreview.mermaidRender(previewElement, ".language-mermaid");
+      Vue.VditorPreview.mermaidRender(previewElement);
       Vue.VditorPreview.graphvizRender(previewElement);
       Vue.VditorPreview.chartRender(previewElement);
       Vue.VditorPreview.mindmapRender(previewElement);
