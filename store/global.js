@@ -4,7 +4,7 @@ export const state = () => ({
   // ua
   userAgent: '',
   // 默认语言
-  language: '',
+  language: 'zh-CN',
 })
 
 

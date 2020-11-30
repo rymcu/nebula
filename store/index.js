@@ -1,6 +1,6 @@
 import { isServer } from '~/environment'
 
-const cookieparser = process.server ? require('cookieparser') : undefined
+const cookieParser = isServer ? require('cookieparser') : undefined
 
 export const state = () => {
   return {
@@ -52,7 +52,7 @@ export const actions = {
           android: userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1, //android终端或uc浏览器
           iPhone: userAgent.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
           iPad: userAgent.indexOf('iPad') > -1, //是否iPad
-          webApp: userAgent.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+          webApp: userAgent.indexOf('Safari') == -1 //是否web应用程序，没有头部与底部
         };
       } ()
     }
@@ -62,7 +62,7 @@ export const actions = {
     }
     let auth = null
     if (req.headers.cookie) {
-      const parsed = cookieparser.parse(req.headers.cookie)
+      const parsed = cookieParser.parse(req.headers.cookie)
       try {
         auth = JSON.parse(parsed.auth)
       } catch (err) {
@@ -75,7 +75,8 @@ export const actions = {
     const initFetchAppData = [
       // 内容数据
       store.dispatch('topic/fetchNavList'),
-      store.dispatch('article/fetchList')
+      store.dispatch('article/fetchList'),
+      store.dispatch('search/fetchList'),
     ]
 
     return Promise.all(initFetchAppData)

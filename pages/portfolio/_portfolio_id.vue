@@ -136,6 +136,9 @@
       currentChangeArticle(page) {
         this.$store.dispatch('portfolio/fetchArticleList', {page: page, portfolio_id: this.routePortfolioId})
       }
+    },
+    mounted() {
+      this.$store.commit('setActiveMenu', 'portfolioDetail');
     }
   }
 </script>
