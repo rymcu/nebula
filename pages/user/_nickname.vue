@@ -157,7 +157,7 @@ export default {
   },
   mounted() {
     let _ts = this;
-    this.$store.commit('setActiveMenu', 'user')
+    this.$store.commit('setActiveMenu', 'user');
     if (_ts.oauth) {
       _ts.$axios.$get('/api/follow/is-follow', {
         params: {

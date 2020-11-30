@@ -23,8 +23,16 @@
             <span slot="title">专题管理</span>
           </el-menu-item>
           <el-menu-item index="admin-tags">
-            <i class="el-icon-postcard"></i>
+            <i class="el-icon-price-tag"></i>
             <span slot="title">标签管理</span>
+          </el-menu-item>
+          <el-menu-item index="admin-banks">
+            <i class="el-icon-office-building"></i>
+            <span slot="title">银行管理</span>
+          </el-menu-item>
+          <el-menu-item index="admin-bank-accounts">
+            <i class="el-icon-bank-card"></i>
+            <span slot="title">银行卡管理</span>
           </el-menu-item>
         </el-menu>
       </el-col>

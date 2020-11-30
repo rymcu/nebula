@@ -28,6 +28,9 @@
         articles: state => state.draft.list.data,
         user: state => state.oauth
       })
+    },
+    mounted() {
+      this.$store.commit('setActiveMenu', 'drafts');
     }
   }
 </script>

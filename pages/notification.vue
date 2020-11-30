@@ -36,6 +36,9 @@
           page: page
         })
       }
+    },
+    mounted() {
+      this.$store.commit('setActiveMenu', 'notification');
     }
   }
 </script>

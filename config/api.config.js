@@ -12,8 +12,8 @@ const apisMap = {
   production: {
     FE: 'https://rymcu.com',
     BASE: 'https://rymcu.com',
-    CDN: 'https://cdn.rymcu.com',
-    PROXY: 'https://cdn.rymcu.com/proxy',
+    CDN: 'https://static.rymcu.com',
+    PROXY: 'https://static.rymcu.com/proxy',
     SOCKET: 'https://rymcu.com',
     GRAVATAR: 'https://static.rymcu.com/avatar'
   }
