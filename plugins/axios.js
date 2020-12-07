@@ -1,11 +1,13 @@
+import {Message} from 'element-ui'
+
 const Cookie = require('js-cookie')
 export default function ({app, $axios, store, redirect}) {
   $axios.onRequest(config => {
     let token = store.state.oauth?.accessToken;
     if (token) {
-      if (!(config.url.indexOf('console') > -1 || config.url.indexOf('comments') > -1)) {
-        config.headers['Authorization'] = store.state.oauth?.accessToken
-      }
+      // if (!(config.url.indexOf('console') > -1 || config.url.indexOf('comments') > -1)) {
+      // }
+      config.headers['Authorization'] = token
     }
   })
   $axios.onResponse(response => {
@@ -20,18 +22,18 @@ export default function ({app, $axios, store, redirect}) {
       if (response.data.success) {
         resolve(response.data);
       } else {
-        if (response.data.code === '0') {
-          app.$message(message);
-        } else if (response.data.code === '401') {
+        if (response.data.code === 0) {
+          Message.error(message ? message : '服务异常')
+        } else if (response.data.code === 401) {
           Cookie.remove('auth')
           store.commit('setAuth', null);
-        } else if (response.data.code === '402') {
+        } else if (response.data.code === 402) {
           Cookie.remove('auth')
           store.commit('setAuth', null);
-        } else if (response.data.code === '404') {
-          app.$message('操作失败，请稍后再试......')
-        } else if (response.data.code === '500') {
-          app.$message('服务器正在开小差，请稍后再试......')
+        } else if (response.data.code === 404) {
+          Message.error('操作失败，请稍后再试......')
+        } else if (response.data.code === 500) {
+          Message.error('服务器正在开小差，请稍后再试......')
         }
       }
       reject(response);
