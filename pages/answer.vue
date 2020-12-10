@@ -17,7 +17,9 @@
             </el-radio-group>
           </el-col>
           <el-col :span="6">
-            你的答案: <span class="question-answer">{{answerRecord.subjectAnswerRecords[0].answer}}</span>
+            你的答案:
+            <span v-if="answerRecord.correctAnswer == answerRecord.subjectAnswerRecords[0].answer" class="question-answer answer-right">{{answerRecord.subjectAnswerRecords[0].answer}}</span>
+            <span v-else class="question-answer answer-wrong">{{answerRecord.subjectAnswerRecords[0].answer}}</span>
           </el-col>
           <el-col class="question-operate" :span="8">
             <el-button type="primary" @click="getAnswer">查看答案</el-button>
@@ -124,5 +126,13 @@ export default {
 .question-operate {
   margin: 10px auto;
   text-align: right;
+}
+
+.answer-right {
+  color: limegreen;
+}
+
+.answer-wrong {
+  color: red;
 }
 </style>
