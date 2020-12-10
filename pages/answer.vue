@@ -1,6 +1,14 @@
 <template>
   <el-row class="wrapper">
     <el-col v-for="answerRecord in answerRecords" :key="answerRecord.id">
+      <el-col v-if="answerRecord.subjectAnswerRecords">
+        <el-col class="question-tip">
+          <h1>✨ 您已完成今日答题任务!</h1>
+        </el-col>
+        <el-col>
+          <h2>答题记录</h2>
+        </el-col>
+      </el-col>
       <el-col class="question-content">
         <span v-html="getQuestionContent(answerRecord.questionContent)"></span>
       </el-col>
@@ -21,11 +29,8 @@
             <span v-if="answerRecord.correctAnswer == answerRecord.subjectAnswerRecords[0].answer" class="question-answer answer-right">{{answerRecord.subjectAnswerRecords[0].answer}}</span>
             <span v-else class="question-answer answer-wrong">{{answerRecord.subjectAnswerRecords[0].answer}}</span>
           </el-col>
-          <el-col class="question-operate" :span="8">
-            <el-button type="primary" @click="getAnswer">查看答案</el-button>
-          </el-col>
-          <el-col v-if="correctAnswer">
-            正确答案: <span class="question-answer">{{ correctAnswer }}</span>
+          <el-col class="question-operate" :span="6">
+            正确答案: <span class="question-answer"> {{ answerRecord.correctAnswer }} </span>
           </el-col>
         </el-col>
         <el-col v-else>
@@ -77,18 +82,6 @@ export default {
       questionContent = questionContent.replace("）", "");
       return questionContent;
     },
-    getAnswer() {
-      let _ts = this;
-      _ts.$axios.$get("/api/answer/get-answer", {
-        params: {
-          idSubjectQuestion: _ts.answerRecords[0].id
-        }
-      }).then(function (res) {
-        if (res) {
-          _ts.$set(_ts, 'correctAnswer', res.respData);
-        }
-      })
-    },
     submitAnswer() {
       let _ts = this;
       _ts.$axios.$post("/api/answer/answer", {
@@ -113,6 +106,10 @@ export default {
 </script>
 
 <style scoped>
+.question-tip {
+  margin-bottom: 40px;
+  margin-left: 15%;
+}
 .question-content {
   margin: 10px auto;
 }
