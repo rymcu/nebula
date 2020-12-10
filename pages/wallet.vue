@@ -29,8 +29,7 @@
           prop="transactionTime">
         </el-table-column>
         <el-table-column
-          label="金额 (巴旦木)"
-          width="180">
+          label="金额 (巴旦木)">
           <template slot-scope="scope">
             <span v-if="scope.row.formBankAccount === bankAccount.bankAccount" style="color: red;font-weight: bold;">
               - {{ scope.row.money }}
