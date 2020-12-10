@@ -9,6 +9,7 @@
       <el-col :span="12" style="text-align: left;">
         <el-link class="footer-link" rel="nofollow" :underline="false" :href="markdownGuide" style="vertical-align: baseline;"><span>Markdown 教程</span></el-link>
         <el-link class="footer-link" rel="nofollow" :underline="false" :href="rules" style="vertical-align: baseline;"><span>社区规章</span></el-link>
+        <el-link class="footer-link" rel="nofollow" :underline="false" :href="currencyRule" style="vertical-align: baseline;"><span>货币规则</span></el-link>
         <el-link class="footer-link" rel="nofollow" :underline="false" :href="email" style="vertical-align: baseline;"><span>意见反馈</span></el-link>
         <el-link class="footer-link" rel="nofollow" :underline="false" :href="aboutMe" style="vertical-align: baseline;"><span>关于我们</span></el-link>
         <el-link class="footer-link" rel="nofollow" :underline="false" :href="github" style="vertical-align: baseline;"><span>github</span></el-link>
@@ -45,7 +46,8 @@
         rules: '/article/20',
         email: 'mailto:support@rymcu.com',
         aboutMe: '/article/115',
-        github: 'https://github.com/rymcu'
+        github: 'https://github.com/rymcu',
+        currencyRule: '/rules/currency'
       }
     }
   }
