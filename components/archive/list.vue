@@ -4,8 +4,14 @@
       <el-col v-for="article in articles.articles" :key="article.idArticle" style="padding-bottom: 1rem;">
         <el-card>
           <div class="card-body d-flex flex-column">
-            <el-link rel="nofollow" @click="onRouter('article',article.articleLink)" :underline="false" style="margin-bottom: .5rem;">
-              <h4 v-html="article.articleTitle"></h4>
+            <el-link rel="nofollow" @click="onRouter('article',article.articleLink)" :underline="false"
+                     style="margin-bottom: .5rem;">
+              <h4>
+                <span v-if="isPerfect(article.articlePerfect)" style="color: gold;" title="优选">
+                  <font-awesome-icon :icon="['fas', 'medal']"></font-awesome-icon>
+                </span>
+                {{ article.articleTitle }}
+              </h4>
             </el-link>
             <el-tag
               style="margin-left: 0.5rem;"
@@ -25,14 +31,16 @@
               </el-col>
               <el-col :xs="16" :sm="16" :xl="16">
                 <div>
-                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthorName)" :underline="false" class="text-default">
+                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthorName)" :underline="false"
+                           class="text-default">
                     {{ article.articleAuthorName }}
                   </el-link>
                   <small class="d-block text-muted">{{ article.timeAgo }}</small>
                 </div>
               </el-col>
               <el-col class="text-right">
-                <el-link rel="nofollow" :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span style="color: red;">{{ article.articleViewCount }}</span>
+                <el-link rel="nofollow" :underline="false" title="总浏览数"><i class="el-icon-s-data"></i><span
+                  style="color: red;">{{ article.articleViewCount }}</span>
                 </el-link>
               </el-col>
             </el-row>
@@ -57,32 +65,35 @@
 </template>
 
 <script>
-  export default {
-    name: "ArticleList",
-    props: {
-      articles: {
-        type: Object
+export default {
+  name: "ArticleList",
+  props: {
+    articles: {
+      type: Object
+    }
+  },
+  methods: {
+    currentChange(page) {
+      this.$emit('currentChange', page);
+    },
+    onRouter(name, data) {
+      if ("article" === name) {
+        this.$router.push({
+          path: data
+        })
+      } else {
+        this.$router.push(
+          {
+            path: '/user/' + data
+          }
+        )
       }
     },
-    methods: {
-      currentChange(page) {
-        this.$emit('currentChange', page);
-      },
-      onRouter(name, data) {
-        if ("article" === name) {
-          this.$router.push({
-            path: data
-          })
-        } else {
-          this.$router.push(
-            {
-              path: '/user/' + data
-            }
-          )
-        }
-      }
+    isPerfect(articlePerfect) {
+      return articlePerfect === '1';
     }
   }
+}
 </script>
 
 <style scoped>

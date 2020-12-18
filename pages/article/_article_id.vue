@@ -4,7 +4,12 @@
       <el-card>
         <div class="card-body d-flex flex-column article">
           <div class="article__item">
-            <h1 class="list__title" v-html="article.articleTitle"></h1>
+            <h1 class="list__title">
+              <span v-if="isPerfect" style="color: gold;" title="优选">
+                <font-awesome-icon :icon="['fas', 'medal']"></font-awesome-icon>
+              </span>
+              {{ article.articleTitle }}
+            </h1>
             <el-row class="pt-5">
               <el-col :xs="3" :sm="1" :xl="1">
                 <el-avatar v-if="article.articleAuthorAvatarUrl" :src="article.articleAuthorAvatarUrl"></el-avatar>
@@ -42,7 +47,12 @@
                     <el-button size="mini" v-else @click="followUser(article.articleAuthorId)" plain>关注</el-button>
                   </template>
                   <el-button size="mini" v-if="hasPermissions" @click="handleCommand('edit')" plain>编辑文章</el-button>
-                  <el-button size="mini" v-if="isAdmin" @click="handleCommand('editTag')" plain>编辑标签</el-button>
+                  <template v-if="isAdmin">
+                    <el-button size="mini" @click="handleCommand('editTag')" plain>编辑标签</el-button>
+                    <el-button v-if="isPerfect" size="mini" @click="cancelPreference" plain>取消优选</el-button>
+                    <el-button v-else size="mini" @click="setPreference" plain>设为优选</el-button>
+
+                  </template>
                   <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
                 </el-col>
                 <el-col v-else :span="12" style="text-align: right;">
@@ -125,7 +135,7 @@ export default {
       return this.$store.getters.hasPermissions('blog_admin');
     },
     routeArticleId() {
-      return Number(this.$route.params.article_id)
+      return Number(this.$route.params.article_id);
     }
   },
   head() {
@@ -173,6 +183,7 @@ export default {
       isShare: false,
       dialogVisible: false,
       isFollow: false,
+      isPerfect: false,
       shareData: {}
     }
   },
@@ -212,7 +223,10 @@ export default {
     },
     gotoLogin() {
       this.$router.push({
-        name: 'login'
+        name: 'login',
+        query: {
+          historyUrl: window.location.href
+        }
       })
     },
     closeTagsDialog() {
@@ -244,6 +258,38 @@ export default {
       } else {
         _ts.gotoLogin()
       }
+    },
+    setPreference() {
+      let _ts = this;
+      _ts.$axios.$patch("/api/article/update-perfect", {
+        idArticle: _ts.article.idArticle,
+        articlePerfect: '1',
+      }).then(function (res) {
+        if (res) {
+          if (res.success) {
+            _ts.$set(_ts, 'isPerfect', false);
+            _ts.$message.success("设置成功!");
+          } else {
+            _ts.$message.error(_ts.message);
+          }
+        }
+      })
+    },
+    cancelPreference() {
+      let _ts = this;
+      _ts.$axios.$patch("/api/article/update-perfect", {
+        idArticle: _ts.article.idArticle,
+        articlePerfect: '0',
+      }).then(function (res) {
+        if (res) {
+          if (res.success) {
+            _ts.$set(_ts, 'isPerfect', true);
+            _ts.$message.success("取消成功!");
+          } else {
+            _ts.$message.error(_ts.message);
+          }
+        }
+      })
     }
   },
   mounted() {
@@ -267,6 +313,7 @@ export default {
       Vue.VditorPreview.lazyLoadImageRender(previewElement);
       //VditorPreview.outlineRender(previewElement, outLineElement);
       window.scrollTo(0, 0);
+      _ts.$set(_ts, 'isPerfect', _ts.article.articlePerfect === '1')
     })
 
     if (_ts.user) {
