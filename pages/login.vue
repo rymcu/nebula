@@ -52,151 +52,157 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
+import {mapState} from 'vuex';
 
-  const Cookie = process.client ? require('js-cookie') : undefined
-  export default {
-    name: "login",
-    middleware: 'notAuthenticated',
-    data() {
-      return {
-        user: {
-          account: '',
-          password: ''
-        },
-        forgetForm: {
-          email: ''
-        },
-        forget: false,
-        loading: false,
-        loginLoading: false
-      }
-    },
-    computed: {
-      ...mapState({
-        article: state => state.article.detail.data
-      })
-    },
-    methods: {
-      login() {
-        let _ts = this;
-        _ts.$refs.user.validate((valid) => {
-          if (valid) {
-            _ts.$set(_ts, 'loginLoading', true);
-            setTimeout(function () {
-              _ts.$set(_ts, 'loginLoading', false);
-            }, 10000);
+const Cookie = process.client ? require('js-cookie') : undefined
+export default {
+  name: "login",
+  middleware: 'notAuthenticated',
+  data() {
+    return {
+      user: {
+        account: '',
+        password: ''
+      },
+      forgetForm: {
+        email: ''
+      },
+      forget: false,
+      loading: false,
+      loginLoading: false,
+      historyUrl: ''
+    }
+  },
+  computed: {
+    ...mapState({
+      article: state => state.article.detail.data
+    })
+  },
+  methods: {
+    login() {
+      let _ts = this;
+      _ts.$refs.user.validate((valid) => {
+        if (valid) {
+          _ts.$set(_ts, 'loginLoading', true);
+          setTimeout(function () {
+            _ts.$set(_ts, 'loginLoading', false);
+          }, 10000);
 
-            let data = {
-              account: _ts.user.account,
-              password: _ts.user.password
-            }
+          let data = {
+            account: _ts.user.account,
+            password: _ts.user.password
+          }
 
-            _ts.$axios.$post('/api/console/login', data).then(function (res) {
-              _ts.$set(_ts, 'loginLoading', false);
-              if (res) {
-                if (res.message) {
-                  _ts.$message(res.message);
-                  return false;
-                }
-                let auth = {
-                  accessToken: res.user.token,
-                  idUser: res.user.idUser,
-                  role: res.user.weights
-                }
+          _ts.$axios.$post('/api/console/login', data).then(function (res) {
+            _ts.$set(_ts, 'loginLoading', false);
+            if (res) {
+              if (res.message) {
+                _ts.$message(res.message);
+                return false;
+              }
+              let auth = {
+                accessToken: res.user.token,
+                idUser: res.user.idUser,
+                role: res.user.weights
+              }
 
-                let user = {
-                  nickname: res.user.nickname,
-                  avatarURL: res.user.avatarUrl
-                }
-                _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
-                localStorage.setItem('user', JSON.stringify(user))
-                _ts.$store.commit('setUser', user) // mutating to store for client rendering
-                Cookie.set('auth', auth)
+              let user = {
+                nickname: res.user.nickname,
+                avatarURL: res.user.avatarUrl
+              }
+              _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
+              localStorage.setItem('user', JSON.stringify(user))
+              _ts.$store.commit('setUser', user) // mutating to store for client rendering
+              Cookie.set('auth', auth)
+              if (_ts.historyUrl) {
+                window.location.href = _ts.historyUrl
+              } else {
                 _ts.$router.push({
                   name: 'index'
                 })
               }
-            })
-          } else {
-            return false;
-          }
-        });
-      },
-      register() {
-        this.$router.push(
-          {
-            name: 'register'
-          }
-        )
-      },
-      forgetPassword() {
-        this.forget = true;
-      },
-      hideForgetPasswordDialog() {
-        this.forget = false;
-      },
-      sendEmailCode() {
-        let _ts = this;
-        _ts.loading = true;
-        let email = _ts.forgetForm.email;
-        if (!email) {
-          return false
+            }
+          })
+        } else {
+          return false;
         }
-        let data = {
-          email: email
-        };
-        _ts.$axios.$get('/api/console/get-forget-password-email', {
-          params: data
-        }).then(function (res) {
-          _ts.loading = false;
-          _ts.forget = false;
-          if (res) {
-            _ts.$message(res.message)
-          }
-        })
-      }
+      });
     },
-    mounted() {
-      this.$store.commit('setActiveMenu', 'login')
+    register() {
+      this.$router.push(
+        {
+          name: 'register'
+        }
+      )
+    },
+    forgetPassword() {
+      this.forget = true;
+    },
+    hideForgetPasswordDialog() {
+      this.forget = false;
+    },
+    sendEmailCode() {
+      let _ts = this;
+      _ts.loading = true;
+      let email = _ts.forgetForm.email;
+      if (!email) {
+        return false
+      }
+      let data = {
+        email: email
+      };
+      _ts.$axios.$get('/api/console/get-forget-password-email', {
+        params: data
+      }).then(function (res) {
+        _ts.loading = false;
+        _ts.forget = false;
+        if (res) {
+          _ts.$message(res.message)
+        }
+      })
     }
+  },
+  mounted() {
+    this.$store.commit('setActiveMenu', 'login');
+    this.$set(this, 'historyUrl', this.$route.query.historyUrl || '');
   }
+}
 </script>
 
 <style scoped>
-  .icon-rymcu {
-    margin: 0 auto;
-    display: block;
-    height: 4rem;
-  }
+.icon-rymcu {
+  margin: 0 auto;
+  display: block;
+  height: 4rem;
+}
 
-  .verify .verify-wrap {
-    /*width: 60%;*/
-  }
+.verify .verify-wrap {
+  /*width: 60%;*/
+}
 
-  .flex-inline {
-    display: flex;
-    align-items: center;
-  }
+.flex-inline {
+  display: flex;
+  align-items: center;
+}
 
-  .verify .intro {
-    padding: 50px;
-    background-color: #f1f7fe;
-    /*width: 40%;*/
-    color: #616161;
-  }
+.verify .intro {
+  padding: 50px;
+  background-color: #f1f7fe;
+  /*width: 40%;*/
+  color: #616161;
+}
 
-  .verify__sign {
-    background-color: transparent !important;
-  }
+.verify__sign {
+  background-color: transparent !important;
+}
 
-  .vditor-reset {
-    font-variant-ligatures: no-common-ligatures;
-    font-family: Helvetica Neue, Luxi Sans, DejaVu Sans, Tahoma, Hiragino Sans GB, Microsoft Yahei, sans-serif, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
-    word-wrap: break-word;
-    overflow: auto;
-    line-height: 1.5;
-    font-size: 16px;
-    word-break: break-word;
-  }
+.vditor-reset {
+  font-variant-ligatures: no-common-ligatures;
+  font-family: Helvetica Neue, Luxi Sans, DejaVu Sans, Tahoma, Hiragino Sans GB, Microsoft Yahei, sans-serif, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
+  word-wrap: break-word;
+  overflow: auto;
+  line-height: 1.5;
+  font-size: 16px;
+  word-break: break-word;
+}
 </style>
