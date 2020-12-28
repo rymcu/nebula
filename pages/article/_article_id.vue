@@ -51,7 +51,6 @@
                     <el-button size="mini" @click="handleCommand('editTag')" plain>编辑标签</el-button>
                     <el-button v-if="isPerfect" size="mini" @click="cancelPreference" plain>取消优选</el-button>
                     <el-button v-else size="mini" @click="setPreference" plain>设为优选</el-button>
-
                   </template>
                   <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
                 </el-col>
@@ -70,6 +69,46 @@
             <div class="pt-7 pipe-content__reset vditor-reset" id="articleContent" v-html="article.articleContent"
                  style="overflow: hidden;"></div>
           </div>
+          <el-row>
+            <el-col v-if="article.portfolios && article.portfolios.length > 0">
+              <portfolios-widget :portfolios="article.portfolios"></portfolios-widget>
+            </el-col>
+            <el-col v-if="user">
+              <el-tooltip class="item" effect="dark" content="点赞" placement="top-start">
+                <el-button type="text" style="font-size: 1.2rem;" @click="thumbsUp">
+                  <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
+                  {{ article.articleThumbsUpCount }}
+                </el-button>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="赞赏" placement="top-start">
+                <el-button v-if="user.idUser === article.articleAuthorId" type="text" icon="el-icon-coffee" style="font-size: 1.2rem;">
+                  {{ article.articleSponsorCount }}
+                </el-button>
+                <el-popconfirm
+                  v-else
+                  title="赞赏本文作者 20 巴旦木？"
+                  @confirm="sponsor"
+                >
+                  <el-button slot="reference" type="text" icon="el-icon-coffee" style="font-size: 1.2rem;">
+                    {{ article.articleSponsorCount }}
+                  </el-button>
+                </el-popconfirm>
+              </el-tooltip>
+            </el-col>
+            <el-col v-else>
+              <el-tooltip class="item" effect="dark" content="点赞" placement="top-start">
+                <el-button type="text" style="font-size: 1.2rem;">
+                  <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
+                  {{ article.articleThumbsUpCount }}
+                </el-button>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="赞赏" placement="top-start">
+                <el-button type="text" icon="el-icon-coffee" style="font-size: 1.2rem;">
+                  {{ article.articleSponsorCount }}
+                </el-button>
+              </el-tooltip>
+            </el-col>
+          </el-row>
         </div>
       </el-card>
     </el-col>
@@ -91,7 +130,7 @@
 
 <script>
 import Vue from 'vue';
-import { mapState } from 'vuex';
+import {mapState} from 'vuex';
 import ShareBox from '~/components/widget/share';
 import PortfoliosWidget from '~/components/widget/portfolios';
 import EditTags from '~/components/widget/tags';
@@ -231,7 +270,7 @@ export default {
     },
     closeTagsDialog() {
       this.$set(this, 'dialogVisible', false);
-      this.$store.dispatch('article/fetchDetail', this.$route.params)
+      this.$store.dispatch('article/fetchDetail', this.$route.params);
     },
     followUser(idUser) {
       let _ts = this;
@@ -243,7 +282,7 @@ export default {
           _ts.$set(_ts, 'isFollow', res);
         })
       } else {
-        _ts.gotoLogin()
+        _ts.gotoLogin();
       }
     },
     cancelFollowUser(idUser) {
@@ -256,7 +295,7 @@ export default {
           _ts.$set(_ts, 'isFollow', res);
         })
       } else {
-        _ts.gotoLogin()
+        _ts.gotoLogin();
       }
     },
     setPreference() {
@@ -285,6 +324,37 @@ export default {
           if (res.success) {
             _ts.$set(_ts, 'isPerfect', true);
             _ts.$message.success("取消成功!");
+          } else {
+            _ts.$message.error(_ts.message);
+          }
+        }
+      })
+    },
+    thumbsUp() {
+      let _ts = this;
+      _ts.$axios.$post('/api/article/thumbs-up', {
+        idArticle: _ts.article.idArticle
+      }).then(function (res) {
+        if (res) {
+          if (res.success) {
+            _ts.$message.success(res.message);
+            _ts.$store.dispatch('article/updateThumbsUpCount', {thumbsUpNumber: res.thumbsUpNumber})
+          } else {
+            _ts.$message.error(_ts.message);
+          }
+        }
+      })
+    },
+    sponsor() {
+      let _ts = this;
+      _ts.$axios.$post('/api/article/sponsor', {
+        dataType: '0',
+        dataId: _ts.article.idArticle
+      }).then(function (res) {
+        if (res) {
+          if (res.success) {
+            _ts.$message.success(res.message);
+            _ts.$store.dispatch('article/updateSponsorCount', {sponsorNumber: 1})
           } else {
             _ts.$message.error(_ts.message);
           }

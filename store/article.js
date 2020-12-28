@@ -53,6 +53,12 @@ export const mutations = {
       'isRenderedFullContent',
       action == null ? true : action
     )
+  },
+  updateArticleThumbsUpCount(state, action) {
+    state.detail.data.articleThumbsUpCount += action.thumbsUpNumber
+  },
+  updateArticleSponsorCount(state, action) {
+    state.detail.data.articleSponsorCount += action.sponsorNumber
   }
 }
 
@@ -143,5 +149,11 @@ export const actions = {
         commit('updateDetailFetching', false)
         return Promise.reject(error)
       })
+  },
+  updateThumbsUpCount({ commit }, params = {}) {
+    commit('updateArticleThumbsUpCount', params)
+  },
+  updateSponsorCount({ commit }, params = {}) {
+    commit('updateArticleSponsorCount', params)
   }
 }
