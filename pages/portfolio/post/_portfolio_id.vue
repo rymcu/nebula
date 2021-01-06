@@ -18,19 +18,40 @@
         <el-form-item label="作品集名称" prop="portfolioTitle">
           <el-input v-model="portfolio.portfolioTitle"></el-input>
         </el-form-item>
-        <el-form-item label="图标">
-          <el-upload
-            class="avatar-uploader"
-            :action="tokenURL.URL"
-            :multiple="true"
-            :with-credentials="true"
-            :headers="uploadHeaders"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="headImgUrl" class="topic-brand-img" :src="headImgUrl">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+        <el-form-item>
+          <el-row>
+            <el-col :span="24">
+              <vue-cropper
+                ref="cropper"
+                :aspect-ratio="4 / 1"
+                :src="headImgUrl"
+                :checkCrossOrigin="false"
+                :checkOrientation="false"
+                :imgStyle="{width: '950px', height: '237.5px'}"
+                :autoCropArea="1"
+                :autoCrop="autoCrop"
+                preview=".preview"
+              />
+            </el-col>
+            <el-col :span="24" style="margin-top: 2rem;">
+              <div class="preview preview-large"/>
+            </el-col>
+            <el-col :span="24" style="margin-top: 2rem;">
+              <el-upload
+                class="avatar-uploader"
+                action=""
+                :multiple="true"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <div>
+                  <el-button type="primary" round plain>上传</el-button>
+                </div>
+              </el-upload>
+              <el-button style="margin-top: 1rem;" type="primary" round plain @click.prevent="reset">重置</el-button>
+              <el-button type="primary" round plain @click.prevent="cropImage">裁剪</el-button>
+            </el-col>
+          </el-row>
         </el-form-item>
 
         <el-form-item label="作品集介绍" prop="portfolioDescription">
@@ -49,6 +70,9 @@
 <script>
   import Vue from 'vue';
   import {mapState} from 'vuex';
+  import saveSvg from 'save-svg-as-png';
+  import VueCropper from 'vue-cropperjs';
+  import 'cropperjs/dist/cropper.css';
 
   export default {
     name: "PortfolioPost",
@@ -63,6 +87,9 @@
         store.dispatch('portfolio/fetchPostDetail', params)
           .catch(err => error({statusCode: 404}))
       ])
+    },
+    components: {
+      VueCropper
     },
     computed: {
       ...mapState({
@@ -97,7 +124,9 @@
           token: ''
         },
         headImgUrl: '',
-        isEdit: false
+        cropImg: '',
+        isEdit: false,
+        autoCrop: true
       }
     },
     methods: {
@@ -194,6 +223,7 @@
         if (res && res.data && res.data.url) {
           let portfolio = _ts.portfolio;
           portfolio.headImgUrl = res.data.url;
+          portfolio.headImgType = '0';
           _ts.$set(_ts, 'portfolio', portfolio);
           _ts.$set(_ts, 'headImgUrl', res.data.url);
         } else {
@@ -204,14 +234,25 @@
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
         const isLt2M = file.size / 1024 / 1024 < 2;
-
         if (!(isJPG || isPNG)) {
-          this.$message.error('上传图标只能是 JPG 或者 PNG 格式!');
+          this.$message.error('上传图片只能是 JPG 或者 PNG 格式!');
+          return false;
         }
         if (!isLt2M) {
-          this.$message.error('上传图标大小不能超过 2MB!');
+          this.$message.error('上传图片大小不能超过 2MB!');
+          return false;
         }
-        return (isJPG || isPNG) && isLt2M;
+        this.fileToBase64(file);
+        return false;
+      },
+      fileToBase64(file) {
+        let _ts = this;
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          _ts.$set(_ts, 'headImgUrl', this.result);
+          _ts.$refs.cropper.replace(this.result);
+        }
       },
       async updatePortfolio() {
         let _ts = this;
@@ -231,9 +272,6 @@
             _ts.$message({
               type: 'success',
               message: title + '成功!'
-            });
-            _ts.$router.push({
-              path: '/portfolio/' + res.idPortfolio
             });
           }
           _ts.$set(_ts, 'loading', false)
@@ -267,6 +305,25 @@
             message: '已取消'
           });
         });
+      },
+      reset() {
+        this.$refs.cropper.reset();
+      },
+      // get image data for post processing, e.g. upload or setting image src
+      cropImage() {
+        let _ts = this;
+        try {
+          _ts.cropImg = _ts.$refs.cropper.getCroppedCanvas().toDataURL();
+          let portfolio = _ts.portfolio;
+          portfolio.headImgUrl = _ts.cropImg;
+          portfolio.headImgType = '0';
+          _ts.$set(_ts, 'portfolio', portfolio);
+          _ts.$set(_ts, 'headImgUrl', _ts.cropImg);
+          _ts.$message.success('已裁剪 !');
+        } catch (e) {
+          _ts.$message.error('图片获取失败 !');
+          return;
+        }
       }
     },
     mounted() {
@@ -286,9 +343,10 @@
       let portfolioContent = '';
       if (_ts.idPortfolio) {
         _ts.$set(_ts, 'isEdit', true);
-        _ts.$set(_ts, 'portfolio', _ts.portfolioDetail);
+        _ts.$set(_ts, 'portfolio', JSON.parse(JSON.stringify(_ts.portfolioDetail)));
         _ts.$set(_ts, 'headImgUrl', _ts.portfolioDetail.headImgUrl);
-        portfolioContent = _ts.portfolioDetail.portfolioDescription
+        _ts.$refs.cropper.replace(_ts.portfolioDetail.headImgUrl);
+        portfolioContent = _ts.portfolioDetail.portfolioDescription;
       } else {
         _ts.$set(_ts, 'isEdit', false);
       }
@@ -307,4 +365,41 @@
 
 <style lang="scss">
   @import "~vditor/src/assets/scss/index.scss";
+  .preview-area {
+    width: 16rem;
+  }
+
+  .preview-area p {
+    font-size: 1.25rem;
+  }
+
+  .preview-area p:last-of-type {
+    margin-top: 1rem;
+  }
+
+  .crop-placeholder {
+    width: 36px;
+    height: 36px;
+    background: #ccc;
+  }
+
+  .cropped-image img {
+    max-width: 100%;
+  }
+
+  .img-cropper {
+    width: 950px;
+    min-height: 300px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC);
+  }
+
+  .preview-large {
+    width: 950px;
+    height: 237.5px;
+    margin-bottom: 1rem;
+    margin-top: 3rem;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    overflow: hidden;
+  }
 </style>
