@@ -1,10 +1,7 @@
 <template>
   <el-row class="wrapper">
     <el-col>
-      <el-col :xs="3" :sm="3" :xl="3" class="mr-3">
-        <el-image :src="portfolio.headImgUrl"></el-image>
-      </el-col>
-      <el-col :xs="20" :sm="20" :xl="20">
+      <el-col>
         <el-col>
           <h1>{{ portfolio.portfolioTitle }}</h1>
         </el-col>
@@ -20,6 +17,9 @@
         </el-col>
         <el-col v-if="isAuthor" style="margin-top: .5rem;text-align: left;">
           <el-button @click="managerPortfolio(portfolio.idPortfolio)" plain>管理</el-button>
+        </el-col>
+        <el-col style="margin-top: 10px;">
+          <el-image :src="portfolio.headImgUrl"></el-image>
         </el-col>
         <el-col style="margin-bottom: .5rem;" v-html="portfolio.portfolioDescription"></el-col>
       </el-col>

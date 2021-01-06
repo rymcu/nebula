@@ -4,7 +4,7 @@
       <el-col v-for="portfolio in portfolios.portfolios" :key="portfolio.idPortfolio">
         <el-col class="card">
           <el-col class="card-body d-flex flex-column">
-            <el-col :span="4" class="mr-3">
+            <el-col :span="24" class="mr-3">
               <a v-show="portfolio.headImgUrl">
                 <el-image class="card-img-top" style="height: 10rem;" :src="portfolio.headImgUrl"></el-image>
               </a>
@@ -13,7 +13,7 @@
                           src="https://static.rymcu.com/article/1574441170152.jpg"></el-image>
               </a>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="24">
               <h4 class="article-header-md">
                 <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false"
                          v-html="portfolio.portfolioTitle"></el-link>
