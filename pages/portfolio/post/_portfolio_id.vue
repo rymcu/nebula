@@ -268,11 +268,13 @@
           if (res && res.message) {
             _ts.$message.error(res.message);
           } else {
-            _ts.contentEditor.setValue(res.portfolioDescription);
             _ts.$message({
               type: 'success',
               message: title + '成功!'
             });
+            _ts.$router.push({
+              path: '/portfolio/' + res.idPortfolio
+            })
           }
           _ts.$set(_ts, 'loading', false)
         }).catch(error => _ts.$set(_ts, 'loading', false))
