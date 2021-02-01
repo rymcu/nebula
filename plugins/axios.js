@@ -1,6 +1,6 @@
 import {Message} from 'element-ui'
 
-const Cookie = require('js-cookie')
+const Cookie = process.client ? require('js-cookie') : undefined
 export default function ({app, $axios, store, redirect}) {
   $axios.onRequest(config => {
     let token = store.state.oauth?.accessToken;
@@ -25,15 +25,17 @@ export default function ({app, $axios, store, redirect}) {
         if (response.data.code === 0) {
           Message.error(message ? message : '服务异常')
         } else if (response.data.code === 401) {
-          Cookie.remove('auth')
+          Cookie.remove('auth');
           store.commit('setAuth', null);
         } else if (response.data.code === 402) {
-          Cookie.remove('auth')
+          Cookie.remove('auth');
           store.commit('setAuth', null);
         } else if (response.data.code === 404) {
           Message.error('操作失败，请稍后再试......')
         } else if (response.data.code === 500) {
           Message.error('服务器正在开小差，请稍后再试......')
+        } else {
+          Message.error(response.data.message);
         }
       }
       reject(response);
