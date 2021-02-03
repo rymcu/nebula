@@ -182,7 +182,7 @@ export default {
         switch (item) {
           case 'topic':
             _ts.$router.push({
-              path: '/topic/news'
+              path: '/topic/news?page=1'
             })
             break;
           case 'github':

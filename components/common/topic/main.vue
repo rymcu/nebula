@@ -31,7 +31,7 @@
     methods: {
       handleSelectTopic(item) {
         this.$router.push({
-          path: '/topic/' + item
+          path: `/topic/${item}?page=1`
         });
       }
     }

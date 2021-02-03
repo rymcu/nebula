@@ -43,13 +43,22 @@
     validate({params, store}) {
       return params.portfolio_id && !isNaN(Number(params.portfolio_id))
     },
-    fetch({store, params, error}) {
+    fetch({store, params, query, error}) {
+      params.page = query.page || 1
       return Promise.all([
         store
           .dispatch('portfolio/fetchDetail', params)
           .catch(err => error({statusCode: 404})),
         store.dispatch('portfolio/fetchArticleList', params)
       ])
+    },
+    watch: {
+      '$route.query': function () {
+        this.$store.dispatch('portfolio/fetchArticleList', {
+          page: this.$route.query.page || 1,
+          portfolio_id: this.routePortfolioId
+        })
+      }
     },
     computed: {
       ...mapState({
@@ -134,7 +143,11 @@
         )
       },
       currentChangeArticle(page) {
-        this.$store.dispatch('portfolio/fetchArticleList', {page: page, portfolio_id: this.routePortfolioId})
+        this.$router.push(
+          {
+            path: `/portfolio/${this.routePortfolioId}?page=${page}`
+          }
+        )
       }
     },
     mounted() {

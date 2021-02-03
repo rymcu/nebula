@@ -12,11 +12,24 @@
           <h3 class="mb-3">{{ user.nickname }}</h3>
           <p class="mb-4" v-html="user.signature"></p>
           <div v-if="userExtend" style="margin-bottom: 1rem;">
-            <el-link v-if="userExtend.blog" class="user-link" title="博客" :underline="false" :href="userExtend.blog" target="_blank"><font-awesome-icon :icon="['fas', 'link']"></font-awesome-icon></el-link>
-            <el-link v-if="userExtend.github" class="user-link" title="github" :underline="false" :href="'https://github.com/' + userExtend.github" target="_blank"><font-awesome-icon :icon="['fab', 'github']"></font-awesome-icon></el-link>
-            <el-link v-if="userExtend.weibo" class="user-link" title="微博" :underline="false" :href="'https://weibo.com/n/' + userExtend.weibo" target="_blank"><font-awesome-icon :icon="['fab', 'weibo']"></font-awesome-icon></el-link>
-            <el-link v-if="userExtend.weixin" class="user-link" title="微信" :underline="false" :href="userExtend.weixin"><font-awesome-icon :icon="['fab', 'weixin']" target="_blank"></font-awesome-icon></el-link>
-            <el-link v-if="userExtend.qq" class="user-link" title="QQ" :underline="false" :href="userExtend.qq"><font-awesome-icon :icon="['fab', 'qq']" target="_blank"></font-awesome-icon></el-link>
+            <el-link v-if="userExtend.blog" class="user-link" title="博客" :underline="false" :href="userExtend.blog"
+                     target="_blank">
+              <font-awesome-icon :icon="['fas', 'link']"></font-awesome-icon>
+            </el-link>
+            <el-link v-if="userExtend.github" class="user-link" title="github" :underline="false"
+                     :href="'https://github.com/' + userExtend.github" target="_blank">
+              <font-awesome-icon :icon="['fab', 'github']"></font-awesome-icon>
+            </el-link>
+            <el-link v-if="userExtend.weibo" class="user-link" title="微博" :underline="false"
+                     :href="'https://weibo.com/n/' + userExtend.weibo" target="_blank">
+              <font-awesome-icon :icon="['fab', 'weibo']"></font-awesome-icon>
+            </el-link>
+            <el-link v-if="userExtend.weixin" class="user-link" title="微信" :underline="false" :href="userExtend.weixin">
+              <font-awesome-icon :icon="['fab', 'weixin']" target="_blank"></font-awesome-icon>
+            </el-link>
+            <el-link v-if="userExtend.qq" class="user-link" title="QQ" :underline="false" :href="userExtend.qq">
+              <font-awesome-icon :icon="['fab', 'qq']" target="_blank"></font-awesome-icon>
+            </el-link>
           </div>
           <div v-if="oauth">
             <div v-if="oauth.idUser !== user.idUser">
@@ -72,7 +85,8 @@ export default {
   validate({params, store}) {
     return params.nickname
   },
-  fetch({store, params, error}) {
+  fetch({store, params, query, error}) {
+    params.page = query.page || 1
     return Promise.all([
       store
         .dispatch('user/fetchDetail', params)
@@ -83,6 +97,38 @@ export default {
       store.dispatch('user/fetchFollowerList', params),
       store.dispatch('user/fetchFollowingList', params)
     ])
+  },
+  watch: {
+    '$route.query': function () {
+      let _ts = this;
+      _ts.$set(_ts, 'activeTab', _ts.$route.query.tab)
+      switch (_ts.activeTab) {
+        case "0":
+          _ts.$store.dispatch('user/fetchArticleList', {
+            nickname: this.$route.params.nickname,
+            page: this.$route.query.page || 1
+          })
+          break;
+        case "1":
+          _ts.$store.dispatch('user/fetchPortfolioList', {
+            nickname: this.$route.params.nickname,
+            page: this.$route.query.page || 1
+          })
+          break;
+        case "2":
+          _ts.$store.dispatch('user/fetchFollowerList', {
+            nickname: this.$route.params.nickname,
+            page: this.$route.query.page || 1
+          })
+          break;
+        default:
+          _ts.$store.dispatch('user/fetchFollowingList', {
+            nickname: this.$route.params.nickname,
+            page: this.$route.query.page || 1
+          })
+          break
+      }
+    }
   },
   computed: {
     ...mapState({
@@ -103,19 +149,25 @@ export default {
   },
   methods: {
     currentChangeArticle(page) {
-      this.$store.dispatch('user/fetchArticleList', {page: page, nickname: this.$route.params.nickname})
+      this.onRouter(0, page)
     },
     currentChangePortfolio(page) {
-      this.$store.dispatch('user/fetchPortfolioList', {page: page, nickname: this.$route.params.nickname})
+      this.onRouter(1, page)
     },
     currentChangeFollowing(page) {
-      this.$store.dispatch('user/fetchFollowingList', {page: page, nickname: this.$route.params.nickname})
+      this.onRouter(2, page)
     },
     currentChangeFollower(page) {
-      this.$store.dispatch('user/fetchFollowerList', {page: page, nickname: this.$route.params.nickname})
+      this.onRouter(3, page)
     },
     handleToggleTab(key) {
-      this.$set(this, 'activeTab', key);
+      this.onRouter(key, 1)
+    },
+    onRouter(key, page) {
+      this.$router.push({
+        path: `/user/${this.$route.params.nickname}?tab=${key}&page=${page}`
+      })
+
     },
     gotoChats() {
       let _ts = this;
