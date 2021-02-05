@@ -61,8 +61,9 @@ $ npm generate
 ```
 
 ## 项目部署
-1. 控制台执行 `npm run build`
+1. 关闭本地项目后,在控制台执行 `npm run build` 进行打包
 2. 拷贝以下文件至服务器
+
 ![build](assets/build.png)
    
 3. 服务器安装 `Nodejs` 环境
