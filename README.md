@@ -60,4 +60,16 @@ $ npm start
 $ npm generate
 ```
 
+## 项目部署
+1. 控制台执行 `npm run build`
+2. 拷贝以下文件至服务器
+![build](assets/build.png)
+   
+3. 服务器安装 `Nodejs` 环境
+4. 项目目录下执行 `npm install`
+5. 执行 `npm install pm2 -g`
+6. 执行 `pm2 list` 检查 `pm2` 是否安装好
+7. 执行 `pm2 start npm --name "nebula" -- run start --watch`
+
+
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
