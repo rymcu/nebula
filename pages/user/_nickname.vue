@@ -101,30 +101,31 @@ export default {
   watch: {
     '$route.query': function () {
       let _ts = this;
-      _ts.$set(_ts, 'activeTab', _ts.$route.query.tab)
+      let activeTab = _ts.$route.query.tab || '0'
+      _ts.$set(_ts, 'activeTab', activeTab)
       switch (_ts.activeTab) {
         case "0":
           _ts.$store.dispatch('user/fetchArticleList', {
-            nickname: this.$route.params.nickname,
-            page: this.$route.query.page || 1
+            nickname: _ts.$route.params.nickname,
+            page: _ts.$route.query.page || 1
           })
           break;
         case "1":
           _ts.$store.dispatch('user/fetchPortfolioList', {
-            nickname: this.$route.params.nickname,
-            page: this.$route.query.page || 1
+            nickname: _ts.$route.params.nickname,
+            page: _ts.$route.query.page || 1
           })
           break;
         case "2":
           _ts.$store.dispatch('user/fetchFollowerList', {
-            nickname: this.$route.params.nickname,
-            page: this.$route.query.page || 1
+            nickname: _ts.$route.params.nickname,
+            page: _ts.$route.query.page || 1
           })
           break;
         default:
           _ts.$store.dispatch('user/fetchFollowingList', {
-            nickname: this.$route.params.nickname,
-            page: this.$route.query.page || 1
+            nickname: _ts.$route.params.nickname,
+            page: _ts.$route.query.page || 1
           })
           break
       }
@@ -143,7 +144,7 @@ export default {
   },
   data() {
     return {
-      activeTab: '0',
+      activeTab: this.$route.query.tab || '0',
       isFollow: false
     }
   },
@@ -213,7 +214,6 @@ export default {
   mounted() {
     let _ts = this;
     this.$store.commit('setActiveMenu', 'user');
-    _ts.$set(_ts, 'activeTab', _ts.$route.query.tab || '0');
     if (_ts.oauth) {
       _ts.$axios.$get('/api/follow/is-follow', {
         params: {
