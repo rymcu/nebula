@@ -89,13 +89,11 @@ export default {
         answer: _ts.answer
       }).then(function (res) {
         if (res) {
-          if (res.respFlag) {
-            _ts.$message(res.message);
-            _ts.$store.dispatch('answer/fetchDetail');
-          } else {
-            _ts.$message(res.message);
-          }
+          _ts.$message.success('回答正确!');
+        } else {
+          _ts.$message.error('回答错误!');
         }
+        _ts.$store.dispatch('answer/fetchDetail');
       })
     }
   },
