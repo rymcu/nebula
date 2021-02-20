@@ -64,15 +64,20 @@ export const mutations = {
 
 export const actions = {
   // 获取文章列表
-  fetchList({commit}, params = {}) {
+  fetchList({commit, state}, params = {}) {
+    commit('updateListFetching', true)
+    // 当前页判断
+    let currentData = JSON.parse(JSON.stringify(state)).list.data
+    if (Number(params.page) === currentData.pagination.currentPage) {
+      commit('updateListFetching', false)
+      return
+    }
     // 清空已有数据
     commit('updateListData', getDefaultListData())
-    commit('updateListFetching', true)
     let data = {
       page: params.page || 1,
       topicUri: params.topic_uri || ''
     }
-
     return this.$axios
       .$get(`${BASE_API_PATH}/articles`, {
         params: data
@@ -87,7 +92,7 @@ export const actions = {
       });
   },
   // 获取文章详情
-  fetchDetail({ commit }, params = {}) {
+  fetchDetail({commit, state}, params = {}) {
     // const delay = fetchDelay(
     //   isBrowser
     // )
@@ -97,6 +102,12 @@ export const actions = {
     //   })
     // }
     commit('updateDetailFetching', true)
+    // 当前文章判断
+    let currentData = JSON.parse(JSON.stringify(state)).detail.data
+    if (Number(params.article_id) === currentData.idArticle) {
+      commit('updateDetailFetching', false)
+      return
+    }
     // commit('updateDetailData', {})
     return this.$axios
       .$get(`${BASE_API_PATH}/article/${params.article_id}`)
