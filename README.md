@@ -70,7 +70,7 @@ $ npm generate
 4. 项目目录下执行 `npm install`
 5. 执行 `npm install pm2 -g`
 6. 执行 `pm2 list` 检查 `pm2` 是否安装好
-7. 执行 `pm2 start npm --name "nebula" -- run start --watch`
+7. 执行 `pm2 start npm --name nebula -- run start`
 
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

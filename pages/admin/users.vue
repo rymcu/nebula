@@ -1,5 +1,5 @@
 <template>
-  <el-row>
+  <el-row style="margin-top: 20px;">
     <el-col style="margin-bottom: 1rem;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">首页</el-breadcrumb-item>
@@ -29,7 +29,7 @@
           width="180"
           prop="nickname">
           <template slot-scope="scope">
-            <el-link rel="nofollow" type="primary" @click="onRouter('user', scope.row.nickname)" :underline="false">
+            <el-link type="primary" :href="getUserPath(scope.row.nickname)" :underline="false">
               {{ scope.row.nickname }}
             </el-link>
           </template>
@@ -213,6 +213,9 @@ export default {
           _ts.$set(_ts, 'idRole', 0);
         }
       })
+    },
+    getUserPath(nickname) {
+      return `/user/${nickname}`
     }
   },
   mounted() {

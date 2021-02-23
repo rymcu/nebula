@@ -83,14 +83,14 @@
 
 <style scoped>
   .el-header {
-    padding-bottom: 1rem;
+    /*padding-bottom: 1rem;*/
     background: #fff;
     border-bottom: 1px solid rgba(0, 40, 100, 0.12);
     z-index: 80;
   }
 
   .el-main {
-    padding: 20px 0;
+    padding: 0;
     background-attachment: fixed;
     min-height: 87.5vh;
     overflow-x: hidden;

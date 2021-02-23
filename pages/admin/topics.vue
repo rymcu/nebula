@@ -1,5 +1,5 @@
 <template>
-  <el-row :gutter="8">
+  <el-row :gutter="8" style="margin-top: 20px;">
     <el-col style="margin-bottom: 1rem;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>

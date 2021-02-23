@@ -165,7 +165,7 @@
 
   .article__wrapper {
     max-width: 980px;
-    margin: 0 auto;
+    margin: 20px auto;
     display: block;
     padding-left: 1rem;
     padding-right: 1rem;

@@ -5,7 +5,7 @@
         <div v-if="user.userHomeBImgURL" class="card-header"
              :style="{backgroundImage:'url('+user.userHomeBImgURL+')', backgroundSize:'percentage', backgroundPosition:'50%'}"></div>
         <div v-else class="card-header"
-             :style="{backgroundImage:'url(https://static.rymcu.com/article/1574441651963.jpg)', backgroundSize:'cover', backgroundPosition:'50%'}"></div>
+             :style="{backgroundImage:'url(' + backgroundImage + ')', backgroundSize:'800px auto', backgroundPosition:'50%'}"></div>
         <div class="card-body text-center">
           <img v-if="user.avatarUrl" class="card-profile-img-avatar" :src="user.avatarUrl">
           <img v-else class="card-profile-img" src="https://static.rymcu.com/article/1578475481946.png">
@@ -78,6 +78,12 @@ import {mapState} from 'vuex';
 import ArticleList from "~/components/archive/list";
 import PortfolioList from "~/components/common/portfolio/list";
 import UserList from "~/components/common/user/list";
+import designTools from "~/static/banner/design-tools.jpg"
+import asteroids from "~/static/banner/asteroids.jpg"
+import isoMetropolis from "~/static/banner/isometropolis.jpg"
+import naranjas from "~/static/banner/naranjas.png"
+import retroFurnish from "~/static/banner/retro-furnish.png"
+import science from "~/static/banner/science.png"
 
 export default {
   name: "User",
@@ -145,7 +151,16 @@ export default {
   data() {
     return {
       activeTab: this.$route.query.tab || '0',
-      isFollow: false
+      isFollow: false,
+      backgroundImage: designTools,
+      backgroundImages: [
+        designTools,
+        asteroids,
+        isoMetropolis,
+        naranjas,
+        retroFurnish,
+        science
+      ]
     }
   },
   methods: {
