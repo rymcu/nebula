@@ -19,7 +19,8 @@ export const state = () => {
     detail: {
       fetching: false,
       data: {}
-    }
+    },
+    topicUri: ''
   }
 }
 
@@ -45,7 +46,6 @@ export const mutations = {
   clearDetailData(state, action) {
     state.detail.data = {}
   },
-
   // 更新文章阅读全文状态
   updateDetailRenderedState(state, action) {
     Vue.set(
@@ -59,6 +59,9 @@ export const mutations = {
   },
   updateArticleSponsorCount(state, action) {
     state.detail.data.articleSponsorCount += action.sponsorNumber
+  },
+  updateTopicUri(state, action) {
+    state.topicUri = action
   }
 }
 
@@ -68,9 +71,12 @@ export const actions = {
     commit('updateListFetching', true)
     // 当前页判断
     let currentData = JSON.parse(JSON.stringify(state)).list.data
+    let topicUri = JSON.parse(JSON.stringify(state)).topicUri
     if (Number(params.page) === currentData.pagination.currentPage) {
-      commit('updateListFetching', false)
-      return
+      if (topicUri && topicUri === params.topic_uri) {
+        commit('updateListFetching', false)
+        return
+      }
     }
     // 清空已有数据
     commit('updateListData', getDefaultListData())
@@ -85,6 +91,7 @@ export const actions = {
       .then(response => {
         commit('updateListFetching', false);
         commit('updateListData', response);
+        commit('updateTopicUri', params.topic_uri || '');
       })
       .catch(error => {
         console.log(error);
