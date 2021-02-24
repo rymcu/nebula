@@ -111,7 +111,7 @@ export const actions = {
     commit('updateDetailFetching', true)
     // 当前文章判断
     let currentData = JSON.parse(JSON.stringify(state)).detail.data
-    if (Number(params.article_id) === currentData.idArticle) {
+    if (Number(params.article_id) === currentData?.idArticle) {
       commit('updateDetailFetching', false)
       return
     }
