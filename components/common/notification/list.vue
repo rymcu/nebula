@@ -57,8 +57,11 @@
         <div class="vertical-container text-center">
           <el-pagination :hide-on-single-page="true" v-model="notifications.pagination"
                          layout="prev, pager, next"
+                         :page-size="notifications.pagination.pageSize"
                          :current-page="notifications.pagination.currentPage"
                          :total="notifications.pagination.total"
+                         prev-text="上一页"
+                         next-text="下一页"
                          @current-change="currentChange">
           </el-pagination>
         </div>
