@@ -19,7 +19,8 @@
         <el-col v-else style="margin-bottom: 20px;">
           <el-card :body-style="{ padding: '0px' }">
             <el-col style="padding: 0;">
-              <el-image :src="portfolio.headImgUrl" style="width:280px;height: 240px;" fit="cover"></el-image>
+              <el-image style="width:281px;height: 281px;" fit="cover">
+              </el-image>
             </el-col>
             <el-col style="padding: 0 10px;">
               <h4 class="article-header-md">
