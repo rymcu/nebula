@@ -17,12 +17,17 @@
     components: {
       NotificationList
     },
-    fetch({store, error}) {
+    fetch({store, query, error}) {
       return Promise.all([
         store
-          .dispatch('notification/fetchList')
+          .dispatch('notification/fetchList', {page: query.page || 1})
           .catch(err => error({statusCode: 404}))
       ])
+    },
+    watch: {
+      '$route.query': function () {
+        this.$store.dispatch('notification/fetchList', {page: this.$route.query.page || 1})
+      }
     },
     computed: {
       ...mapState({
@@ -32,8 +37,11 @@
     },
     methods: {
       currentChangeNotification(page) {
-        this.$store.dispatch('notification/fetchList', {
-          page: page
+        this.$router.push({
+          name: 'notification',
+          query: {
+            page: page
+          }
         })
       }
     },

@@ -48,7 +48,7 @@
     computed: {
       ...mapState('global', []),
       isPostArticle() {
-        if (this.$route.name == 'article-post-article_id') {
+        if (this.$route.name === 'article-post-article_id') {
           return false;
         }
         return true;
@@ -92,7 +92,7 @@
   .el-main {
     padding: 0;
     background-attachment: fixed;
-    min-height: 87.5vh;
+    min-height: 85vh;
     overflow-x: hidden;
   }
 
