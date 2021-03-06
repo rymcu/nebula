@@ -1,31 +1,34 @@
 <template>
   <div class="wrapper">
-    <el-row class="row-cards row-deck" :gutter="10">
-      <el-col v-for="portfolio in portfolios.portfolios" :key="portfolio.idPortfolio">
-        <el-col class="card">
-          <el-col class="card-body d-flex flex-column">
-            <el-col :span="24" class="mr-3">
-              <a v-show="portfolio.headImgUrl">
-                <el-image class="card-img-top" style="height: 10rem;" :src="portfolio.headImgUrl"></el-image>
-              </a>
-              <a v-show="!portfolio.headImgUrl">
-                <el-image class="card-img-top" style="height: 10rem;"
-                          src="https://static.rymcu.com/article/1574441170152.jpg"></el-image>
-              </a>
+    <el-row class="row-cards row-deck" :gutter="20">
+      <el-col :span="8" v-for="portfolio in portfolios.portfolios" :key="portfolio.idPortfolio">
+        <el-col v-if="portfolio.headImgUrl" style="margin-bottom: 20px;">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-col style="padding: 0;">
+              <el-image :src="portfolio.headImgUrl" style="width:281px;height: 281px;" fit="cover"></el-image>
             </el-col>
-            <el-col :span="24">
+            <el-col style="padding: 0 10px;">
               <h4 class="article-header-md">
                 <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false"
                          v-html="portfolio.portfolioTitle"></el-link>
               </h4>
-              <div class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</div>
-              <div class="d-flex align-items-center pt-5 mt-auto">
-                <div class="ml-auto text-muted">
-                  <span>{{ portfolio.timeAgo }}</span>
-                </div>
-              </div>
             </el-col>
-          </el-col>
+            <el-col class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</el-col>
+          </el-card>
+        </el-col>
+        <el-col v-else style="margin-bottom: 20px;">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-col style="padding: 0;">
+              <el-image :src="portfolio.headImgUrl" style="width:280px;height: 240px;" fit="cover"></el-image>
+            </el-col>
+            <el-col style="padding: 0 10px;">
+              <h4 class="article-header-md">
+                <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false"
+                         v-html="portfolio.portfolioTitle"></el-link>
+              </h4>
+            </el-col>
+            <el-col class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</el-col>
+          </el-card>
         </el-col>
       </el-col>
       <el-col v-show="!portfolios" class="text-center">

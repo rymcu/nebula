@@ -13,6 +13,7 @@
                      @select="handleSelectMenu">
               <el-menu-item index="index">首页</el-menu-item>
               <el-menu-item index="topic">专题</el-menu-item>
+              <el-menu-item index="portfolios">作品集</el-menu-item>
             </el-menu>
           </el-col>
         </el-row>
@@ -183,6 +184,11 @@ export default {
           case 'topic':
             _ts.$router.push({
               path: '/topic/news?page=1'
+            })
+            break;
+          case 'portfolios':
+            _ts.$router.push({
+              path: '/portfolios?page=1'
             })
             break;
           case 'github':
