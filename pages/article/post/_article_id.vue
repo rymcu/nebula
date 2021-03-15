@@ -269,6 +269,7 @@
             localStorage.removeItem('article-title');
             localStorage.removeItem('article-tags');
             _ts.contentEditor.setValue('');
+            _ts.$store.commit('article/clearDetailData')
             _ts.$router.push({
               path: `/article/${res.id}`
             })
