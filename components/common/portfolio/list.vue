@@ -1,34 +1,36 @@
 <template>
   <div class="wrapper">
     <el-row class="row-cards row-deck" :gutter="20">
-      <el-col :span="8" v-for="portfolio in portfolios.portfolios" :key="portfolio.idPortfolio">
+      <el-col :xs="24" :sm="10" :md="8" v-for="portfolio in portfolios.portfolios" :key="portfolio.idPortfolio">
         <el-col v-if="portfolio.headImgUrl" style="margin-bottom: 20px;">
           <el-card :body-style="{ padding: '0px' }">
-            <el-col style="padding: 0;">
+            <div style="padding: 0;">
               <el-image :src="portfolio.headImgUrl" style="width:281px;height: 281px;" fit="cover"></el-image>
-            </el-col>
-            <el-col style="padding: 0 10px;">
+            </div>
+            <div style="padding: 0 10px;">
               <h4 class="article-header-md">
-                <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false"
-                         v-html="portfolio.portfolioTitle"></el-link>
+                <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false">
+                  {{ portfolio.portfolioTitle }}
+                </el-link>
               </h4>
-            </el-col>
-            <el-col class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</el-col>
+            </div>
+            <div class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</div>
           </el-card>
         </el-col>
         <el-col v-else style="margin-bottom: 20px;">
           <el-card :body-style="{ padding: '0px' }">
-            <el-col style="padding: 0;">
+            <div style="padding: 0;">
               <el-image style="width:281px;height: 281px;" fit="cover">
               </el-image>
-            </el-col>
-            <el-col style="padding: 0 10px;">
+            </div>
+            <div style="padding: 0 10px;">
               <h4 class="article-header-md">
-                <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false"
-                         v-html="portfolio.portfolioTitle"></el-link>
+                <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false">
+                  {{ portfolio.portfolioTitle }}
+                </el-link>
               </h4>
-            </el-col>
-            <el-col class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</el-col>
+            </div>
+            <div class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</div>
           </el-card>
         </el-col>
       </el-col>
