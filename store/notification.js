@@ -12,7 +12,8 @@ export const state = () => {
     list: {
       fetching: false,
       data: getDefaultListData()
-    }
+    },
+    updateState: false
   }
 }
 
@@ -23,6 +24,9 @@ export const mutations = {
   },
   updateListData(state, action) {
     state.list.data = action
+  },
+  updateState(state, action) {
+    state.updateState = action
   }
 }
 
@@ -33,14 +37,19 @@ export const actions = {
     commit('updateListFetching', true)
     // 当前页判断
     let currentData = JSON.parse(JSON.stringify(state)).list.data
-    if (Number(params.page) === currentData.pagination.currentPage) {
-      commit('updateListFetching', false)
-      return
+    let updateState = state.updateState
+    if (!updateState) {
+      if (Number(params.page) === currentData?.pagination.currentPage) {
+        commit('updateListFetching', false)
+        return
+      }
     }
     commit('updateListData', getDefaultListData())
     let data = {
       page: params.page || 1
     }
+
+    commit('updateState', false)
 
     return this.$axios
       .$get(`${NOTIFICATION_API_PATH}/all`, {

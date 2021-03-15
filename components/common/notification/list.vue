@@ -85,6 +85,7 @@
       read(id) {
         let _ts = this;
         this.$axios.$put('/api/notification/read/' + id).then(function () {
+          _ts.$store.commit('notification/updateState', true)
           _ts.currentChange(1);
         }).catch(error => console.log(error));
       },
