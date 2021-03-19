@@ -89,6 +89,15 @@
         isEdit: false
       }
     },
+     beforeCreate() {
+    window.onbeforeunload = function (e) {
+      e = e || window.event;
+      if (e) {
+        e.returnValue = "关闭提示";
+      }
+      return "关闭提示";
+    };
+  },
     methods: {
       _initEditor(data) {
         let _ts = this;
