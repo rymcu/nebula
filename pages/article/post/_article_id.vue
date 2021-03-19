@@ -48,6 +48,7 @@
 <script>
   import Vue from 'vue';
   import {mapState} from 'vuex';
+  import { isBrowser } from '~/environment'
 
   export default {
     name: "PostArticle",
@@ -320,6 +321,20 @@
           }
         })
       }
+    },
+    beforeRouteLeave(to, from, next) {
+      this.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        next();
+      }).catch(() => {
+        return false
+      });
+    },
+    beforeDestroy() {
+      window.onbeforeunload = null;
     },
     async mounted() {
       window.addEventListener('beforeunload', e => {
