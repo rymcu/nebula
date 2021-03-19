@@ -333,21 +333,12 @@
         return false
       });
     },
-    beforeDestroy() {
-      window.onbeforeunload = null;
+    beforeunloadFn(e) {
+      alert("正在离开");
+      alert("确认已经保存了？");
     },
     async mounted() {
-      window.addEventListener('beforeunload', e => {
-        e = e || window.event;
-
-        // 兼容IE8和Firefox 4之前的版本
-        if (e) {
-          e.returnValue = '关闭提示';
-        }
-
-        // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-        return '关闭提示';
-      });
+      window.addEventListener('beforeunload', e => this.beforeunloadFn(e));
       let _ts = this;
       _ts.$store.commit('setActiveMenu', 'post-article');
       const responseData = await _ts.$axios.$get('/api/upload/token');
