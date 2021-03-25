@@ -138,7 +138,8 @@ export default {
       headImgUrl: '',
       cropImg: '',
       isEdit: false,
-      autoCrop: true
+      autoCrop: true,
+      notificationFlag: true
     }
   },
   methods: {
@@ -282,6 +283,7 @@ export default {
             type: 'success',
             message: title + '成功!'
           });
+          _ts.$set(_ts, 'notificationFlag', false);
           _ts.$router.push({
             path: '/portfolio/' + res.idPortfolio
           })
@@ -305,6 +307,7 @@ export default {
             if (res.message) {
               _ts.$message(res.message);
             } else {
+              _ts.$set(_ts, 'notificationFlag', false);
               _ts.$router.push({
                 path: '/user/' + _ts.$store.state.userInfo?.nickname
               })
@@ -339,15 +342,21 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    this.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
+    let _ts = this;
+    if (_ts.notificationFlag) {
+      _ts.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        next();
+      }).catch(() => {
+        _ts.$store.commit("setActiveMenu", "portfolio-post");
+        return false
+      });
+    } else {
       next();
-    }).catch(() => {
-      return false
-    });
+    }
   },
   beforeDestroy() {
     window.onbeforeunload = null;

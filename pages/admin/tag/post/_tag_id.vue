@@ -92,7 +92,8 @@ export default {
       tagIconPath: '',
       loading: false,
       isEdit: false,
-      tag: {}
+      tag: {},
+      notificationFlag: true
     }
   },
   methods: {
@@ -233,21 +234,27 @@ export default {
             message: title + '成功!'
           });
           _ts.$set(_ts, 'loading', false);
-          // _ts.getData();
+          _ts.$set(_ts, 'notificationFlag', false);
         }
       })
     }
   },
   beforeRouteLeave(to, from, next) {
-    this.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
+    let _ts = this;
+    if (_ts.notificationFlag) {
+      _ts.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        next();
+      }).catch(() => {
+        _ts.$store.commit("setActiveMenu", "admin-tag-post");
+        return false
+      });
+    } else {
       next();
-    }).catch(() => {
-      return false
-    });
+    }
   },
   beforeDestroy() {
     window.onbeforeunload = null;
@@ -265,7 +272,7 @@ export default {
       return '关闭提示';
     });
     let _ts = this;
-    this.$store.commit('setActiveMenu', 'postAdminTag');
+    this.$store.commit('setActiveMenu', 'admin-tag-post');
     this.$axios.$get('/api/upload/simple/token').then(function (res) {
       if (res) {
         _ts.$store.commit('setUploadHeaders', res.uploadToken);

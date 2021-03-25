@@ -70,7 +70,6 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    '~/io',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     'js-cookie',
@@ -83,6 +82,9 @@ export default {
     ['/api', {
       target: apiConfig.BASE,  //api请求路径
       pathRewrite: {'^/api': isDevMode ? '/api/v1' : '/api'}  //重定向请求路径，防止路由、api路径的冲突
+    }],
+    ['/ws', {
+      target: apiConfig.BASE  //api请求路径
     }]
   ],
   /*

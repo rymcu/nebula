@@ -106,7 +106,8 @@ export default {
         token: ''
       },
       topicIconPath: '',
-      isEdit: false
+      isEdit: false,
+      notificationFlag: true
     }
   },
   methods: {
@@ -246,6 +247,7 @@ export default {
             message: title + '成功!'
           });
           _ts.$set(_ts, 'loading', false);
+          _ts.$set(_ts, 'notificationFlag', false);
           _ts.contentEditor.setValue('');
           _ts.$router.push({
             path: `/admin/topic/${data.topicUri}`
@@ -255,15 +257,21 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    this.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
+    let _ts = this;
+    if (_ts.notificationFlag) {
+      _ts.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        next();
+      }).catch(() => {
+        _ts.$store.commit("setActiveMenu", "admin-topic-post");
+        return false
+      });
+    } else {
       next();
-    }).catch(() => {
-      return false
-    });
+    }
   },
   beforeDestroy() {
     window.onbeforeunload = null;

@@ -87,7 +87,8 @@
         list: [],
         loading: false,
         doLoading: false,
-        isEdit: false
+        isEdit: false,
+        notificationFlag: true
       }
     },
     methods: {
@@ -232,6 +233,7 @@
             localStorage.removeItem('article-title');
             localStorage.removeItem('article-tags');
             _ts.contentEditor.setValue('');
+            _ts.$set(_ts, 'notificationFlag', false);
             _ts.$router.push({
               name: 'index'
             })
@@ -271,6 +273,7 @@
             localStorage.removeItem('article-tags');
             _ts.contentEditor.setValue('');
             _ts.$store.commit('article/clearDetailData')
+            _ts.$set(_ts, 'notificationFlag', false);
             _ts.$router.push({
               path: `/article/${res.id}`
             })
@@ -307,6 +310,7 @@
             localStorage.removeItem('article-title');
             localStorage.removeItem('article-tags');
             _ts.contentEditor.setValue('');
+            _ts.$set(_ts, 'notificationFlag', false);
             _ts.$router.push({
               path: `/draft/${res.id}`
             })
@@ -323,15 +327,21 @@
       }
     },
     beforeRouteLeave(to, from, next) {
-      this.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      let _ts = this;
+      if (_ts.notificationFlag) {
+        _ts.$confirm('系统可能不会保存您所做的更改。', '离开此网站?', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          next();
+        }).catch(() => {
+          return false
+        });
+        _ts.$store.commit("setActiveMenu", "article-post");
+      } else {
         next();
-      }).catch(() => {
-        return false
-      });
+      }
     },
     beforeDestroy() {
       window.onbeforeunload = null;
@@ -349,7 +359,7 @@
         return '关闭提示';
       });
       let _ts = this;
-      _ts.$store.commit('setActiveMenu', 'post-article');
+      _ts.$store.commit('setActiveMenu', 'article-post');
       const responseData = await _ts.$axios.$get('/api/upload/token');
       if (responseData) {
         _ts.$set(_ts, 'tokenURL', {
