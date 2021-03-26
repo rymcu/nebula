@@ -25,14 +25,14 @@ export default {
     }, _ts.headers);
     _ts.stompClient.subscribe('/topic/greening', (msg) => {
       console.log('pub', JSON.parse(msg.body));
-    });
+    }, _ts.headers);
   },
   initSocket: function (user) {
     let _ts = this;
     _ts.socket = new SockJS(apiConfig.SOCKET);
     _ts.stompClient = Stomp.over(_ts.socket);
     let headers = {
-      id: user.nickname
+      id: user.account
     }
     _ts.headers = headers;
     _ts.stompClient.connect(_ts.headers, () => {

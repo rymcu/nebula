@@ -9,7 +9,7 @@
       </el-col>
       <el-col style="margin-top: 2rem;" id="messagesContent">
         <el-col v-for="message in Array.prototype.reverse.call(messages)" :key="message.dataId">
-          <el-col v-if="message.from === user.nickname">
+          <el-col v-if="message.from === user.account">
             <el-col :span="22" style="text-align: right;">
               <div class="from-message">
                 <div v-html="message.content"></div>
@@ -156,8 +156,8 @@ export default {
     async send() {
       let _ts = this;
       const message = {
-        to: _ts.to.nickname,
-        from: _ts.user.nickname,
+        to: _ts.to.account,
+        from: _ts.user.account,
         dataType: 1,
         dataId: new Date().getTime(),
         content: await _ts.contentEditor.getHTML()
@@ -172,7 +172,7 @@ export default {
     _ts.$store.commit('setActiveMenu', 'post-article');
 
     let to = {
-      nickname: _ts.$route.params?.nickname
+      account: _ts.$route.params?.account
     }
 
     _ts.$set(_ts, 'to', to);

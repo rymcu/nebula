@@ -29,7 +29,7 @@
           width="180"
           prop="nickname">
           <template slot-scope="scope">
-            <el-link type="primary" :href="getUserPath(scope.row.nickname)" :underline="false">
+            <el-link type="primary" :href="getUserPath(scope.row.account)" :underline="false">
               {{ scope.row.nickname }}
             </el-link>
           </template>

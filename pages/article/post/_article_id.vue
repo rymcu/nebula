@@ -48,7 +48,6 @@
 <script>
   import Vue from 'vue';
   import {mapState} from 'vuex';
-  import { isBrowser } from '~/environment'
 
   export default {
     name: "PostArticle",

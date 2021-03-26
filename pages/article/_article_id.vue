@@ -17,7 +17,7 @@
               </el-col>
               <el-col :xs="9" :sm="11" :xl="11">
                 <div style="margin-left: 1rem;">
-                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthorName)" :underline="false"
+                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthor.userAccount)" :underline="false"
                            class="text-default">{{ article.articleAuthorName }}
                   </el-link>
                   <small class="d-block text-muted">{{ article.timeAgo }}</small>

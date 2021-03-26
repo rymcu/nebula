@@ -31,7 +31,7 @@
               </el-col>
               <el-col :xs="16" :sm="16" :xl="16">
                 <div>
-                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthorName)" :underline="false"
+                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthor.userAccount)" :underline="false"
                            class="text-default">
                     {{ article.articleAuthorName }}
                   </el-link>

@@ -108,7 +108,8 @@ export default {
 
               let user = {
                 nickname: res.user.nickname,
-                avatarURL: res.user.avatarUrl
+                avatarURL: res.user.avatarUrl,
+                account: res.user.account
               }
               _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
               localStorage.setItem('user', JSON.stringify(user))

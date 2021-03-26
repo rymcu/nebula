@@ -7,7 +7,7 @@
         </el-col>
         <el-col :span="21">
           <div>
-            <el-link rel="nofollow" @click="onRouter(user.nickname)" :underline="false" class="text-default">
+            <el-link rel="nofollow" @click="onRouter(user.account)" :underline="false" class="text-default">
               {{ user.nickname }}
             </el-link>
             <small class="d-block text-muted">{{ user.signature }}</small>

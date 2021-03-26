@@ -35,7 +35,7 @@
             <div v-if="oauth.idUser !== user.idUser">
               <el-button type="primary" v-if="isFollow" @click="cancelFollowUser(user.idUser)" plain>取消关注</el-button>
               <el-button type="primary" v-else @click="followUser(user.idUser)" plain>关注</el-button>
-              <el-button @click="gotoChats" plain>聊天</el-button>
+              <el-button v-show="false" @click="gotoChats" plain>聊天</el-button>
             </div>
           </div>
           <div v-else>
@@ -89,7 +89,7 @@ export default {
   name: "User",
   components: {ArticleList, PortfolioList, UserList},
   validate({params, store}) {
-    return params.nickname
+    return params.account
   },
   fetch({store, params, query, error}) {
     params.page = query.page || 1
@@ -112,25 +112,25 @@ export default {
       switch (_ts.activeTab) {
         case "0":
           _ts.$store.dispatch('user/fetchArticleList', {
-            nickname: _ts.$route.params.nickname,
+            account: _ts.$route.params.account,
             page: _ts.$route.query.page || 1
           })
           break;
         case "1":
           _ts.$store.dispatch('user/fetchPortfolioList', {
-            nickname: _ts.$route.params.nickname,
+            account: _ts.$route.params.account,
             page: _ts.$route.query.page || 1
           })
           break;
         case "2":
           _ts.$store.dispatch('user/fetchFollowerList', {
-            nickname: _ts.$route.params.nickname,
+            account: _ts.$route.params.account,
             page: _ts.$route.query.page || 1
           })
           break;
         default:
           _ts.$store.dispatch('user/fetchFollowingList', {
-            nickname: _ts.$route.params.nickname,
+            account: _ts.$route.params.account,
             page: _ts.$route.query.page || 1
           })
           break
@@ -181,14 +181,14 @@ export default {
     },
     onRouter(key, page) {
       this.$router.push({
-        path: `/user/${this.$route.params.nickname}?tab=${key}&page=${page}`
+        path: `/user/${this.$route.params.account}?tab=${key}&page=${page}`
       })
 
     },
     gotoChats() {
       let _ts = this;
       _ts.$router.push({
-        path: `/chats/${_ts.user.nickname}`
+        path: `/chats/${_ts.user.account}`
       })
     },
     followUser(idUser) {

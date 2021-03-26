@@ -58,7 +58,7 @@ export const actions = {
   fetchDetail({ commit }, params) {
     commit('updateFetching', true);
     return this.$axios
-      .$get(`${USER_API_PATH}/${params.nickname}`)
+      .$get(`${USER_API_PATH}/${params.account}`)
       .then(response => {
         commit('updateDetailData', response)
         commit('updateFetching', false)
@@ -70,7 +70,7 @@ export const actions = {
   fetchUserExtend({ commit }, params) {
     commit('updateFetching', true);
     return this.$axios
-      .$get(`${USER_API_PATH}/${params.nickname}/user-extend`)
+      .$get(`${USER_API_PATH}/${params.account}/user-extend`)
       .then(response => {
         commit('updateUserExtendData', response)
         commit('updateFetching', false)
@@ -82,7 +82,7 @@ export const actions = {
   fetchArticleList({commit}, params) {
     commit('updateFetching', true);
     return this.$axios
-      .$get(`${USER_API_PATH}/${params.nickname}/articles`, {
+      .$get(`${USER_API_PATH}/${params.account}/articles`, {
         params: {
           page: params.page
         }
@@ -98,7 +98,7 @@ export const actions = {
   fetchPortfolioList({commit}, params) {
     commit('updateFetching', true);
     return this.$axios
-      .$get(`${USER_API_PATH}/${params.nickname}/portfolios`, {
+      .$get(`${USER_API_PATH}/${params.account}/portfolios`, {
         params: {
           page: params.page
         }
@@ -118,7 +118,7 @@ export const actions = {
       pagination: {}
     })
     return this.$axios
-      .$get(`${USER_API_PATH}/${params.nickname}/followers`, {
+      .$get(`${USER_API_PATH}/${params.account}/followers`, {
         params: {
           page: params.page
         }
@@ -138,7 +138,7 @@ export const actions = {
       pagination: {}
     })
     return this.$axios
-      .$get(`${USER_API_PATH}/${params.nickname}/followings`, {
+      .$get(`${USER_API_PATH}/${params.account}/followings`, {
         params: {
           page: params.page
         }

@@ -106,6 +106,18 @@
         }
         return _ts.$store.state.userInfo?.nickname;
       },
+      account() {
+        let _ts = this;
+        if (isBrowser) {
+          if (!_ts.$store.state.userInfo) {
+            let user = localStorage.getItem('user');
+            if (user) {
+              _ts.$store.commit('setUser', JSON.parse(user))
+            }
+          }
+        }
+        return _ts.$store.state.userInfo?.account;
+      },
       hasPermissions() {
         return this.$store.getters.hasPermissions('blog_admin');
       }
@@ -154,7 +166,7 @@
         switch (item) {
           case 'user':
             _ts.$router.push({
-              path: '/user/' + _ts.nickname
+              path: '/user/' + _ts.account
             })
             break;
           case 'user-info':

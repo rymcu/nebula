@@ -7,7 +7,7 @@
         </el-col>
         <el-col style="margin-bottom: .5rem;">
           <span class="text-default" style="padding-right: 1rem;">作者</span>
-          <el-link rel="nofollow" @click="onRouter('user', portfolio.portfolioAuthorName)" :underline="false" class="text-default">
+          <el-link rel="nofollow" @click="onRouter('user', portfolio.portfolioAuthor.userAccount)" :underline="false" class="text-default">
             <el-avatar :src="portfolio.portfolioAuthorAvatarUrl" :size="16"></el-avatar>
             {{ portfolio.portfolioAuthorName }}
           </el-link>
