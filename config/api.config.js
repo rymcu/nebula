@@ -6,7 +6,7 @@ const apisMap = {
     BASE: 'http://localhost:8099/forest',
     CDN: '',
     PROXY: '/proxy',
-    SOCKET: 'http://localhost:3000/wss',
+    SOCKET: 'http://localhost:3000/ws',
     GRAVATAR: '/proxy/static.rymcu.com/avatar'
   },
   production: {
