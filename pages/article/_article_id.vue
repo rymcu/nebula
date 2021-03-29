@@ -134,6 +134,7 @@ import {mapState} from 'vuex';
 import ShareBox from '~/components/widget/share';
 import PortfoliosWidget from '~/components/widget/portfolios';
 import EditTags from '~/components/widget/tags';
+import 'vditor/dist/css/content-theme/light.css';
 
 export default {
   name: "ArticleDetail",
@@ -382,6 +383,11 @@ export default {
       Vue.VditorPreview.mediaRender(previewElement);
       Vue.VditorPreview.lazyLoadImageRender(previewElement);
       //VditorPreview.outlineRender(previewElement, outLineElement);
+      previewElement.addEventListener("click", (event) => {
+        if (event.target.tagName === "IMG") {
+          Vue.VditorPreview.previewImage(event.target);
+        }
+      });
       window.scrollTo(0, 0);
       _ts.$set(_ts, 'isPerfect', _ts.article.articlePerfect === '1')
     })

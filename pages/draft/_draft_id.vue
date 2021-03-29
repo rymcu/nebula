@@ -67,6 +67,7 @@
 <script>
   import Vue from 'vue';
   import {mapState} from 'vuex';
+  import 'vditor/dist/css/content-theme/light.css';
 
   export default {
     name: "DraftDetail",
@@ -154,6 +155,11 @@
         Vue.VditorPreview.mediaRender(previewElement);
         Vue.VditorPreview.lazyLoadImageRender(previewElement);
         //VditorPreview.outlineRender(previewElement, outLineElement);
+        previewElement.addEventListener("click", (event) => {
+          if (event.target.tagName === "IMG") {
+            Vue.VditorPreview.previewImage(event.target);
+          }
+        });
         window.scrollTo(0,0);
       })
     }
