@@ -185,7 +185,8 @@ p {
 
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {
-  width: 1px;
+  width: 7px;
+  height: 7px;
 }
 
 /* 滚动槽 */
