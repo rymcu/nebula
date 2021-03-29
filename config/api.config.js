@@ -14,7 +14,7 @@ const apisMap = {
     BASE: 'https://rymcu.com',
     CDN: 'https://static.rymcu.com',
     PROXY: 'https://static.rymcu.com/proxy',
-    SOCKET: 'https://rymcu.com/ws',
+    SOCKET: 'https://rymcu.com/wss',
     GRAVATAR: 'https://static.rymcu.com/avatar'
   }
 }
