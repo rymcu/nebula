@@ -85,14 +85,14 @@
               </el-col>
             </el-col>
           </el-card>
-          <el-col v-show="comment.commentOriginalCommentId" :id="'original-' + comment.commentOriginalCommentId" style="background-color: #d9d9d9;padding-left: 1.5rem;
+          <el-col :id="'original-' + comment.commentOriginalCommentId" style="background-color: #d9d9d9;padding-left: 1.5rem;
             margin-top: 0.3rem;border-radius: 0.5rem;cursor: pointer;display: none;">
-            <el-col :span="2">
+            <el-col v-show="comment.commentOriginalCommentId" :span="2">
               <p>
                 <span>{{comment.commentOriginalAuthorNickname}} :</span>
               </p>
             </el-col>
-            <el-col :span="20">
+            <el-col v-show="comment.commentOriginalCommentId" :span="20">
               <div class="vditor-reset comment-content" v-html="comment.commentOriginalContent"></div>
             </el-col>
           </el-col>
