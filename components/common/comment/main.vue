@@ -73,7 +73,7 @@
               </el-col>
               <el-col style="padding: 1rem;">
                 <el-col>
-                  <span v-html="comment.commentContent"></span>
+                  <div class="vditor-reset comment-content" v-html="comment.commentContent"></div>
                 </el-col>
               </el-col>
               <el-col :span="16" style="padding-left: 1rem;">
@@ -85,15 +85,15 @@
               </el-col>
             </el-col>
           </el-card>
-          <el-col :id="'original-' + comment.commentOriginalCommentId" style="background-color: #d9d9d9;padding-left: 1.5rem;
+          <el-col v-show="comment.commentOriginalCommentId" :id="'original-' + comment.commentOriginalCommentId" style="background-color: #d9d9d9;padding-left: 1.5rem;
             margin-top: 0.3rem;border-radius: 0.5rem;cursor: pointer;display: none;">
-            <el-col v-show="comment.commentOriginalCommentId" :span="2">
+            <el-col :span="2">
               <p>
                 <span>{{comment.commentOriginalAuthorNickname}} :</span>
               </p>
             </el-col>
             <el-col :span="20">
-              <div v-html="comment.commentOriginalContent"></div>
+              <div class="vditor-reset comment-content" v-html="comment.commentOriginalContent"></div>
             </el-col>
           </el-col>
         </el-col>
@@ -367,8 +367,33 @@
         }
       }
 
-      // 评论定位
       Vue.nextTick(function () {
+        // 评论渲染
+        const previewElements = document.getElementsByClassName("comment-content");
+        if (previewElements) {
+          for (let i in previewElements) {
+            const previewElement = previewElements[i];
+            Vue.VditorPreview.codeRender(previewElement, 'zh_CN');
+            Vue.VditorPreview.highlightRender({"enable": true, "lineNumber": true, "style": "github"}, previewElement);
+            Vue.VditorPreview.mathRender(previewElement, {
+              math: {"engine": "KaTeX", "inlineDigit": false, "macros": {}},
+            });
+            Vue.VditorPreview.mermaidRender(previewElement);
+            Vue.VditorPreview.graphvizRender(previewElement);
+            Vue.VditorPreview.chartRender(previewElement);
+            Vue.VditorPreview.mindmapRender(previewElement);
+            Vue.VditorPreview.abcRender(previewElement);
+            Vue.VditorPreview.mediaRender(previewElement);
+            Vue.VditorPreview.lazyLoadImageRender(previewElement);
+            //VditorPreview.outlineRender(previewElement, outLineElement);
+            previewElement.addEventListener("click", (event) => {
+              if (event.target.tagName === "IMG") {
+                Vue.VditorPreview.previewImage(event.target);
+              }
+            });
+          }
+        }
+        // 评论定位
         if (_ts.$route.hash) {
           const element = document.getElementById(_ts.$route.hash.replace('#', ''));
           if (element) {
