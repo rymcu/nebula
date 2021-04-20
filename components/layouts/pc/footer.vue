@@ -22,7 +22,7 @@
               <el-link rel="nofollow" :underline="false" href="/" style="vertical-align: baseline;"><span>{{ systemName }}</span>
               </el-link>
               .
-              <el-link rel="nofollow" :underline="false" href="http://www.beian.miit.gov.cn/" style="vertical-align: baseline;"><span>{{ beiAn }}</span>
+              <el-link rel="nofollow" :underline="false" href="https://beian.miit.gov.cn/" style="vertical-align: baseline;"><span>{{ beiAn }}</span>
               </el-link>
             </el-col>
           </el-col>
@@ -41,7 +41,7 @@
         systemName: 'RYMCU',
         systemUrl: 'https://rymcu.com',
         slogan: 'RYMCU · 嵌入式知识学习交流平台 ',
-        beiAn: '沪ICP备19042611号',
+        beiAn: '赣ICP备2021003088号-1',
         markdownGuide: '/guides/markdown',
         rules: '/article/20',
         email: 'mailto:support@rymcu.com',
