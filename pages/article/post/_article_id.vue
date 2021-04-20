@@ -1,46 +1,57 @@
 <template>
   <el-row class="articles">
-    <el-col>
-      <el-input
-        v-model="articleTitle"
-        class="article-title"
-        placeholder="请输入标题"
-        @change="setLocalstorage('title',articleTitle)">
-      </el-input>
+    <el-col v-if="hasPermissions">
+      <el-col>
+        <el-input
+          v-model="articleTitle"
+          class="article-title"
+          placeholder="请输入标题"
+          @change="setLocalstorage('title',articleTitle)">
+        </el-input>
+      </el-col>
+      <el-col>
+        <div id="contentEditor"></div>
+      </el-col>
+      <el-col style="margin-top: 1rem;">
+        <el-select
+          style="width: 100%;"
+          v-model="articleTags"
+          multiple
+          filterable
+          allow-create
+          default-first-option
+          remote
+          :remote-method="remoteMethod"
+          placeholder="请选择文章标签"
+          :loading="loading"
+          @change="setLocalstorage('tags',articleTags)">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-col>
+      <el-col v-if="!isEdit" style="margin-top: 1rem;padding-right:3rem;text-align: right;">
+        <el-button :loading="doLoading" @click="saveArticle" plain>保存草稿</el-button>
+        <el-button type="primary" :loading="doLoading" @click="postArticle" plain>发布</el-button>
+      </el-col>
+      <el-col v-else style="margin-top: 1rem;padding-right:3rem;text-align: right;">
+        <el-button type="danger" :loading="doLoading" @click="deleteArticle" plain>删除</el-button>
+        <el-button v-if="articleStatus === '1'" :loading="doLoading" @click="saveArticle" plain>保存草稿</el-button>
+        <el-button v-if="articleStatus === '0'" :loading="doLoading" type="primary" @click="postArticle" plain>更新</el-button>
+        <el-button v-else type="primary" :loading="doLoading" @click="postArticle" plain>发布</el-button>
+      </el-col>
     </el-col>
-    <el-col>
-      <div id="contentEditor"></div>
-    </el-col>
-    <el-col style="margin-top: 1rem;">
-      <el-select
-        style="width: 100%;"
-        v-model="articleTags"
-        multiple
-        filterable
-        allow-create
-        default-first-option
-        remote
-        :remote-method="remoteMethod"
-        placeholder="请选择文章标签"
-        :loading="loading"
-        @change="setLocalstorage('tags',articleTags)">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </el-col>
-    <el-col v-if="!isEdit" style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-      <el-button :loading="doLoading" @click="saveArticle" plain>保存草稿</el-button>
-      <el-button type="primary" :loading="doLoading" @click="postArticle" plain>发布</el-button>
-    </el-col>
-    <el-col v-else style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-      <el-button type="danger" :loading="doLoading" @click="deleteArticle" plain>删除</el-button>
-      <el-button v-if="articleStatus === '1'" :loading="doLoading" @click="saveArticle" plain>保存草稿</el-button>
-      <el-button v-if="articleStatus === '0'" :loading="doLoading" type="primary" @click="postArticle" plain>更新</el-button>
-      <el-button v-else type="primary" :loading="doLoading" @click="postArticle" plain>发布</el-button>
+    <el-col v-else class="text-center">
+      <el-alert
+        title="用户无权限"
+        type="warning"
+        center
+        show-icon
+        :closable="false">
+      </el-alert>
     </el-col>
   </el-row>
 </template>
@@ -66,7 +77,16 @@
     computed: {
       ...mapState({
         article: state => state.article.detail.data
-      })
+      }),
+      hasPermissions() {
+        let account = this.$store.state.userInfo?.nickname;
+        if (account) {
+          if (account === this.article.articleAuthor.userNickname) {
+            return true;
+          }
+        }
+        return this.$store.getters.hasPermissions('blog_admin');
+      }
     },
     data() {
       return {
@@ -346,6 +366,9 @@
       window.onbeforeunload = null;
     },
     async mounted() {
+      if (!this.hasPermissions) {
+        return
+      }
       window.addEventListener('beforeunload', e => {
         e = e || window.event;
 
