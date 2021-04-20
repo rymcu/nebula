@@ -44,7 +44,7 @@
               <el-col style="margin-left: 1rem;">
                 <el-col v-show="comment.commentOriginalCommentId">
                   <el-col :span="16">
-                    <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
+                    <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userAccount)" :underline="false"
                              class="text-default">{{ comment.commenter.userNickname }}
                     </el-link>
                     <small class="text-default" style="margin: 0 0.2rem">回复了</small><span style="font-weight: bold;"> {{comment.commentOriginalAuthorNickname}}</span>
@@ -60,7 +60,7 @@
                 </el-col>
                 <el-col v-show="!comment.commentOriginalCommentId">
                   <el-col :span="16">
-                    <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userNickname)" :underline="false"
+                    <el-link rel="nofollow" @click="onRouter('user', comment.commenter.userAccount)" :underline="false"
                              class="text-default">{{ comment.commenter.userNickname }}
                     </el-link>
                   </el-col>
