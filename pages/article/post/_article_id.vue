@@ -81,7 +81,11 @@
       hasPermissions() {
         let account = this.$store.state.userInfo?.nickname;
         if (account) {
-          if (account === this.article.articleAuthor.userNickname) {
+          if (this.$route.params.article_id) {
+            if (account === this.article.articleAuthor.userNickname) {
+              return true;
+            }
+          } else {
             return true;
           }
         }
