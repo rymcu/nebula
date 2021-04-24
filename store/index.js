@@ -30,7 +30,8 @@ export const mutations = {
     state.userInfo.nickname = data.nickname;
     let user = {
       nickname: data.nickname,
-      avatarURL: data.avatarUrl
+      avatarURL: data.avatarUrl,
+      account: this.state.userInfo.account
     }
     localStorage.setItem('user', JSON.stringify(user))
   }
