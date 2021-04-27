@@ -25,7 +25,7 @@
       </el-col>
     </el-col>
     <el-col>
-      <el-divider><i class="el-icon-loading"></i></el-divider>
+      <el-divider></el-divider>
       <el-col>
           <article-list :articles="articles" @currentChange="currentChangeArticle"></article-list>
       </el-col>

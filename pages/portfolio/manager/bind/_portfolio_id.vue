@@ -7,12 +7,12 @@
       </el-breadcrumb>
     </el-col>
     <el-col>
-      <el-divider><i class="el-icon-loading"></i></el-divider>
+      <el-divider></el-divider>
     </el-col>
     <el-col>
       <el-input v-model="searchText" @input="searchUnbindArticle" placeholder="输入帖子标题,回车检索"></el-input>
     </el-col>
-    <el-col>
+    <el-col style="padding-top: 10px;">
       <portfolio-manager-bind-list :idPortfolio="idPortfolio" :articles="articles"
                                    @currentChange="currentChangeArticle"></portfolio-manager-bind-list>
     </el-col>

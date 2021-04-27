@@ -38,11 +38,13 @@
         这里什么都没有!
       </el-col>
       <el-col>
-        <div class="vertical-container text-center">
+        <div class="vertical-container text-center" style="padding-top: 10px;">
           <el-pagination :hide-on-single-page="true" v-model="portfolios.pagination"
                          layout="prev, pager, next"
                          :current-page="portfolios.pagination.currentPage"
                          :total="portfolios.pagination.total"
+                         prev-text="上一页"
+                         next-text="下一页"
                          @current-change="currentChange">
           </el-pagination>
         </div>
