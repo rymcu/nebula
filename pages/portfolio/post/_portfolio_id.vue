@@ -1,84 +1,95 @@
 <template>
   <el-row class="wrapper">
-    <el-col v-if="isEdit" style="margin-bottom: 1rem;">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/portfolio/manager/' + idPortfolio }">{{ portfolio.portfolioTitle }}
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>更新作品集</el-breadcrumb-item>
-      </el-breadcrumb>
-    </el-col>
-    <el-col>
-      <h1>创建作品集</h1>
-    </el-col>
-    <el-col style="margin-bottom: 1rem;">
-      作品集需要有明确的写作方向，如果您在某个领域有深度的研究，欢迎创建自己的作品集分享自己的观点
-    </el-col>
-    <el-col>
-      <el-form :model="portfolio" :rules="rules" ref="topic" label-width="100px">
-        <el-form-item label="作品集名称" prop="portfolioTitle">
-          <el-input v-model="portfolio.portfolioTitle"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-row>
-            <el-col :span="24">
-              <vue-cropper
-                ref="cropper"
-                :aspect-ratio="1 / 1"
-                :src="headImgUrl"
-                :checkCrossOrigin="false"
-                :checkOrientation="false"
-                :imgStyle="{width: '480px', height: '480px'}"
-                :autoCropArea="1"
-                :autoCrop="autoCrop"
-                preview=".preview"
-              />
-            </el-col>
-            <el-col :span="24" style="margin-top: 2rem;">
-              <el-col :span="8">
-                <el-card :body-style="{ padding: '0px' }">
-                  <el-col>
-                    <div class="preview preview-large"/>
-                  </el-col>
-                  <el-col style="padding: 0 10px;">
-                    <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
-                  </el-col>
-                  <el-col class="text-muted article-summary-md" style="padding: 0 10px;">
-                    {{ portfolio.portfolioDescription }}
-                  </el-col>
-                </el-card>
+    <el-col v-if="isAuthor">
+      <el-col v-if="isEdit" style="margin-bottom: 1rem;">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/portfolio/manager/' + idPortfolio }">{{ portfolio.portfolioTitle }}
+          </el-breadcrumb-item>
+          <el-breadcrumb-item>更新作品集</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+      <el-col>
+        <h1>创建作品集</h1>
+      </el-col>
+      <el-col style="margin-bottom: 1rem;">
+        作品集需要有明确的写作方向，如果您在某个领域有深度的研究，欢迎创建自己的作品集分享自己的观点
+      </el-col>
+      <el-col>
+        <el-form :model="portfolio" :rules="rules" ref="topic" label-width="100px">
+          <el-form-item label="作品集名称" prop="portfolioTitle">
+            <el-input v-model="portfolio.portfolioTitle"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-row>
+              <el-col :span="24">
+                <vue-cropper
+                  ref="cropper"
+                  :aspect-ratio="1 / 1"
+                  :src="headImgUrl"
+                  :checkCrossOrigin="false"
+                  :checkOrientation="false"
+                  :imgStyle="{width: '480px', height: '480px'}"
+                  :autoCropArea="1"
+                  :autoCrop="autoCrop"
+                  preview=".preview"
+                />
               </el-col>
-            </el-col>
-            <el-col :span="24" style="margin-top: 2rem;">
-              <el-upload
-                class="avatar-uploader"
-                action=""
-                :multiple="true"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <div>
-                  <el-button type="primary" round plain>上传</el-button>
-                </div>
-              </el-upload>
-              <el-button style="margin-top: 1rem;" type="primary" round plain @click.prevent="reset">重置</el-button>
-              <el-button type="primary" round plain @click.prevent="cropImage">裁剪</el-button>
-              <el-col>
-                <span style="color: red;padding-right: 5px;">*</span>
-                <span>上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
+              <el-col :span="24" style="margin-top: 2rem;">
+                <el-col :span="8">
+                  <el-card :body-style="{ padding: '0px' }">
+                    <el-col>
+                      <div class="preview preview-large"/>
+                    </el-col>
+                    <el-col style="padding: 0 10px;">
+                      <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
+                    </el-col>
+                    <el-col class="text-muted article-summary-md" style="padding: 0 10px;">
+                      {{ portfolio.portfolioDescription }}
+                    </el-col>
+                  </el-card>
+                </el-col>
               </el-col>
-            </el-col>
-          </el-row>
-        </el-form-item>
+              <el-col :span="24" style="margin-top: 2rem;">
+                <el-upload
+                  class="avatar-uploader"
+                  action=""
+                  :multiple="true"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload">
+                  <div>
+                    <el-button type="primary" round plain>上传</el-button>
+                  </div>
+                </el-upload>
+                <el-button style="margin-top: 1rem;" type="primary" round plain @click.prevent="reset">重置</el-button>
+                <el-button type="primary" round plain @click.prevent="cropImage">裁剪</el-button>
+                <el-col>
+                  <span style="color: red;padding-right: 5px;">*</span>
+                  <span>上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
+                </el-col>
+              </el-col>
+            </el-row>
+          </el-form-item>
 
-        <el-form-item label="作品集介绍" prop="portfolioDescription">
-          <div id="contentEditor"></div>
-        </el-form-item>
-        <el-form-item class="text-right">
-          <el-button v-if="isEdit" @click="deletePortfolio" :loading="loading">删除</el-button>
-          <el-button v-if="isEdit" @click="updatePortfolio" :loading="loading">更新</el-button>
-          <el-button v-else @click="updatePortfolio" :loading="loading">提交</el-button>
-        </el-form-item>
-      </el-form>
+          <el-form-item label="作品集介绍" prop="portfolioDescription">
+            <div id="contentEditor"></div>
+          </el-form-item>
+          <el-form-item class="text-right">
+            <el-button v-if="isEdit" @click="deletePortfolio" :loading="loading">删除</el-button>
+            <el-button v-if="isEdit" @click="updatePortfolio" :loading="loading">更新</el-button>
+            <el-button v-else @click="updatePortfolio" :loading="loading">提交</el-button>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-col>
+    <el-col v-else class="text-center">
+      <el-alert
+        title="用户无权限"
+        type="warning"
+        center
+        show-icon
+        :closable="false">
+      </el-alert>
     </el-col>
   </el-row>
 </template>
@@ -112,6 +123,19 @@ export default {
       portfolioDetail: state => state.portfolio.detail.data,
       uploadHeaders: state => {
         return {'X-Upload-Token': state.uploadHeaders}
+      },
+      isAuthor() {
+        let account = this.$store.state.userInfo?.nickname;
+        if (account) {
+          if (this.$route.params.portfolio_id) {
+            if (account === this.portfolioDetail.portfolioAuthorName) {
+              return true;
+            }
+          } else {
+            return true;
+          }
+        }
+        return false;
       }
     }),
     idPortfolio() {
@@ -366,6 +390,9 @@ export default {
     window.onbeforeunload = null;
   },
   mounted() {
+    if (!this.isAuthor) {
+      return
+    }
     window.addEventListener('beforeunload', e => {
       e = e || window.event;
 

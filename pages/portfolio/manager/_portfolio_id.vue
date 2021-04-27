@@ -35,12 +35,21 @@
           </el-col>
         </el-col>
         <el-col>
-          <el-divider><i class="el-icon-loading"></i></el-divider>
+          <el-divider></el-divider>
         </el-col>
         <el-col>
           <portfolio-manager-list :idPortfolio="portfolio.idPortfolio"></portfolio-manager-list>
         </el-col>
       </el-col>
+    </el-col>
+    <el-col v-else class="text-center">
+      <el-alert
+        title="用户无权限"
+        type="warning"
+        center
+        show-icon
+        :closable="false">
+      </el-alert>
     </el-col>
   </el-row>
 </template>
