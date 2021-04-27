@@ -9,7 +9,8 @@
             <el-col style="font-size: 12px;color: #7f828b;">{{ notification.createdTime }}</el-col>
           </el-col>
           <el-col :xs="8" :sm="4" :xl="4" class="text-right" style="padding-right: 1rem;">
-            <el-link rel="nofollow" v-if="notification.hasRead === '0'" :underline="false" @click="read(notification.idNotification)">
+            <el-link rel="nofollow" v-if="notification.hasRead === '0'" :underline="false"
+                     @click="read(notification.idNotification)">
               <i class="el-icon-check"></i> 标记已读
             </el-link>
           </el-col>
@@ -21,7 +22,8 @@
             <el-col style="font-size: 12px;color: #7f828b;">{{ notification.createdTime }}</el-col>
           </el-col>
           <el-col :xs="8" :sm="4" :xl="4" class="text-right" style="padding-right: 1rem;">
-            <el-link rel="nofollow" v-if="notification.hasRead === '0'" :underline="false" @click="read(notification.idNotification)">
+            <el-link rel="nofollow" v-if="notification.hasRead === '0'" :underline="false"
+                     @click="read(notification.idNotification)">
               <i class="el-icon-check"></i> 标记已读
             </el-link>
           </el-col>
@@ -71,32 +73,32 @@
 </template>
 
 <script>
-  export default {
-    name: "NotificationList",
-    props: {
-      notifications: {
-        type: Object
-      }
+export default {
+  name: "NotificationList",
+  props: {
+    notifications: {
+      type: Object
+    }
+  },
+  methods: {
+    currentChange(page) {
+      this.$emit('currentChange', page);
     },
-    methods: {
-      currentChange(page) {
-        this.$emit('currentChange', page);
-      },
-      read(id) {
-        let _ts = this;
-        this.$axios.$put('/api/notification/read/' + id).then(function () {
-          _ts.$store.commit('notification/updateState', true)
-          _ts.currentChange(1);
-        }).catch(error => console.log(error));
-      },
-      onRouter(notification) {
-        if (notification.hasRead === '0') {
-          this.read(notification.idNotification);
-        }
-        window.location.href = notification.dataUrl;
+    read(id) {
+      let _ts = this;
+      this.$axios.$put('/api/notification/read/' + id).then(function () {
+        _ts.$store.commit('notification/updateState', true)
+        _ts.$store.dispatch('notification/fetchList', {page: 1})
+      }).catch(error => console.log(error));
+    },
+    onRouter(notification) {
+      if (notification.hasRead === '0') {
+        this.read(notification.idNotification);
       }
+      window.location.href = notification.dataUrl;
     }
   }
+}
 </script>
 
 <style scoped>
