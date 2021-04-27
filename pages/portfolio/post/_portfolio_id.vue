@@ -62,6 +62,10 @@
               </el-upload>
               <el-button style="margin-top: 1rem;" type="primary" round plain @click.prevent="reset">重置</el-button>
               <el-button type="primary" round plain @click.prevent="cropImage">裁剪</el-button>
+              <el-col>
+                <span style="color: red;padding-right: 5px;">*</span>
+                <span>上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
+              </el-col>
             </el-col>
           </el-row>
         </el-form-item>
