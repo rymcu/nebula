@@ -107,7 +107,7 @@
 <script>
 import {mapState} from 'vuex';
 import {isBrowser} from '~/environment';
-import sockClient from '~/plugins/sockjs';
+// import sockClient from '~/plugins/sockjs';
 
 const Cookie = process.client ? require('js-cookie') : undefined
 export default {
@@ -283,7 +283,7 @@ export default {
     let user = this.user;
     if (user) {
       this.getUnreadNotifications();
-      sockClient.initSocket(this.$store.state.userInfo);
+      // sockClient.initSocket(this.$store.state.userInfo);
     }
   }
 
