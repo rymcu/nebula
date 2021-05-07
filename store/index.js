@@ -77,6 +77,7 @@ export const actions = {
       // 内容数据
       store.dispatch('topic/fetchNavList'),
       store.dispatch('article/fetchList'),
+      store.dispatch('article/fetchAnnouncementList'),
       store.dispatch('search/fetchList'),
     ]
 
