@@ -8,9 +8,9 @@
         <el-col :span="21">
           <div>
             <el-link rel="nofollow" @click="onRouter(user.account)" :underline="false" class="text-default">
-              {{ user.nickname }}
+              <span v-html="user.nickname"></span>
             </el-link>
-            <small class="d-block text-muted">{{ user.signature }}</small>
+            <small class="d-block text-muted" v-html="user.signature"></small>
           </div>
         </el-col>
       </el-col>

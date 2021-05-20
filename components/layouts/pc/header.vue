@@ -19,29 +19,7 @@
         </el-row>
       </el-col>
       <el-col :xs="10" :sm="6" :md="6" :xl="6" style="padding-top: 1rem;text-align: right;">
-        <el-autocomplete
-          v-model="queryString"
-          size="small"
-          value-key="label"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="搜索帖子、作品集和用户"
-          :trigger-on-focus="false"
-          @select="handleSelect"
-          style="width: 80%;"
-          popper-class="search-result-box"
-        >
-          <template slot-scope="{ item }">
-            <el-col>
-              <span class="search-result-type">
-                <small class="text-muted" v-html="getSearchResultType(item.type)"></small>
-              </span>
-              <span>{{ item.label }}</span>
-            </el-col>
-          </template>
-          <!--          <template slot="append">-->
-          <!--            <el-button size="small" icon="el-icon-search" @click="search"></el-button>-->
-          <!--          </template>-->
-        </el-autocomplete>
+        <el-input size="small" v-model="queryString" @keyup.enter.native="querySearchAsync"/>
       </el-col>
       <el-col :xs="6" :sm="6" :md="6" :xl="3" style="padding-top: 1rem;">
         <client-only>
@@ -115,8 +93,7 @@ export default {
   computed: {
     ...mapState({
       activeMenu: state => state.activeMenu,
-      user: state => state.oauth,
-      initialSearchData: state => state.search.list
+      user: state => state.oauth
     }),
     avatarURL() {
       let _ts = this;
@@ -173,21 +150,10 @@ export default {
     }
   },
   methods: {
-    querySearchAsync(queryString, cb) {
-      let initialSearchData = this.initialSearchData;
-      let results = queryString ? initialSearchData.filter(this.createStateFilter(queryString)) : initialSearchData;
-
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        cb(results);
-      }, 3000 * Math.random());
-    },
-    createStateFilter(queryString) {
-      return (state) => {
-        if (state && state.label) {
-          return (state.label.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
-        }
-      };
+    querySearchAsync() {
+      this.$router.push({
+        path: `/search?q=${this.queryString}`
+      })
     },
     handleSelectMenu(item) {
       let _ts = this;
@@ -215,15 +181,6 @@ export default {
               }
             )
         }
-      }
-    },
-    handleSelect(item) {
-      console.log(item);
-      let _ts = this;
-      if (item) {
-        _ts.$router.push({
-          path: `/${item.type}/${item.value}`
-        })
       }
     },
     handleCommand(item) {
@@ -260,23 +217,6 @@ export default {
           }
         })
       }
-    },
-    search() {
-      console.log(this.queryString)
-    },
-    getSearchResultType(type) {
-      switch (type) {
-        case 'article':
-          type = '文章';
-          break;
-        case 'portfolio':
-          type = '作品集';
-          break;
-        case 'user':
-          type = '用户';
-          break;
-      }
-      return type;
     }
   },
   mounted() {

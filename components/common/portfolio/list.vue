@@ -10,11 +10,11 @@
             <div style="padding: 0 10px;">
               <h4 class="article-header-md">
                 <el-link rel="nofollow" @click="onRouter('portfolio',portfolio.idPortfolio)" :underline="false">
-                  {{ portfolio.portfolioTitle }}
+                  <span v-html="portfolio.portfolioTitle"></span>
                 </el-link>
               </h4>
             </div>
-            <div class="text-muted article-summary-md">{{ portfolio.portfolioDescription }}</div>
+            <div class="text-muted article-summary-md" v-html="portfolio.portfolioDescription"></div>
           </el-card>
         </el-col>
         <el-col v-else style="margin-bottom: 20px;">

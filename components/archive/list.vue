@@ -10,7 +10,7 @@
                 <span v-if="isPerfect(article.articlePerfect)" style="color: gold;" title="优选">
                   <font-awesome-icon :icon="['fas', 'medal']"></font-awesome-icon>
                 </span>
-                {{ article.articleTitle }}
+                <span v-html="article.articleTitle"></span>
               </h4>
             </el-link>
             <el-tag
@@ -21,7 +21,7 @@
               effect="plain">
               # {{ tag.tagTitle }}
             </el-tag>
-            <div class="text-muted article-summary-md">{{ article.articlePreviewContent }}</div>
+            <div class="text-muted article-summary-md" v-html="article.articlePreviewContent"></div>
             <el-row class="pt-5">
               <el-col :xs="3" :sm="1" :xl="1" class="mr-3">
                 <el-avatar v-if="article.articleAuthorAvatarUrl" size="medium"
