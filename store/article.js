@@ -16,6 +16,10 @@ export const state = () => {
       fetching: false,
       data: getDefaultListData()
     },
+    announcements: {
+      fetching: false,
+      data: getDefaultListData()
+    },
     detail: {
       fetching: false,
       data: {}
@@ -31,6 +35,12 @@ export const mutations = {
   },
   updateListData(state, action) {
     state.list.data = action
+  },
+  updateAnnouncementListFetching(state, action) {
+    state.announcements.fetching = action
+  },
+  updateAnnouncementListData(state, action) {
+    state.announcements.data = action
   },
   updateExistingListData(state, action) {
     state.list.data.data.push(...action.data)
@@ -66,6 +76,27 @@ export const mutations = {
 }
 
 export const actions = {
+  // 获取公告列表
+  fetchAnnouncementList({commit, state}, params = {}) {
+    commit('updateAnnouncementListFetching', true)
+    // 清空已有数据
+    commit('updateListData', getDefaultListData())
+    let data = {
+      page: params.page || 1
+    }
+    return this.$axios
+      .$get(`${BASE_API_PATH}/announcements`, {
+        params: data
+      })
+      .then(response => {
+        commit('updateAnnouncementListFetching', false);
+        commit('updateAnnouncementListData', response);
+      })
+      .catch(error => {
+        console.log(error);
+        commit('updateAnnouncementListFetching', false);
+      });
+  },
   // 获取文章列表
   fetchList({commit, state}, params = {}) {
     commit('updateListFetching', true)
