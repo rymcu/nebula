@@ -18,34 +18,21 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col :xs="10" :sm="6" :md="6" :xl="6" style="padding-top: 1rem;text-align: right;">
-        <el-autocomplete
-          v-model="queryString"
-          size="small"
-          value-key="label"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="搜索帖子、作品集和用户"
-          :trigger-on-focus="false"
-          @select="handleSelect"
-          style="width: 80%;"
-          popper-class="search-result-box"
-        >
-          <template slot-scope="{ item }">
-            <el-col>
-              <span class="search-result-type">
-                <small class="text-muted" v-html="getSearchResultType(item.type)"></small>
-              </span>
-              <span>{{ item.label }}</span>
-            </el-col>
-          </template>
-          <!--          <template slot="append">-->
-          <!--            <el-button size="small" icon="el-icon-search" @click="search"></el-button>-->
-          <!--          </template>-->
-        </el-autocomplete>
-      </el-col>
-      <el-col :xs="6" :sm="6" :md="6" :xl="3" style="padding-top: 1rem;">
+      <el-col :xs="16" :sm="12" :md="12" :xl="9" style="padding-top: 1rem;">
         <client-only>
           <el-col v-if="user" style="text-align: right;">
+            <el-popover
+              placement="bottom"
+              width="400"
+              trigger="click"
+              v-model="showPopover"
+              @show="handleShowPopover">
+              <el-input id="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户"
+                        :autofocus="autofocus">
+                <el-button slot="append" icon="el-icon-search" @click="querySearchAsync"></el-button>
+              </el-input>
+              <el-button slot="reference" icon="el-icon-search" circle size="small"></el-button>
+            </el-popover>
             <el-link rel="nofollow" :underline="false" style="padding-left: 10px;padding-right: 10px;"
                      href="/portfolio/post">创建作品集
             </el-link>
@@ -91,6 +78,17 @@
             </el-link>
           </el-col>
           <el-col v-else style="text-align: right;">
+            <el-popover
+              placement="bottom"
+              width="400"
+              trigger="click"
+              v-model="showPopover">
+              <el-input v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户"
+                        autofocus>
+                <el-button slot="append" icon="el-icon-search" @click="querySearchAsync"></el-button>
+              </el-input>
+              <el-button slot="reference" icon="el-icon-search" circle size="small"></el-button>
+            </el-popover>
             <nuxt-link to="/login">
               <el-link rel="nofollow" :underline="false" style="margin-left: 10px;">登录</el-link>
             </nuxt-link>
@@ -115,8 +113,7 @@ export default {
   computed: {
     ...mapState({
       activeMenu: state => state.activeMenu,
-      user: state => state.oauth,
-      initialSearchData: state => state.search.list
+      user: state => state.oauth
     }),
     avatarURL() {
       let _ts = this;
@@ -164,7 +161,9 @@ export default {
       timeout: null,
       show: false,
       notifications: [],
-      notificationNumbers: ""
+      notificationNumbers: "",
+      showPopover: false,
+      autofocus: false
     };
   },
   watch: {
@@ -173,21 +172,17 @@ export default {
     }
   },
   methods: {
-    querySearchAsync(queryString, cb) {
-      let initialSearchData = this.initialSearchData;
-      let results = queryString ? initialSearchData.filter(this.createStateFilter(queryString)) : initialSearchData;
-
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        cb(results);
-      }, 3000 * Math.random());
+    querySearchAsync() {
+      this.$router.push({
+        path: `/search?q=${this.queryString}`
+      })
+      this.$set(this, 'showPopover', false);
+      this.$set(this, 'queryString', '');
     },
-    createStateFilter(queryString) {
-      return (state) => {
-        if (state && state.label) {
-          return (state.label.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
-        }
-      };
+    handleShowPopover() {
+      setTimeout(function () {
+        document.getElementById("searchInput").focus()
+      }, 500);
     },
     handleSelectMenu(item) {
       let _ts = this;
@@ -215,15 +210,6 @@ export default {
               }
             )
         }
-      }
-    },
-    handleSelect(item) {
-      console.log(item);
-      let _ts = this;
-      if (item) {
-        _ts.$router.push({
-          path: `/${item.type}/${item.value}`
-        })
       }
     },
     handleCommand(item) {
@@ -260,23 +246,6 @@ export default {
           }
         })
       }
-    },
-    search() {
-      console.log(this.queryString)
-    },
-    getSearchResultType(type) {
-      switch (type) {
-        case 'article':
-          type = '文章';
-          break;
-        case 'portfolio':
-          type = '作品集';
-          break;
-        case 'user':
-          type = '用户';
-          break;
-      }
-      return type;
     }
   },
   mounted() {
