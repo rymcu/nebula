@@ -1,7 +1,9 @@
 <template>
   <el-row class="wrapper">
     <el-col>
-      <el-input v-model="q" @keyup.enter.native="search"/>
+      <el-input v-model="q" @keyup.enter.native="search" placeholder="搜索文章,作品集,用户" :clearable="true">
+        <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+      </el-input>
     </el-col>
     <el-col>
       <el-tabs v-model="activeName">
@@ -66,9 +68,12 @@ export default {
   },
   methods: {
     search() {
-      this.$store.dispatch("search/fetchArticleList", {queryString: this.q});
-      this.$store.dispatch("search/fetchUserList", {queryString: this.q});
-      this.$store.dispatch("search/fetchPortfolioList", {queryString: this.q});
+      let _ts = this
+      if (_ts.q) {
+        _ts.$router.push({
+          path: `/search?q=${_ts.q}`
+        })
+      }
     },
     currentChangeArticle(page) {
       this.$store.dispatch("search/fetchArticleList", {queryString: this.q, page: page});
@@ -90,6 +95,7 @@ export default {
     let _ts = this;
     let queryString = _ts.$route.query.q;
     _ts.$set(_ts, "q", queryString);
+    _ts.$store.commit('setActiveMenu', 'search')
   }
 }
 </script>

@@ -18,12 +18,21 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col :xs="10" :sm="6" :md="6" :xl="6" style="padding-top: 1rem;text-align: right;">
-        <el-input size="small" v-model="queryString" @keyup.enter.native="querySearchAsync"/>
-      </el-col>
-      <el-col :xs="6" :sm="6" :md="6" :xl="3" style="padding-top: 1rem;">
+      <el-col :xs="16" :sm="12" :md="12" :xl="9" style="padding-top: 1rem;">
         <client-only>
           <el-col v-if="user" style="text-align: right;">
+            <el-popover
+              placement="bottom"
+              width="400"
+              trigger="click"
+              v-model="showPopover"
+              @show="handleShowPopover">
+              <el-input id="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户"
+                        :autofocus="autofocus">
+                <el-button slot="append" icon="el-icon-search" @click="querySearchAsync"></el-button>
+              </el-input>
+              <el-button slot="reference" icon="el-icon-search" circle size="small"></el-button>
+            </el-popover>
             <el-link rel="nofollow" :underline="false" style="padding-left: 10px;padding-right: 10px;"
                      href="/portfolio/post">创建作品集
             </el-link>
@@ -69,6 +78,17 @@
             </el-link>
           </el-col>
           <el-col v-else style="text-align: right;">
+            <el-popover
+              placement="bottom"
+              width="400"
+              trigger="click"
+              v-model="showPopover">
+              <el-input v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户"
+                        autofocus>
+                <el-button slot="append" icon="el-icon-search" @click="querySearchAsync"></el-button>
+              </el-input>
+              <el-button slot="reference" icon="el-icon-search" circle size="small"></el-button>
+            </el-popover>
             <nuxt-link to="/login">
               <el-link rel="nofollow" :underline="false" style="margin-left: 10px;">登录</el-link>
             </nuxt-link>
@@ -141,7 +161,9 @@ export default {
       timeout: null,
       show: false,
       notifications: [],
-      notificationNumbers: ""
+      notificationNumbers: "",
+      showPopover: false,
+      autofocus: false
     };
   },
   watch: {
@@ -154,6 +176,13 @@ export default {
       this.$router.push({
         path: `/search?q=${this.queryString}`
       })
+      this.$set(this, 'showPopover', false);
+      this.$set(this, 'queryString', '');
+    },
+    handleShowPopover() {
+      setTimeout(function () {
+        document.getElementById("searchInput").focus()
+      }, 500);
     },
     handleSelectMenu(item) {
       let _ts = this;
@@ -223,7 +252,7 @@ export default {
     let user = this.user;
     if (user) {
       this.getUnreadNotifications();
-      sockClient.initSocket(this.$store.state.userInfo);
+      // sockClient.initSocket(this.$store.state.userInfo);
     }
   }
 
