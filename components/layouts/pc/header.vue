@@ -14,6 +14,16 @@
               <el-menu-item index="index">首页</el-menu-item>
               <el-menu-item index="topic">专题</el-menu-item>
               <el-menu-item index="portfolios">作品集</el-menu-item>
+              <el-submenu index="store">
+                <template slot="title">RYMCU Store</template>
+                <el-menu-item index="taobao">淘宝店铺</el-menu-item>
+                <el-submenu index="weixin">
+                  <template slot="title">微信</template>
+                  <el-menu-item style="height: 200px;">
+                    <img src="@/assets/weixinStore.jpg" style="width: 200px;"/>
+                  </el-menu-item>
+                </el-submenu>
+              </el-submenu>
             </el-menu>
           </el-col>
         </el-row>
@@ -27,8 +37,7 @@
               trigger="click"
               v-model="showPopover"
               @show="handleShowPopover">
-              <el-input id="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户"
-                        :autofocus="autofocus">
+              <el-input name="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户">
                 <el-button slot="append" icon="el-icon-search" @click="querySearchAsync"></el-button>
               </el-input>
               <el-button slot="reference" icon="el-icon-search" circle size="small"></el-button>
@@ -82,9 +91,9 @@
               placement="bottom"
               width="400"
               trigger="click"
-              v-model="showPopover">
-              <el-input v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户"
-                        autofocus>
+              v-model="showPopover"
+              @show="handleShowPopover">
+              <el-input name="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户">
                 <el-button slot="append" icon="el-icon-search" @click="querySearchAsync"></el-button>
               </el-input>
               <el-button slot="reference" icon="el-icon-search" circle size="small"></el-button>
@@ -181,7 +190,7 @@ export default {
     },
     handleShowPopover() {
       setTimeout(function () {
-        document.getElementById("searchInput").focus()
+        document.getElementsByName("searchInput")[0].focus()
       }, 500);
     },
     handleSelectMenu(item) {
@@ -201,7 +210,9 @@ export default {
             break;
           case 'github':
             window.open("https://github.com/rymcu");
-            return false;
+            break;
+          case 'taobao':
+            window.open("https://rymcu.taobao.com?utm_source=rymcu.com");
             break;
           default:
             _ts.$router.push(
