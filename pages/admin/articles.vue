@@ -24,14 +24,14 @@
         style="width: 100%">
         <el-table-column
           label="#"
-          width="40"
+          width="60"
           prop="idArticle">
         </el-table-column>
         <el-table-column
           label="标题"
           prop="articleTitle">
           <template slot-scope="scope">
-            <el-button type="text" @click="showArticleDetail(scope.row.articlePermalink)">{{ scope.row.articleTitle }}</el-button>
+            <el-button type="text" @click="openLink(scope.row.articlePermalink)">{{ scope.row.articleTitle }}</el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -50,8 +50,10 @@
         </el-table-column>
         <el-table-column
           label="作者"
-          width="100"
-          prop="articleAuthorName">
+          width="100">
+          <template slot-scope="scope">
+            <el-button type="text" @click="openLink('/user/' + scope.row.articleAuthor.userAccount)">{{ scope.row.articleAuthorName }}</el-button>
+          </template>
         </el-table-column>
         <el-table-column
           label="最后更新时间"
@@ -198,8 +200,8 @@ export default {
     closeTagsDialog() {
       this.$set(this, 'dialogVisible', false);
     },
-    showArticleDetail(articlePermalink) {
-      window.open(articlePermalink);
+    openLink(link) {
+      window.open(link);
     }
   },
   mounted() {
