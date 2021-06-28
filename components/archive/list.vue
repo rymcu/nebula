@@ -4,7 +4,7 @@
       <el-col v-for="article in articles.articles" :key="article.idArticle" style="padding-bottom: 1rem;">
         <el-card>
           <div class="card-body d-flex flex-column">
-            <el-link rel="nofollow" @click="onRouter('article',article.articleLink)" :underline="false"
+            <el-link rel="nofollow" :href="article.articleLink"
                      style="margin-bottom: .5rem;">
               <h4>
                 <span v-if="isPerfect(article.articlePerfect)" style="color: gold;" title="优选">
@@ -31,8 +31,7 @@
               </el-col>
               <el-col :xs="16" :sm="16" :xl="16">
                 <div>
-                  <el-link rel="nofollow" @click="onRouter('user', article.articleAuthor.userAccount)" :underline="false"
-                           class="text-default">
+                  <el-link rel="nofollow" :href="'/user/' + article.articleAuthor.userAccount" class="text-default">
                     {{ article.articleAuthorName }}
                   </el-link>
                   <small class="d-block text-muted">{{ article.timeAgo }}</small>
@@ -75,19 +74,6 @@ export default {
   methods: {
     currentChange(page) {
       this.$emit('currentChange', page);
-    },
-    onRouter(name, data) {
-      if ("article" === name) {
-        this.$router.push({
-          path: data
-        })
-      } else {
-        this.$router.push(
-          {
-            path: '/user/' + data
-          }
-        )
-      }
     },
     isPerfect(articlePerfect) {
       return articlePerfect === '1';
