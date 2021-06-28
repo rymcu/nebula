@@ -388,7 +388,6 @@ export default {
           Vue.VditorPreview.previewImage(event.target);
         }
       });
-      window.scrollTo(0, 0);
       _ts.$set(_ts, 'isPerfect', _ts.article.articlePerfect === '1')
     })
 
