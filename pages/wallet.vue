@@ -4,6 +4,9 @@
       <h1>账户信息</h1>
     </el-col>
     <el-col class="bank-account-item">
+      <span style="font-size: 24px;"> 账号:</span> <span style="color: red;">{{ bankAccount.bankAccount }}</span>
+    </el-col>
+    <el-col class="bank-account-item">
       <span style="font-size: 24px;"> 余额:</span> <span style="color: red;">{{ bankAccount.accountBalance }}</span> <span style="font-size: 24px;">巴旦木</span>
     </el-col>
     <el-col>
@@ -14,9 +17,47 @@
         :data="transactionRecords"
         style="width: 100%">
         <el-table-column
-          label="#"
-          width="40"
-          prop="idTransactionRecord">
+          label="流水号"
+          prop="transactionNo"
+          width="200">
+        </el-table-column>
+        <el-table-column
+          label="支付账号">
+          <template slot-scope="scope">
+            <el-popover
+              placement="right"
+              trigger="hover">
+                <el-col style="padding: 5px;">
+                  开户银行: {{scope.row.formBankAccountInfo.bankName}}
+                </el-col>
+                <el-col style="padding: 5px;">
+                  银行账号: {{scope.row.formBankAccountInfo.bankAccount}}
+                </el-col>
+                <el-col style="padding: 5px;">
+                  所属用户: {{scope.row.formBankAccountInfo.accountOwnerName}}
+                </el-col>
+              <el-button slot="reference" type="text">{{ scope.row.formBankAccount }}</el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="收款账号">
+          <template slot-scope="scope">
+            <el-popover
+              placement="right"
+              trigger="hover">
+              <el-col style="padding: 5px;">
+                开户银行: {{scope.row.toBankAccountInfo.bankName}}
+              </el-col>
+              <el-col style="padding: 5px;">
+                银行账号: {{scope.row.toBankAccountInfo.bankAccount}}
+              </el-col>
+              <el-col style="padding: 5px;">
+                所属用户: {{scope.row.toBankAccountInfo.accountOwnerName}}
+              </el-col>
+              <el-button slot="reference" type="text">{{ scope.row.toBankAccount }}</el-button>
+            </el-popover>
+          </template>
         </el-table-column>
         <el-table-column
           label="款项"
