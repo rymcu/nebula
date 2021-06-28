@@ -97,7 +97,6 @@
 <script>
 import Vue from 'vue';
 import {mapState} from 'vuex';
-import saveSvg from 'save-svg-as-png';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 

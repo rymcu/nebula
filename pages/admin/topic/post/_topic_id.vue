@@ -21,18 +21,64 @@
           <el-input v-model="topic.topicUri"></el-input>
         </el-form-item>
         <el-form-item label="图标">
-          <el-upload
-            class="avatar-uploader"
-            :action="tokenURL.URL"
-            :multiple="true"
-            :with-credentials="true"
-            :headers="uploadHeaders"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="topicIconPath" class="topic-brand-img" :src="topicIconPath">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+          <el-row>
+            <el-col :span="24">
+              <vue-cropper
+                ref="cropper"
+                :aspect-ratio="1 / 1"
+                :src="topicIconPath"
+                :checkCrossOrigin="false"
+                :checkOrientation="false"
+                :imgStyle="{width: '480px', height: '480px'}"
+                :autoCropArea="1"
+                :autoCrop="autoCrop"
+                preview=".preview"
+              />
+            </el-col>
+            <el-col :span="24" style="margin-top: 2rem;">
+              <el-col :span="8">
+                <el-card>
+                  <div class="card-body d-flex flex-column">
+                    <el-col :span="4" style="text-align: right;">
+                      <div v-if="topicIconPath" class="preview preview-large topic-brand-img"/>
+                      <el-image v-else class="topic-brand-img" />
+                    </el-col>
+                    <el-col :span="20">
+                      <el-col>
+                        <el-col>
+                          <el-link rel="nofollow" :underline="false">
+                            <h4>{{ topic.topicTitle }}</h4>
+                          </el-link>
+                        </el-col>
+                        <el-col>
+                          <div class="text-muted article-summary-md">{{ topic.topicDescription }}</div>
+                        </el-col>
+                      </el-col>
+                    </el-col>
+                  </div>
+                </el-card>
+              </el-col>
+            </el-col>
+            <el-col :span="24" style="margin-top: 2rem;">
+              <el-upload
+                class="avatar-uploader"
+                action=""
+                :multiple="true"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <div>
+                  <el-button type="primary" round plain>上传</el-button>
+                </div>
+              </el-upload>
+              <el-button style="margin-top: 1rem;" type="primary" round plain @click.prevent="reset">重置</el-button>
+              <el-button type="primary" round plain @click.prevent="cropImage">裁剪</el-button>
+              <el-col>
+                <span style="color: red;padding-right: 5px;">*</span>
+                <span>上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
+              </el-col>
+            </el-col>
+          </el-row>
         </el-form-item>
         <el-form-item label="导航主题">
           <el-switch
@@ -71,14 +117,21 @@
 
 <script>
 import Vue from 'vue';
+import {mapState} from 'vuex';
+import VueCropper from 'vue-cropperjs';
+import 'cropperjs/dist/cropper.css';
 
 export default {
   name: "adminTopicPost",
+  components: {
+    VueCropper
+  },
   computed: {
-    uploadHeaders() {
-      let token = this.$store.getters.uploadHeaders;
-      return {'X-Upload-Token': token}
-    }
+    ...mapState({
+      uploadHeaders: state => {
+        return {'X-Upload-Token': state.uploadHeaders}
+      }
+    })
   },
   data() {
     return {
@@ -107,6 +160,7 @@ export default {
       },
       topicIconPath: '',
       isEdit: false,
+      autoCrop: true,
       notificationFlag: true
     }
   },
@@ -114,44 +168,44 @@ export default {
     _initEditor(data) {
       let _ts = this;
 
-        let toolbar = [
-          'emoji',
-          'headings',
-          'bold',
-          'italic',
-          'strike',
-          'link',
-          '|',
-          'list',
-          'ordered-list',
-          'check',
-          'outdent',
-          'indent',
-          '|',
-          'quote',
-          'line',
-          'code',
-          'inline-code',
-          'insert-before',
-          'insert-after',
-          '|',
-          'upload',
-          // 'record',
-          'table',
-          '|',
-          'undo',
-          'redo',
-          '|',
-          'edit-mode',
-          {
-            name: 'more',
-            toolbar: [
-              'fullscreen',
-              'both',
-              'preview',
-              'info'
-            ],
-          }]
+      let toolbar = [
+        'emoji',
+        'headings',
+        'bold',
+        'italic',
+        'strike',
+        'link',
+        '|',
+        'list',
+        'ordered-list',
+        'check',
+        'outdent',
+        'indent',
+        '|',
+        'quote',
+        'line',
+        'code',
+        'inline-code',
+        'insert-before',
+        'insert-after',
+        '|',
+        'upload',
+        // 'record',
+        'table',
+        '|',
+        'undo',
+        'redo',
+        '|',
+        'edit-mode',
+        {
+          name: 'more',
+          toolbar: [
+            'fullscreen',
+            'both',
+            'preview',
+            'info'
+          ],
+        }]
       return new Vue.Vditor(data.id, {
         toolbar,
         mode: 'sv',
@@ -191,9 +245,7 @@ export default {
           url: this.tokenURL.URL,
           linkToImgUrl: this.tokenURL.linkToImageURL,
           token: this.tokenURL.token,
-          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
-          replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
-          replace('/\\s/g', '')
+          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
         },
         height: data.height,
         counter: 102400,
@@ -222,11 +274,24 @@ export default {
 
       if (!(isJPG || isPNG)) {
         this.$message.error('上传图标只能是 JPG 或者 PNG 格式!');
+        return false;
       }
       if (!isLt2M) {
         this.$message.error('上传图标大小不能超过 2MB!');
+        return false;
       }
-      return (isJPG || isPNG) && isLt2M;
+
+      this.fileToBase64(file);
+      return false;
+    },
+    fileToBase64(file) {
+      let _ts = this;
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        _ts.$set(_ts, 'topicIconPath', this.result);
+        _ts.$refs.cropper.replace(this.result);
+      }
     },
     async updateTopic() {
       let _ts = this;
@@ -254,6 +319,24 @@ export default {
           })
         }
       })
+    },
+    reset() {
+      this.$refs.cropper.reset();
+    },
+    // get image data for post processing, e.g. upload or setting image src
+    cropImage() {
+      let _ts = this;
+      try {
+        _ts.cropImg = _ts.$refs.cropper.getCroppedCanvas().toDataURL();
+        let topic = _ts.topic;
+        topic.topicIconPath = _ts.cropImg;
+        _ts.$set(_ts, 'topic', topic);
+        _ts.$set(_ts, 'topicIconPath', _ts.cropImg);
+        _ts.$message.success('已裁剪 !');
+      } catch (e) {
+        _ts.$message.error('图片获取失败 !');
+        return;
+      }
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -306,7 +389,7 @@ export default {
       const responseData = await _ts.$axios.$get('/api/admin/topic/detail/' + _ts.$route.params.topic_id);
       _ts.$set(_ts, 'topic', responseData);
       if (responseData.topicIconPath) {
-        _ts.$set(_ts,'topicIconPath',responseData.topicIconPath);
+        _ts.$set(_ts, 'topicIconPath', responseData.topicIconPath);
       }
     } else {
       _ts.$set(_ts, 'isEdit', false);
@@ -329,5 +412,41 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~vditor/src/assets/scss/index.scss";
+@import "~vditor/src/assets/scss/index.scss";
+
+.preview-area {
+  width: 16rem;
+}
+
+.preview-area p {
+  font-size: 1.25rem;
+}
+
+.preview-area p:last-of-type {
+  margin-top: 1rem;
+}
+
+.crop-placeholder {
+  width: 36px;
+  height: 36px;
+  background: #ccc;
+}
+
+.cropped-image img {
+  max-width: 100%;
+}
+
+.img-cropper {
+  width: 480px;
+  min-height: 480px;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC);
+}
+
+.preview-large {
+  width: 100%;
+  height: 144px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  overflow: hidden;
+}
 </style>

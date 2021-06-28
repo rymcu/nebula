@@ -10,6 +10,14 @@
             <i class="el-icon-s-data"></i>
             <span slot="title">Dashboard</span>
           </el-menu-item>
+          <el-menu-item index="admin-articles">
+            <i class="el-icon-s-custom"></i>
+            <span slot="title">文章管理</span>
+          </el-menu-item>
+          <el-menu-item index="admin-comments">
+            <i class="el-icon-s-custom"></i>
+            <span slot="title">评论管理</span>
+          </el-menu-item>
           <el-menu-item index="admin-users">
             <i class="el-icon-s-custom"></i>
             <span slot="title">用户管理</span>
