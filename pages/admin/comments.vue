@@ -20,7 +20,12 @@
     </el-col>
     <el-col>
       <el-col v-for="comment in comments" :key="comment.idComment">
-        <el-card style="margin-top: 1rem;" :id="'comment-' + comment.idComment">
+        <el-card style="margin-top: 1rem;padding-bottom: 10px;" :id="'comment-' + comment.idComment">
+          <el-col style="margin-bottom: 1rem;">
+            <el-link :href="comment.commentSharpUrl">
+              <span style="font-weight: bold;font-size: 16px;">{{ comment.articleTitle }}</span>
+            </el-link>
+          </el-col>
           <el-col :xs="3" :sm="1" :xl="1">
             <el-avatar v-show="comment.commenter.userAvatarURL" :src="comment.commenter.userAvatarURL"></el-avatar>
             <el-avatar v-show="!comment.commenter.userAvatarURL"
