@@ -4,8 +4,7 @@
       <el-col v-for="article in articles.articles" :key="article.idArticle" style="padding-bottom: 1rem;">
         <el-card>
           <div class="card-body d-flex flex-column">
-            <el-link rel="nofollow" :href="article.articleLink"
-                     style="margin-bottom: .5rem;">
+            <el-link :href="article.articleLink" style="margin-bottom: .5rem;">
               <h4>
                 <span v-if="isPerfect(article.articlePerfect)" style="color: gold;" title="优选">
                   <font-awesome-icon :icon="['fas', 'medal']"></font-awesome-icon>
@@ -31,7 +30,7 @@
               </el-col>
               <el-col :xs="16" :sm="16" :xl="16">
                 <div>
-                  <el-link rel="nofollow" :href="'/user/' + article.articleAuthor.userAccount" class="text-default">
+                  <el-link :href="'/user/' + article.articleAuthor.userAccount" class="text-default">
                     {{ article.articleAuthorName }}
                   </el-link>
                   <small class="d-block text-muted">{{ article.timeAgo }}</small>
