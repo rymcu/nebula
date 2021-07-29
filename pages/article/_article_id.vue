@@ -90,7 +90,7 @@
                 </el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="dark" content="赞赏" placement="top-start">
-                <el-button v-if="user.idUser === article.articleAuthorId" type="text" icon="el-icon-coffee"
+                <el-button v-if="user.idUser === article.articleAuthorId" type="text"
                            style="font-size: 1.2rem;">
                   <svg width="24" height="24">
                     <path :d="buymeacoffee.path"></path>
@@ -102,7 +102,10 @@
                   title="赞赏本文作者 20 巴旦木？"
                   @confirm="sponsor"
                 >
-                  <el-button slot="reference" type="text" icon="el-icon-coffee" style="font-size: 1.2rem;">
+                  <el-button slot="reference" type="text" style="font-size: 1.2rem;">
+                    <svg width="24" height="24">
+                      <path :d="buymeacoffee.path"></path>
+                    </svg>
                     {{ article.articleSponsorCount }}
                   </el-button>
                 </el-popconfirm>
@@ -112,7 +115,7 @@
               <el-tooltip class="item" effect="dark" content="酷" placement="top-start">
                 <el-button type="text" style="font-size: 1.2rem;">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                       style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
+                       style="fill: rgba(0, 0, 0, 1);">
                     <path
                       d="M14.683 14.828a4.055 4.055 0 0 1-1.272.858 4.002 4.002 0 0 1-4.875-1.45l-1.658 1.119a6.063 6.063 0 0 0 1.621 1.62 5.963 5.963 0 0 0 2.148.903 6.035 6.035 0 0 0 3.542-.35 6.048 6.048 0 0 0 1.907-1.284c.272-.271.52-.571.734-.889l-1.658-1.119a4.147 4.147 0 0 1-.489.592z"></path>
                     <path
