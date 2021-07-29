@@ -3,25 +3,31 @@
     <el-col>
       <el-col>
         <el-col>
-          <h1>{{ portfolio.portfolioTitle }}</h1>
+          <el-col :span="6">
+            <el-image style="width: 200px;" :src="portfolio.headImgUrl"></el-image>
+          </el-col>
+          <el-col :span="12">
+            <el-col>
+              <h1>{{ portfolio.portfolioTitle }}</h1>
+            </el-col>
+            <el-col style="margin-bottom: .5rem;">
+              <span class="text-default" style="padding-right: 1rem;">作者</span>
+              <el-link target="_blank" :href="'/user/' + portfolio.portfolioAuthor.userAccount" class="text-default">
+                <el-avatar :src="portfolio.portfolioAuthorAvatarUrl" :size="16"></el-avatar>
+                {{ portfolio.portfolioAuthorName }}
+              </el-link>
+            </el-col>
+            <el-col style="margin-bottom: .5rem;">
+              <span class="text-default" style="padding-right: 1rem;">文章</span> {{portfolio.articleNumber}}篇
+            </el-col>
+            <el-col style="margin-bottom: .5rem;" v-html="portfolio.portfolioDescription"></el-col>
+          </el-col>
+          <el-col :span="6">
+            <el-col v-if="isAuthor" style="margin-top: .5rem;text-align: right;">
+              <el-button @click="managerPortfolio(portfolio.idPortfolio)" plain>管理</el-button>
+            </el-col>
+          </el-col>
         </el-col>
-        <el-col style="margin-bottom: .5rem;">
-          <span class="text-default" style="padding-right: 1rem;">作者</span>
-          <el-link rel="nofollow" @click="onRouter('user', portfolio.portfolioAuthor.userAccount)" :underline="false" class="text-default">
-            <el-avatar :src="portfolio.portfolioAuthorAvatarUrl" :size="16"></el-avatar>
-            {{ portfolio.portfolioAuthorName }}
-          </el-link>
-        </el-col>
-        <el-col style="margin-bottom: .5rem;">
-          <span class="text-default" style="padding-right: 1rem;">文章</span> {{portfolio.articleNumber}}篇
-        </el-col>
-        <el-col v-if="isAuthor" style="margin-top: .5rem;text-align: left;">
-          <el-button @click="managerPortfolio(portfolio.idPortfolio)" plain>管理</el-button>
-        </el-col>
-        <el-col style="margin-top: 10px;">
-          <el-image :src="portfolio.headImgUrl"></el-image>
-        </el-col>
-        <el-col style="margin-bottom: .5rem;" v-html="portfolio.portfolioDescription"></el-col>
       </el-col>
     </el-col>
     <el-col>
