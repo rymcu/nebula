@@ -6,7 +6,10 @@
           <div class="article__item">
             <h1 class="list__title">
               <span v-if="isPerfect" style="color: gold;" title="优选">
-                <font-awesome-icon :icon="['fas', 'medal']"></font-awesome-icon>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                     style="fill: #FFB71B;"><path
+                  d="M12 22c3.859 0 7-3.141 7-7s-3.141-7-7-7c-3.86 0-7 3.141-7 7s3.14 7 7 7zm0-12c2.757 0 5 2.243 5 5s-2.243 5-5 5-5-2.243-5-5 2.243-5 5-5zm-1-8H7v5.518a8.957 8.957 0 0 1 4-1.459V2zm6 0h-4v4.059a8.957 8.957 0 0 1 4 1.459V2z"></path><path
+                  d="m10.019 15.811-.468 2.726L12 17.25l2.449 1.287-.468-2.726 1.982-1.932-2.738-.398L12 11l-1.225 2.481-2.738.398z"></path></svg>
               </span>
               {{ article.articleTitle }}
             </h1>
@@ -17,7 +20,8 @@
               </el-col>
               <el-col :xs="9" :sm="11" :xl="11">
                 <div style="margin-left: 1rem;">
-                  <el-link :href="'/user/' + article.articleAuthor.userAccount" class="text-default">{{ article.articleAuthorName }}
+                  <el-link :href="'/user/' + article.articleAuthor.userAccount" class="text-default">
+                    {{ article.articleAuthorName }}
                   </el-link>
                   <small class="d-block text-muted">{{ article.timeAgo }}</small>
                 </div>
@@ -73,14 +77,24 @@
               <portfolios-widget :portfolios="article.portfolios"></portfolios-widget>
             </el-col>
             <el-col v-if="user">
-              <el-tooltip class="item" effect="dark" content="点赞" placement="top-start">
+              <el-tooltip class="item" effect="dark" content="酷" placement="top-start">
                 <el-button type="text" style="font-size: 1.2rem;" @click="thumbsUp">
-                  <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                       style="fill: rgba(0, 0, 0, 1);">
+                    <path
+                      d="M14.683 14.828a4.055 4.055 0 0 1-1.272.858 4.002 4.002 0 0 1-4.875-1.45l-1.658 1.119a6.063 6.063 0 0 0 1.621 1.62 5.963 5.963 0 0 0 2.148.903 6.035 6.035 0 0 0 3.542-.35 6.048 6.048 0 0 0 1.907-1.284c.272-.271.52-.571.734-.889l-1.658-1.119a4.147 4.147 0 0 1-.489.592z"></path>
+                    <path
+                      d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 2c2.953 0 5.531 1.613 6.918 4H5.082C6.469 5.613 9.047 4 12 4zm0 16c-4.411 0-8-3.589-8-8 0-.691.098-1.359.264-2H5v1a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2h2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-1h.736c.166.641.264 1.309.264 2 0 4.411-3.589 8-8 8z"></path>
+                  </svg>
                   {{ article.articleThumbsUpCount }}
                 </el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="dark" content="赞赏" placement="top-start">
-                <el-button v-if="user.idUser === article.articleAuthorId" type="text" icon="el-icon-coffee" style="font-size: 1.2rem;">
+                <el-button v-if="user.idUser === article.articleAuthorId" type="text" icon="el-icon-coffee"
+                           style="font-size: 1.2rem;">
+                  <svg width="24" height="24">
+                    <path :d="buymeacoffee.path"></path>
+                  </svg>
                   {{ article.articleSponsorCount }}
                 </el-button>
                 <el-popconfirm
@@ -95,14 +109,23 @@
               </el-tooltip>
             </el-col>
             <el-col v-else>
-              <el-tooltip class="item" effect="dark" content="点赞" placement="top-start">
+              <el-tooltip class="item" effect="dark" content="酷" placement="top-start">
                 <el-button type="text" style="font-size: 1.2rem;">
-                  <font-awesome-icon :icon="['far', 'thumbs-up']"></font-awesome-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                       style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
+                    <path
+                      d="M14.683 14.828a4.055 4.055 0 0 1-1.272.858 4.002 4.002 0 0 1-4.875-1.45l-1.658 1.119a6.063 6.063 0 0 0 1.621 1.62 5.963 5.963 0 0 0 2.148.903 6.035 6.035 0 0 0 3.542-.35 6.048 6.048 0 0 0 1.907-1.284c.272-.271.52-.571.734-.889l-1.658-1.119a4.147 4.147 0 0 1-.489.592z"></path>
+                    <path
+                      d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 2c2.953 0 5.531 1.613 6.918 4H5.082C6.469 5.613 9.047 4 12 4zm0 16c-4.411 0-8-3.589-8-8 0-.691.098-1.359.264-2H5v1a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2h2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-1h.736c.166.641.264 1.309.264 2 0 4.411-3.589 8-8 8z"></path>
+                  </svg>
                   {{ article.articleThumbsUpCount }}
                 </el-button>
               </el-tooltip>
               <el-tooltip class="item" effect="dark" content="赞赏" placement="top-start">
-                <el-button type="text" icon="el-icon-coffee" style="font-size: 1.2rem;">
+                <el-button type="text" style="font-size: 1.2rem;">
+                  <svg width="24" height="24">
+                    <path :d="buymeacoffee.path"></path>
+                  </svg>
                   {{ article.articleSponsorCount }}
                 </el-button>
               </el-tooltip>
@@ -134,6 +157,7 @@ import ShareBox from '~/components/widget/share';
 import PortfoliosWidget from '~/components/widget/portfolios';
 import EditTags from '~/components/widget/tags';
 import 'vditor/dist/css/content-theme/light.css';
+import {buymeacoffee} from "simple-icons"
 
 export default {
   name: "ArticleDetail",
@@ -218,6 +242,7 @@ export default {
   },
   data() {
     return {
+      buymeacoffee,
       loading: false,
       isShare: false,
       dialogVisible: false,

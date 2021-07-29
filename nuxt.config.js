@@ -47,7 +47,6 @@ export default {
   */
   css: [
     'element-ui/lib/theme-chalk/index.css',
-    '@fortawesome/fontawesome-svg-core/styles.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -59,7 +58,6 @@ export default {
     {src: '~/plugins/axios'},
     {src: '~/plugins/element-ui'},
     {src: '~/plugins/vditor', ssr: false},
-    {src: '~/plugins/fontawesome'},
     // {src: '~/plugins/vue-cropper', ssr: false}
   ],
   /*

@@ -14,21 +14,35 @@
           <div v-if="userExtend" style="margin-bottom: 1rem;">
             <el-link v-if="userExtend.blog" class="user-link" title="博客" :underline="false" :href="userExtend.blog"
                      target="_blank">
-              <font-awesome-icon :icon="['fas', 'link']"></font-awesome-icon>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);"><path d="M8.465 11.293c1.133-1.133 3.109-1.133 4.242 0l.707.707 1.414-1.414-.707-.707c-.943-.944-2.199-1.465-3.535-1.465s-2.592.521-3.535 1.465L4.929 12a5.008 5.008 0 0 0 0 7.071 4.983 4.983 0 0 0 3.535 1.462A4.982 4.982 0 0 0 12 19.071l.707-.707-1.414-1.414-.707.707a3.007 3.007 0 0 1-4.243 0 3.005 3.005 0 0 1 0-4.243l2.122-2.121z"></path><path d="m12 4.929-.707.707 1.414 1.414.707-.707a3.007 3.007 0 0 1 4.243 0 3.005 3.005 0 0 1 0 4.243l-2.122 2.121c-1.133 1.133-3.109 1.133-4.242 0L10.586 12l-1.414 1.414.707.707c.943.944 2.199 1.465 3.535 1.465s2.592-.521 3.535-1.465L19.071 12a5.008 5.008 0 0 0 0-7.071 5.006 5.006 0 0 0-7.071 0z"></path></svg>
             </el-link>
             <el-link v-if="userExtend.github" class="user-link" title="github" :underline="false"
                      :href="'https://github.com/' + userExtend.github" target="_blank">
-              <font-awesome-icon :icon="['fab', 'github']"></font-awesome-icon>
+              <svg width="24" height="24">
+                <g :fill="'#' + github.hex">
+                  <path :d="github.path"></path>
+                </g>
+              </svg>
             </el-link>
             <el-link v-if="userExtend.weibo" class="user-link" title="微博" :underline="false"
                      :href="'https://weibo.com/n/' + userExtend.weibo" target="_blank">
-              <font-awesome-icon :icon="['fab', 'weibo']"></font-awesome-icon>
+              <svg width="24" height="24">
+                <g :fill="'#' + sinaweibo.hex">
+                  <path :d="sinaweibo.path"></path>
+                </g>
+              </svg>
             </el-link>
             <el-link v-if="userExtend.weixin" class="user-link" title="微信" :underline="false" :href="userExtend.weixin">
-              <font-awesome-icon :icon="['fab', 'weixin']" target="_blank"></font-awesome-icon>
+              <svg width="24" height="24">
+                <g :fill="'#' + wechat.hex">
+                  <path :d="wechat.path"></path>
+                </g>
+              </svg>
             </el-link>
             <el-link v-if="userExtend.qq" class="user-link" title="QQ" :underline="false" :href="userExtend.qq">
-              <font-awesome-icon :icon="['fab', 'qq']" target="_blank"></font-awesome-icon>
+              <svg width="24" height="24">
+                <path :d="tencentqq.path"></path>
+              </svg>
             </el-link>
           </div>
           <div v-if="oauth">
@@ -84,6 +98,7 @@ import isoMetropolis from "~/static/banner/isometropolis.jpg"
 import naranjas from "~/static/banner/naranjas.png"
 import retroFurnish from "~/static/banner/retro-furnish.png"
 import science from "~/static/banner/science.png"
+import {github, sinaweibo, wechat, tencentqq} from "simple-icons";
 
 export default {
   name: "User",
@@ -150,6 +165,10 @@ export default {
   },
   data() {
     return {
+      github,
+      sinaweibo,
+      wechat,
+      tencentqq,
       activeTab: this.$route.query.tab || '0',
       isFollow: false,
       backgroundImage: designTools,
@@ -378,5 +397,7 @@ h3, .h3 {
 .user-link {
   font-size: 24px;
   margin: 0 0.5rem;
+  width: 24px;
+  height: 24px;
 }
 </style>

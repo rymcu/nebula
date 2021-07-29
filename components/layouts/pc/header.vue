@@ -37,10 +37,27 @@
               trigger="click"
               v-model="showPopover"
               @show="handleShowPopover">
-              <el-input name="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户">
-                <el-button slot="append" icon="el-icon-search" @click="querySearchAsync"></el-button>
+              <el-input name="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync"
+                        placeholder="搜索文章,作品集,用户">
+                <el-button slot="append" @click="querySearchAsync">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                       style="fill: rgba(0, 0, 0, 1);">
+                    <path
+                      d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
+                    <path
+                      d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"></path>
+                  </svg>
+                </el-button>
               </el-input>
-              <el-button slot="reference" icon="el-icon-search" circle size="small"></el-button>
+              <el-button slot="reference" circle size="small">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                     style="fill: rgba(0, 0, 0, 1);">
+                  <path
+                    d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
+                  <path
+                    d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"></path>
+                </svg>
+              </el-button>
             </el-popover>
             <el-link rel="nofollow" :underline="false" style="padding-left: 10px;padding-right: 10px;"
                      href="/portfolio/post">创建作品集
@@ -51,7 +68,13 @@
             <el-link rel="nofollow" :underline="false" style="padding-left: 10px;padding-right: 10px;">
               <el-dropdown trigger="click" @command="handleCommand">
                 <el-badge :value="notificationNumbers" class="item">
-                  <el-link rel="nofollow" :underline="false" style="font-size: 1.4rem;" class="el-icon-bell"></el-link>
+                  <el-link rel="nofollow" :underline="false" style="font-size: 1.4rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                         style="fill: rgba(0, 0, 0, 1);">
+                      <path
+                        d="M19 13.586V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zm-7 5a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z"></path>
+                    </svg>
+                  </el-link>
                 </el-badge>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item v-for="notification in notifications" :key="notification.idNotification"
@@ -93,10 +116,27 @@
               trigger="click"
               v-model="showPopover"
               @show="handleShowPopover">
-              <el-input name="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync" placeholder="搜索文章,作品集,用户">
-                <el-button slot="append" icon="el-icon-search" @click="querySearchAsync"></el-button>
+              <el-input name="searchInput" v-model="queryString" @keyup.enter.native="querySearchAsync"
+                        placeholder="搜索文章,作品集,用户">
+                <el-button slot="append" @click="querySearchAsync">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                       style="fill: rgba(0, 0, 0, 1);">
+                    <path
+                      d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
+                    <path
+                      d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"></path>
+                  </svg>
+                </el-button>
               </el-input>
-              <el-button slot="reference" icon="el-icon-search" circle size="small"></el-button>
+              <el-button slot="reference" circle size="small">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                     style="fill: rgba(0, 0, 0, 1);">
+                  <path
+                    d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
+                  <path
+                    d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"></path>
+                </svg>
+              </el-button>
             </el-popover>
             <nuxt-link to="/login">
               <el-link rel="nofollow" :underline="false" style="margin-left: 10px;">登录</el-link>
