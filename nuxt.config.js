@@ -57,7 +57,7 @@ export default {
     {src: '~/plugins/extend'},
     {src: '~/plugins/axios'},
     {src: '~/plugins/element-ui'},
-    {src: '~/plugins/vditor', ssr: false},
+    {src: '~/plugins/vditor', ssr: false}
     // {src: '~/plugins/vue-cropper', ssr: false}
   ],
   /*
@@ -100,8 +100,20 @@ export default {
     extend(config, ctx) {
       config.plugins.unshift(new LodashModuleReplacementPlugin())
       // rules[2].use[0] is babel-loader
-      config.module.rules.push({ test: /\.txt$/, use: 'raw-loader' })
+      config.module.rules.push({test: /\.txt$/, use: 'raw-loader'})
       config.module.rules[2].use[0].options.plugins = ['lodash']
+    },
+    babel: {
+      presets({ envName }) {
+        return [
+          [
+            '@nuxt/babel-preset-app',
+            {
+              loose: true
+            }
+          ]
+        ]
+      }
     }
   }
 }
