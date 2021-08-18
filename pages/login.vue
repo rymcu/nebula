@@ -114,7 +114,7 @@ export default {
               _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
               localStorage.setItem('user', JSON.stringify(user))
               _ts.$store.commit('setUser', user) // mutating to store for client rendering
-              Cookie.set('auth', auth)
+              Cookie.set('auth', auth, { expires: 7 })
               if (_ts.historyUrl) {
                 window.location.href = _ts.historyUrl
               } else {
