@@ -22,7 +22,7 @@
     "nuxt": "^2.15.8",
     "raw-loader": "^4.0.2",
     "save-svg-as-png": "^1.4.17",
-    "simple-icons": "^5.8.1",
+    "simple-icons": "^5.11.0",
     "sockjs-client": "^1.5.0",
     "stompjs": "^2.3.3",
     "vditor": "^3.8.4",

@@ -7806,10 +7806,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
   resolved "https://registry.npm.taobao.org/signal-exit/download/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha1-oUEMLt2PB3sItOJTyOrPyvBXRhw=
 
-simple-icons@^5.8.1:
-  version "5.9.0"
-  resolved "https://registry.nlark.com/simple-icons/download/simple-icons-5.9.0.tgz#00d9d7df86e226da3ef2277aef470daa8285a6ec"
-  integrity sha1-ANnX34biJto+8id670cNqoKFpuw=
+simple-icons@^5.11.0:
+  version "5.11.0"
+  resolved "https://registry.nlark.com/simple-icons/download/simple-icons-5.11.0.tgz#dd4f0eb835d70f9ccb26edb5fe7749b128b39de1"
+  integrity sha1-3U8OuDXXD5zLJu21/ndJsSizneE=
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
