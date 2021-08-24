@@ -79,10 +79,10 @@
       <portfolio-list :portfolios="portfolios" @currentChange="currentChangePortfolio"></portfolio-list>
     </el-col>
     <el-col v-else-if="activeTab === '2'" class="tab-content">
-      <user-list :users="followings" @currentChange="currentChangeFollowing"></user-list>
+      <user-list :users="followings" @currentChange="currentChangeFollowing" @followUser="followUser" @cancelFollowUser="cancelFollowUser"></user-list>
     </el-col>
     <el-col v-else-if="activeTab === '3'" class="tab-content">
-      <user-list :users="followers" @currentChange="currentChangeFollower"></user-list>
+      <user-list :users="followers" @currentChange="currentChangeFollower" @followUser="followUser" @cancelFollowUser="cancelFollowUser"></user-list>
     </el-col>
   </el-row>
 </template>
@@ -202,7 +202,6 @@ export default {
       this.$router.push({
         path: `/user/${this.$route.params.account}?tab=${key}&page=${page}`
       })
-
     },
     gotoChats() {
       let _ts = this;
@@ -218,6 +217,7 @@ export default {
           followingType: 0
         }).then(function (res) {
           _ts.$set(_ts, 'isFollow', res);
+          _ts.$store.dispatch('follow/fetchUserFollowingList');
         })
       } else {
         _ts.login()
@@ -231,6 +231,7 @@ export default {
           followingType: 0
         }).then(function (res) {
           _ts.$set(_ts, 'isFollow', res);
+          _ts.$store.dispatch('follow/fetchUserFollowingList');
         })
       } else {
         _ts.login()

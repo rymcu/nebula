@@ -44,7 +44,7 @@
                 </el-col>
                 <el-col v-if="user" :span="12" style="text-align: right;">
                   <template v-if="user.idUser !== article.articleAuthorId">
-                    <el-button size="mini" v-if="isFollow" @click="cancelFollowUser(article.articleAuthorId)" plain>
+                    <el-button size="mini" v-if="isFollower(article.articleAuthorId)" @click="cancelFollowUser(article.articleAuthorId)" plain>
                       取消关注
                     </el-button>
                     <el-button size="mini" v-else @click="followUser(article.articleAuthorId)" plain>关注</el-button>
@@ -139,7 +139,7 @@
     </el-col>
     <el-col>
       <comment-box :fetching="isFetching" :user="user" :avatar="avatar" :title="article.articleTitle"
-                   :post-id="routeArticleId" :authorId="article.articleAuthorId"></comment-box>
+                   :post-id="routeArticleId" :authorId="article.articleAuthorId" @gotoLogin="gotoLogin"></comment-box>
     </el-col>
     <el-col>
       <el-dialog :visible.sync="dialogVisible">
@@ -249,7 +249,6 @@ export default {
       loading: false,
       isShare: false,
       dialogVisible: false,
-      isFollow: false,
       isPerfect: false,
       shareData: {}
     }
@@ -308,6 +307,7 @@ export default {
           followingType: 0
         }).then(function (res) {
           _ts.$set(_ts, 'isFollow', res);
+          _ts.$store.dispatch('follow/fetchUserFollowingList');
         })
       } else {
         _ts.gotoLogin();
@@ -321,6 +321,7 @@ export default {
           followingType: 0
         }).then(function (res) {
           _ts.$set(_ts, 'isFollow', res);
+          _ts.$store.dispatch('follow/fetchUserFollowingList');
         })
       } else {
         _ts.gotoLogin();
@@ -388,6 +389,9 @@ export default {
           }
         }
       })
+    },
+    isFollower(idUser) {
+      return this.$store.getters["follow/isFollower"](idUser)
     }
   },
   mounted() {
@@ -417,17 +421,6 @@ export default {
       });
       _ts.$set(_ts, 'isPerfect', _ts.article.articlePerfect === '1')
     })
-
-    if (_ts.user) {
-      _ts.$axios.$get('/api/follow/is-follow', {
-        params: {
-          followingId: _ts.article.articleAuthorId,
-          followingType: 0
-        }
-      }).then(function (res) {
-        _ts.$set(_ts, 'isFollow', res);
-      })
-    }
   }
 
 }
