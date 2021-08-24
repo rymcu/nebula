@@ -333,9 +333,7 @@
         })
       },
       gotoLogin() {
-        this.$router.push({
-          name: 'login'
-        })
+        this.$emit('gotoLogin');
       },
       // 取消回复
       cancelCommentReply() {
