@@ -300,9 +300,12 @@ export default {
     }
   },
   mounted() {
-    let user = this.user;
+    let _ts = this;
+    let user = _ts.user;
     if (user) {
-      this.getUnreadNotifications();
+      _ts.getUnreadNotifications();
+      _ts.$store.dispatch('follow/fetchUserFollowerList');
+      _ts.$store.dispatch('follow/fetchUserFollowingList');
       // sockClient.initSocket(this.$store.state.userInfo);
     }
   }
