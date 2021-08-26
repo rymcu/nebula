@@ -12,8 +12,8 @@
         <el-link class="footer-link" rel="nofollow" :underline="false" :href="currencyRule" style="vertical-align: baseline;"><span>货币规则</span></el-link>
         <el-link class="footer-link" rel="nofollow" :underline="false" :href="email" style="vertical-align: baseline;"><span>意见反馈</span></el-link>
         <el-link class="footer-link" rel="nofollow" :underline="false" :href="aboutMe" style="vertical-align: baseline;"><span>关于我们</span></el-link>
-        <el-link class="footer-link" rel="nofollow" :underline="false" :href="github" style="vertical-align: baseline;"><span>github</span></el-link>
-        <el-link class="footer-link" rel="nofollow" :underline="false" :href="gitee" style="vertical-align: baseline;"><span>gitee</span></el-link>
+        <el-link class="footer-link" rel="nofollow" :underline="false" :href="github" style="vertical-align: baseline;"><span>GitHub</span></el-link>
+        <el-link class="footer-link" rel="nofollow" :underline="false" :href="gitee" style="vertical-align: baseline;"><span>Gitee</span></el-link>
       </el-col>
       <el-col :span="12" style="text-align: right;">
         <el-col>
