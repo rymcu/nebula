@@ -19,7 +19,7 @@
                 <el-menu-item index="taobao">淘宝店铺</el-menu-item>
                 <el-submenu index="weixin">
                   <template slot="title">微信</template>
-                  <el-menu-item style="height: 200px;">
+                  <el-menu-item index="mini" style="height: 200px;">
                     <img src="@/assets/weixinStore.jpg" style="width: 200px;"/>
                   </el-menu-item>
                 </el-submenu>
