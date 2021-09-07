@@ -18,7 +18,7 @@
             <small class="d-block text-muted" v-else>还没有介绍自己</small>
           </el-col>
           <el-col :span="24" style="padding: 2rem 0;">
-            <template v-if="userInfo.idUser !== user.idUser">
+            <template v-if="!(userInfo && userInfo.idUser === user.idUser)">
               <el-button v-if="isFollower(user.idUser)" size="medium" round @click="cancelFollowUser2(user.idUser)">取消关注</el-button>
               <el-button v-else size="medium" round @click="followUser2(user.idUser)">关注</el-button>
             </template>
