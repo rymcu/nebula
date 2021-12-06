@@ -26,7 +26,7 @@
         </el-table-column>
         <el-table-column
           label="昵称"
-          width="180"
+          width="140"
           prop="nickname">
           <template slot-scope="scope">
             <el-link type="primary" :href="getUserPath(scope.row.account)" :underline="false">
@@ -36,7 +36,7 @@
         </el-table-column>
         <el-table-column
           label="账号"
-          width="180"
+          width="140"
           prop="account">
         </el-table-column>
         <el-table-column
@@ -48,6 +48,11 @@
           label="最后登录时间"
           width="180"
           prop="lastLoginTime">
+        </el-table-column>
+        <el-table-column
+          label="最后在线时间"
+          width="180"
+          prop="lastOnlineTime">
         </el-table-column>
         <el-table-column
           label="状态"
