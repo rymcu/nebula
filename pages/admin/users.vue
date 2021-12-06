@@ -53,6 +53,14 @@
           label="最后在线时间"
           width="180"
           prop="lastOnlineTime">
+          <template slot-scope="scope">
+            <span v-if="scope.row.onlineStatus === 0">
+              {{ scope.row.lastOnlineTime }}
+            </span>
+            <el-tag type="success" disable-transitions>
+              Online now
+            </el-tag>
+          </template>
         </el-table-column>
         <el-table-column
           label="状态"
