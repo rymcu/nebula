@@ -57,7 +57,7 @@
             <span v-if="scope.row.onlineStatus === 0">
               {{ scope.row.lastOnlineTime }}
             </span>
-            <el-tag type="success" disable-transitions>
+            <el-tag v-else type="success" disable-transitions>
               Online now
             </el-tag>
           </template>
