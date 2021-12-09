@@ -32,18 +32,34 @@
                 </g>
               </svg>
             </el-link>
-            <el-link v-if="userExtend.weixin" class="user-link" title="微信" :underline="false" :href="userExtend.weixin">
-              <svg width="24" height="24">
-                <g :fill="'#' + wechat.hex">
-                  <path :d="wechat.path"></path>
-                </g>
-              </svg>
-            </el-link>
-            <el-link v-if="userExtend.qq" class="user-link" title="QQ" :underline="false" :href="userExtend.qq">
-              <svg width="24" height="24">
-                <path :d="tencentqq.path"></path>
-              </svg>
-            </el-link>
+            <el-popover
+              v-if="userExtend.weixin"
+              placement="top-start"
+              title="微信号"
+              width="200"
+              trigger="hover"
+              :content="userExtend.weixin">
+              <el-link slot="reference" class="user-link" :underline="false">
+                <svg width="24" height="24">
+                  <g :fill="'#' + wechat.hex">
+                    <path :d="wechat.path"></path>
+                  </g>
+                </svg>
+              </el-link>
+            </el-popover>
+            <el-popover
+              v-if="userExtend.qq"
+              placement="top-start"
+              title="QQ 号"
+              width="200"
+              trigger="hover"
+              :content="userExtend.qq">
+              <el-link slot="reference" class="user-link" :underline="false">
+                <svg width="24" height="24">
+                  <path :d="tencentqq.path"></path>
+                </svg>
+              </el-link>
+            </el-popover>
           </div>
           <div v-if="oauth">
             <div v-if="oauth.idUser !== user.idUser">
