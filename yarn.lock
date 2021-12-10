@@ -3398,10 +3398,10 @@ electron-to-chromium@^1.3.793:
   resolved "https://registry.nlark.com/electron-to-chromium/download/electron-to-chromium-1.3.802.tgz#0afa989321de3e904ac653ee79e0d642883731a1"
   integrity sha1-CvqYkyHePpBKxlPueeDWQog3MaE=
 
-element-ui@^2.15.5:
-  version "2.15.5"
-  resolved "https://registry.nlark.com/element-ui/download/element-ui-2.15.5.tgz#dfb376dc5cd60adab21c991bd4fac3e67e5300f4"
-  integrity sha1-37N23FzWCtqyHJkb1PrD5n5TAPQ=
+element-ui@^2.15.6:
+  version "2.15.6"
+  resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.15.6.tgz#c9609add35af5a686a4b7685dc1d757c75e01df3"
+  integrity sha512-rcYXEKd/j2G0AgficAOk1Zd1AsnHRkhmrK4yLHmNOiimU2JfsywgfKUjMoFuT6pQx0luhovj8lFjpE4Fnt58Iw==
   dependencies:
     async-validator "~1.8.1"
     babel-helper-vue-jsx-merge-props "^2.0.0"
@@ -7806,10 +7806,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
   resolved "https://registry.npm.taobao.org/signal-exit/download/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha1-oUEMLt2PB3sItOJTyOrPyvBXRhw=
 
-simple-icons@^5.11.0:
-  version "5.11.0"
-  resolved "https://registry.nlark.com/simple-icons/download/simple-icons-5.11.0.tgz#dd4f0eb835d70f9ccb26edb5fe7749b128b39de1"
-  integrity sha1-3U8OuDXXD5zLJu21/ndJsSizneE=
+simple-icons@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.npmmirror.com/simple-icons/download/simple-icons-6.1.0.tgz#edcef42a6041ccbea63838e0e8622620a91ae917"
+  integrity sha512-8/AFRlrUwu84pS+W3Dj8LW1cbCzHFrGVIE0hQhP7OFFqLlWcJx0WmP6HTo3Zpf3uxbhvYa9dRA/phrTPaG6BkQ==
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
@@ -7862,17 +7862,17 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-sockjs-client@^1.5.0:
-  version "1.5.1"
-  resolved "https://registry.npm.taobao.org/sockjs-client/download/sockjs-client-1.5.1.tgz#256908f6d5adfb94dabbdbd02c66362cca0f9ea6"
-  integrity sha1-JWkI9tWt+5Tau9vQLGY2LMoPnqY=
+sockjs-client@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.nlark.com/sockjs-client/download/sockjs-client-1.5.2.tgz?cache=0&sync_timestamp=1629825213973&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fsockjs-client%2Fdownload%2Fsockjs-client-1.5.2.tgz#4bc48c2da9ce4769f19dc723396b50f5c12330a3"
+  integrity sha1-S8SMLanOR2nxnccjOWtQ9cEjMKM=
   dependencies:
     debug "^3.2.6"
     eventsource "^1.0.7"
     faye-websocket "^0.11.3"
     inherits "^2.0.4"
     json3 "^3.3.3"
-    url-parse "^1.5.1"
+    url-parse "^1.5.3"
 
 sort-keys@^1.0.0:
   version "1.1.2"
@@ -8705,7 +8705,7 @@ url-loader@^4.1.1:
     mime-types "^2.1.27"
     schema-utils "^3.0.0"
 
-url-parse@^1.4.3, url-parse@^1.5.1:
+url-parse@^1.4.3, url-parse@^1.5.3:
   version "1.5.3"
   resolved "https://registry.nlark.com/url-parse/download/url-parse-1.5.3.tgz?cache=0&sync_timestamp=1627251248997&other_urls=https%3A%2F%2Fregistry.nlark.com%2Furl-parse%2Fdownload%2Furl-parse-1.5.3.tgz#71c1303d38fb6639ade183c2992c8cc0686df862"
   integrity sha1-ccEwPTj7Zjmt4YPCmSyMwGht+GI=
@@ -8798,10 +8798,10 @@ vary@^1.1.2, vary@~1.1.2:
   resolved "https://registry.nlark.com/vary/download/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vditor@^3.8.4:
-  version "3.8.6"
-  resolved "https://registry.nlark.com/vditor/download/vditor-3.8.6.tgz#95a89c4865efa740bf55f2a7e3f968b395987a60"
-  integrity sha1-laicSGXvp0C/VfKn4/los5WYemA=
+vditor@^3.8.8:
+  version "3.8.8"
+  resolved "https://registry.npmmirror.com/vditor/download/vditor-3.8.8.tgz#03fc4f39a0010bee9a3a3ee41f8e3f33c185dcbb"
+  integrity sha512-qaZcxx7SDUkxTTnoBNVzhhLFHXPnaE+DCPUX07K7kBhvgOrJS06TkclbffL+i2U1edEkY8QBkGJU3AtNB90OzA==
   dependencies:
     diff-match-patch "^1.0.5"
 
