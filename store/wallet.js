@@ -1,4 +1,4 @@
-export const BANK_ACCOUNT_API_PATH = '/api/wallet'
+export const WALLET_API_PATH = '/api/wallet'
 
 const getDefaultListData = () => {
   return {
@@ -43,7 +43,7 @@ export const actions = {
     commit('updateDetailFetching', true)
     console.log(params)
     return this.$axios
-      .$get(`${BANK_ACCOUNT_API_PATH}/${params.idUser}`, {
+      .$get(`${WALLET_API_PATH}/${params.idUser}`, {
         params: {
           type: 3
         }
