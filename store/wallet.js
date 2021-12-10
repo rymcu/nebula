@@ -1,4 +1,4 @@
-export const BANK_ACCOUNT_API_PATH = '/api/admin/bank-account'
+export const BANK_ACCOUNT_API_PATH = '/api/wallet'
 
 const getDefaultListData = () => {
   return {
@@ -38,28 +38,6 @@ export const mutations = {
 }
 
 export const actions = {
-  // 获取消息列表
-  fetchList({commit}, params = {}) {
-    // 清空已有数据
-    commit('updateListData', getDefaultListData())
-    commit('updateListFetching', true)
-    let data = {
-      page: params.page || 1
-    }
-
-    return this.$axios
-      .$get(`${BANK_ACCOUNT_API_PATH}/drafts`, {
-        params: data
-      })
-      .then(response => {
-        commit('updateListFetching', false);
-        commit('updateListData', response);
-      })
-      .catch(error => {
-        console.log(error);
-        commit('updateListFetching', false);
-      });
-  },
   // 获取账户详情
   fetchDetail({ commit }, params = {}) {
     commit('updateDetailFetching', true)
