@@ -336,7 +336,7 @@ export default {
             } else {
               _ts.$set(_ts, 'notificationFlag', false);
               _ts.$router.push({
-                path: '/user/' + _ts.$store.state.userInfo?.nickname
+                path: '/user/' + _ts.$store.state.userInfo?.account
               })
             }
           }
