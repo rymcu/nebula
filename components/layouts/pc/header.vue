@@ -289,7 +289,7 @@ export default {
         _ts.$axios.$get('/api/notification/unread').then(function (res) {
           if (res) {
             _ts.$set(_ts, 'notifications', res.notifications);
-            _ts.$set(_ts, 'notificationNumbers', res.notifications.length == 0 ? "" : res.notifications.length);
+            _ts.$set(_ts, 'notificationNumbers', res.pagination.total === 0 ? "" : res.pagination.total);
           }
         })
       }
