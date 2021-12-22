@@ -66,6 +66,9 @@ export default {
         after() {
           _ts.contentEditor.setValue(data.value ? data.value : '');
         },
+        hint: {
+          emoji: Vue.emoji
+        },
         preview: {
           hljs: {
             enable: true,
