@@ -22,10 +22,10 @@ export const state = () => {
 
 export const mutations = {
   // 消费记录列表
-  updateListFetching(state, action) {
+  updateTransactionRecordListFetching(state, action) {
     state.list.fetching = action
   },
-  updateListData(state, action) {
+  updateTransactionRecordListData(state, action) {
     state.list.data = action
   },
   // 账户详情
@@ -39,15 +39,10 @@ export const mutations = {
 
 export const actions = {
   // 获取账户详情
-  fetchDetail({ commit }, params = {}) {
+  fetchDetail({commit}, params = {}) {
     commit('updateDetailFetching', true)
-    console.log(params)
     return this.$axios
-      .$get(`${WALLET_API_PATH}/${params.idUser}`, {
-        params: {
-          type: 3
-        }
-      })
+      .$get(`${WALLET_API_PATH}/${params.idUser}`)
       .then(response => {
         return new Promise(resolve => {
           commit('updateDetailData', response)
@@ -60,6 +55,32 @@ export const actions = {
       })
       .catch(error => {
         commit('updateDetailFetching', false)
+        return Promise.reject(error)
+      })
+  },
+  // 获取账户详情
+  fetchTransactionRecordList({commit}, params = {}) {
+    commit('updateTransactionRecordListFetching', true)
+    return this.$axios
+      .$get(`${WALLET_API_PATH}/transaction-records`, {
+        params: {
+          idUser: params.idUser,
+          startDate: params.startDate,
+          endDate: params.endDate
+        }
+      })
+      .then(response => {
+        return new Promise(resolve => {
+          commit('updateTransactionRecordListData', response)
+          commit('updateTransactionRecordListFetching', false)
+          resolve(response)
+          // delay(() => {
+          //   resolve(response)
+          // })
+        })
+      })
+      .catch(error => {
+        commit('updateTransactionRecordListFetching', false)
         return Promise.reject(error)
       })
   }
