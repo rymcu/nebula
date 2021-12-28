@@ -58,7 +58,7 @@ export const actions = {
         return Promise.reject(error)
       })
   },
-  // 获取账户详情
+  // 获取账户交易记录
   fetchTransactionRecordList({commit}, params = {}) {
     commit('updateTransactionRecordListFetching', true)
     return this.$axios
@@ -66,7 +66,8 @@ export const actions = {
         params: {
           idUser: params.idUser,
           startDate: params.startDate,
-          endDate: params.endDate
+          endDate: params.endDate,
+          page: params.page || 1
         }
       })
       .then(response => {

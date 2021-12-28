@@ -1,6 +1,5 @@
 <template>
   <el-row>
-
     <el-col>
       <el-col>
         <h4>所属作品集</h4>
