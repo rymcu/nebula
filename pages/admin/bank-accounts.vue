@@ -40,6 +40,13 @@
           width="180"
           prop="createdTime">
         </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary"
+                       @click="transactionRecords(scope.$index, scope.row)" plain>查看交易记录
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-col>
     <el-col>
@@ -54,14 +61,21 @@
         :total="pagination.total">
       </el-pagination>
     </el-col>
+    <el-dialog :title="'卡号：' + bankAccount + ' 的交易记录'" :visible.sync="dialogVisible">
+      <records :records="records" :bankAccount="bankAccount"
+               @currentChange="handleTransactionRecordCurrentChange"
+               @searchTransactionRecord="searchTransactionRecord"></records>
+    </el-dialog>
   </el-row>
 </template>
 
 <script>
 import {mapState} from 'vuex';
+import Records from "../../components/common/bank/account/records";
 
 export default {
   name: "bank-accounts",
+  components: {Records},
   fetch({store, params, error}) {
     return Promise.all([
       store
@@ -72,7 +86,8 @@ export default {
   computed: {
     ...mapState({
       bankAccounts: state => state["bank-account"].list.data.bankAccounts,
-      pagination: state => state["bank-account"].list.data.pagination
+      pagination: state => state["bank-account"].list.data.pagination,
+      records: state => state["bank-account"].records.data
     })
   },
   data() {
@@ -80,7 +95,8 @@ export default {
       order: 'desc',
       idRole: 0,
       idUser: 0,
-      dialogVisible: false
+      dialogVisible: false,
+      bankAccount: ''
     }
   },
   methods: {
@@ -101,6 +117,33 @@ export default {
       _ts.$store.dispatch('bank-account/fetchList', {
         page: page,
         rows: _ts.pagination.pageSize
+      })
+    },
+    transactionRecords(index, bankAccount) {
+      let _ts = this
+      _ts.bankAccount = bankAccount.bankAccount
+      _ts.dialogVisible = true
+      _ts.$store.dispatch('bank-account/fetchTransactionRecordList', {
+        bankAccount: _ts.bankAccount
+      })
+    },
+    handleTransactionRecordCurrentChange(search) {
+      let _ts = this;
+      _ts.$store.dispatch('bank-account/fetchTransactionRecordList', {
+        bankAccount: _ts.bankAccount,
+        startDate: search.startDate,
+        endDate: search.endDate,
+        page: search.page
+      })
+    },
+    searchTransactionRecord(dates) {
+      let _ts = this
+      let startDate = dates[0]
+      let endDate = dates[1]
+      _ts.$store.dispatch('wallet/fetchTransactionRecordList', {
+        bankAccount: _ts.bankAccount,
+        startDate: startDate,
+        endDate: endDate
       })
     }
   },
