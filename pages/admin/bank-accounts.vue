@@ -140,7 +140,7 @@ export default {
       let _ts = this
       let startDate = dates[0]
       let endDate = dates[1]
-      _ts.$store.dispatch('wallet/fetchTransactionRecordList', {
+      _ts.$store.dispatch('bank-account/fetchTransactionRecordList', {
         bankAccount: _ts.bankAccount,
         startDate: startDate,
         endDate: endDate

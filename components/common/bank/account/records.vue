@@ -108,6 +108,11 @@ export default {
       type: Object
     }
   },
+  watch: {
+    bankAccount() {
+      this.resetSearchDate()
+    }
+  },
   data() {
     return {
       pickerOptions: {
@@ -169,14 +174,17 @@ export default {
     },
     searchTransactionRecord(dates) {
       this.$emit('searchTransactionRecord', dates);
+    },
+    resetSearchDate() {
+      const end = new Date();
+      const start = new Date();
+      start.setMonth(start.getMonth() - 1);
+      let searchDate = [start, end]
+      this.searchDate = searchDate
     }
   },
   mounted() {
-    const end = new Date();
-    const start = new Date();
-    start.setMonth(start.getMonth() - 1);
-    let searchDate = [start, end]
-    this.searchDate = searchDate
+    this.resetSearchDate()
   }
 }
 </script>
