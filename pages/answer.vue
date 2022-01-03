@@ -10,17 +10,19 @@
         </el-col>
       </el-col>
       <el-col class="question-content">
-        <span v-html="getQuestionContent(answerRecord.questionContent)"></span>
+        <h2 v-html="getQuestionContent(answerRecord.questionContent)"></h2>
       </el-col>
       <el-col>
         <el-col v-if="answerRecord.subjectAnswerRecords">
           <el-col class="question-option">
             <el-radio-group v-model="answerRecord.subjectAnswerRecords[0].answer" :disabled="true">
               <template v-for="subjectOption in answerRecord.subjectOptionDTOList">
-                <el-radio :key="subjectOption.optionName" :label="subjectOption.optionName">
-                  <span>{{ subjectOption.optionName }}.</span>
-                  <span>{{ subjectOption.optionContent }}</span>
-                </el-radio>
+                <el-col :span="24" style="margin-bottom: 10px;">
+                  <el-radio :key="subjectOption.optionName" :label="subjectOption.optionName">
+                    <span>{{ subjectOption.optionName }}.</span>
+                    <span>{{ subjectOption.optionContent }}</span>
+                  </el-radio>
+                </el-col>
               </template>
             </el-radio-group>
           </el-col>
@@ -37,10 +39,12 @@
           <el-col class="question-option">
             <el-radio-group v-model="answer">
               <template v-for="subjectOption in answerRecord.subjectOptionDTOList">
-                <el-radio :key="subjectOption.optionName" :label="subjectOption.optionName">
-                  <span>{{ subjectOption.optionName }}.</span>
-                  <span>{{ subjectOption.optionContent }}</span>
-                </el-radio>
+                <el-col :span="24" style="margin-bottom: 10px;">
+                  <el-radio :key="subjectOption.optionName" :label="subjectOption.optionName">
+                    <span>{{ subjectOption.optionName }}.</span>
+                    <span>{{ subjectOption.optionContent }}</span>
+                  </el-radio>
+                </el-col>
               </template>
             </el-radio-group>
           </el-col>
@@ -78,7 +82,7 @@ export default {
   },
   methods: {
     getQuestionContent(questionContent) {
-      questionContent = questionContent.replace("（", "");
+      questionContent = questionContent.replace("（", "____");
       questionContent = questionContent.replace("）", "");
       return questionContent;
     },
