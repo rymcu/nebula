@@ -195,7 +195,7 @@ export default {
           return true;
         }
       }
-      return this.$store.getters.hasPermissions('blog_admin');
+      return false;
     },
     isAdmin() {
       return this.$store.getters.hasPermissions('blog_admin');
@@ -329,7 +329,7 @@ export default {
     },
     setPreference() {
       let _ts = this;
-      _ts.$axios.$patch("/api/article/update-perfect", {
+      _ts.$axios.$patch("/api/admin/article/update-perfect", {
         idArticle: _ts.article.idArticle,
         articlePerfect: '1',
       }).then(function (res) {
@@ -345,7 +345,7 @@ export default {
     },
     cancelPreference() {
       let _ts = this;
-      _ts.$axios.$patch("/api/article/update-perfect", {
+      _ts.$axios.$patch("/api/admin/article/update-perfect", {
         idArticle: _ts.article.idArticle,
         articlePerfect: '0',
       }).then(function (res) {
