@@ -55,6 +55,9 @@
                     <el-button v-if="isPerfect" size="mini" @click="cancelPreference" plain>取消优选</el-button>
                     <el-button v-else size="mini" @click="setPreference" plain>设为优选</el-button>
                   </template>
+                  <template v-else-if="hasPermissions">
+                    <el-button size="mini" @click="handleCommand('editTag')" plain>编辑标签</el-button>
+                  </template>
                   <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
                 </el-col>
                 <el-col v-else :span="12" style="text-align: right;">
