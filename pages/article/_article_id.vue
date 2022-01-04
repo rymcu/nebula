@@ -42,28 +42,31 @@
                     # {{ tag.tagTitle }}
                   </el-tag>
                 </el-col>
-                <el-col v-if="user" :span="12" style="text-align: right;">
-                  <template v-if="user.idUser !== article.articleAuthorId">
-                    <el-button size="mini" v-if="isFollower(article.articleAuthorId)" @click="cancelFollowUser(article.articleAuthorId)" plain>
-                      取消关注
-                    </el-button>
-                    <el-button size="mini" v-else @click="followUser(article.articleAuthorId)" plain>关注</el-button>
-                  </template>
-                  <el-button size="mini" v-if="hasPermissions" @click="handleCommand('edit')" plain>编辑文章</el-button>
-                  <template v-if="isAdmin">
-                    <el-button size="mini" @click="handleCommand('editTag')" plain>编辑标签</el-button>
-                    <el-button v-if="isPerfect" size="mini" @click="cancelPreference" plain>取消优选</el-button>
-                    <el-button v-else size="mini" @click="setPreference" plain>设为优选</el-button>
-                  </template>
-                  <template v-else-if="hasPermissions">
-                    <el-button size="mini" @click="handleCommand('editTag')" plain>编辑标签</el-button>
-                  </template>
-                  <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
-                </el-col>
-                <el-col v-else :span="12" style="text-align: right;">
-                  <el-button size="mini" @click="gotoLogin" plain>关注</el-button>
-                  <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
-                </el-col>
+                <client-only>
+                  <el-col v-if="user" :span="12" style="text-align: right;">
+                    <template v-if="user.idUser !== article.articleAuthorId">
+                      <el-button size="mini" v-if="isFollower(article.articleAuthorId)"
+                                 @click="cancelFollowUser(article.articleAuthorId)" plain>
+                        取消关注
+                      </el-button>
+                      <el-button size="mini" v-else @click="followUser(article.articleAuthorId)" plain>关注</el-button>
+                    </template>
+                    <el-button size="mini" v-if="hasPermissions" @click="handleCommand('edit')" plain>编辑文章</el-button>
+                    <template v-if="isAdmin">
+                      <el-button size="mini" @click="handleCommand('editTag')" plain>编辑标签</el-button>
+                      <el-button v-if="isPerfect" size="mini" @click="cancelPreference" plain>取消优选</el-button>
+                      <el-button v-else size="mini" @click="setPreference" plain>设为优选</el-button>
+                    </template>
+                    <template v-else-if="hasPermissions">
+                      <el-button size="mini" @click="handleCommand('editTag')" plain>编辑标签</el-button>
+                    </template>
+                    <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
+                  </el-col>
+                  <el-col v-else :span="12" style="text-align: right;">
+                    <el-button size="mini" @click="gotoLogin" plain>关注</el-button>
+                    <el-button size="mini" @click="handleCommand('share')" plain>分享</el-button>
+                  </el-col>
+                </client-only>
               </el-col>
               <el-col v-if="isShare" style="margin-bottom: 1rem;">
                 <share-box :url="shareData.shareUrl"></share-box>
