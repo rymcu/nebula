@@ -72,7 +72,8 @@ export default {
     },
     saveTags() {
       let _ts = this;
-      _ts.$axios.$post(`/api/article/${_ts.idArticle}/update-tags`, {
+      _ts.$axios.$post(`/api/article/update-tags`, {
+        idArticle: _ts.idArticle,
         articleTags: _ts.articleTags.join(',')
       }).then(function (res) {
         if (res) {
