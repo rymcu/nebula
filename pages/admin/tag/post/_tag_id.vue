@@ -29,6 +29,64 @@
             <img v-if="tagIconPath" class="tag-brand-img" :src="tagIconPath">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+          <el-row>
+            <el-col :span="24">
+              <vue-cropper
+                ref="cropper"
+                :aspect-ratio="1 / 1"
+                :src="tagIconPath"
+                :checkCrossOrigin="false"
+                :checkOrientation="false"
+                :imgStyle="{width: '480px', height: '480px'}"
+                :autoCropArea="1"
+                :autoCrop="autoCrop"
+                preview=".preview"
+              />
+            </el-col>
+            <el-col :span="24" style="margin-top: 2rem;">
+              <el-col :span="8">
+                <el-card>
+                  <div class="card-body d-flex flex-column">
+                    <el-col :span="4" style="text-align: right;">
+                      <div v-if="tagIconPath" class="preview preview-large topic-brand-img"/>
+                      <el-image v-else class="topic-brand-img"/>
+                    </el-col>
+                    <el-col :span="20">
+                      <el-col>
+                        <el-col>
+                          <el-link rel="nofollow" :underline="false">
+                            <h4>{{ tag.tagTitle }}</h4>
+                          </el-link>
+                        </el-col>
+                        <el-col>
+                          <div class="text-muted article-summary-md">{{ tag.tagDescription }}</div>
+                        </el-col>
+                      </el-col>
+                    </el-col>
+                  </div>
+                </el-card>
+              </el-col>
+            </el-col>
+            <el-col :span="24" style="margin-top: 2rem;">
+              <el-upload
+                class="avatar-uploader"
+                action=""
+                :multiple="true"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <div>
+                  <el-button type="primary" round plain>上传</el-button>
+                </div>
+              </el-upload>
+              <el-button style="margin-top: 1rem;" type="primary" round plain @click.prevent="reset">重置</el-button>
+              <el-button type="primary" round plain @click.prevent="cropImage">裁剪</el-button>
+              <el-col>
+                <span style="color: red;padding-right: 5px;">*</span>
+                <span>上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
+              </el-col>
+            </el-col>
+          </el-row>
         </el-form-item>
         <el-form-item label="状态">
           <el-switch
@@ -61,9 +119,15 @@
 
 <script>
 import Vue from "vue";
+import {mapState} from 'vuex';
+import VueCropper from "vue-cropperjs";
+import 'cropperjs/dist/cropper.css';
 
 export default {
   name: "PostTag",
+  components: {
+    VueCropper
+  },
   validate({params, store}) {
     if (typeof params.tag_id === 'undefined') {
       return true;
@@ -77,10 +141,11 @@ export default {
     ])
   },
   computed: {
-    uploadHeaders() {
-      let token = this.$store.state.uploadHeaders;
-      return {'X-Upload-Token': token}
-    }
+    ...mapState({
+      uploadHeaders: state => {
+        return {'X-Upload-Token': state.uploadHeaders}
+      }
+    })
   },
   data() {
     return {
@@ -93,6 +158,7 @@ export default {
       loading: false,
       isEdit: false,
       tag: {},
+      autoCrop: true,
       notificationFlag: true
     }
   },
@@ -100,44 +166,44 @@ export default {
     _initEditor(data) {
       let _ts = this;
 
-        let toolbar = [
-          'emoji',
-          'headings',
-          'bold',
-          'italic',
-          'strike',
-          'link',
-          '|',
-          'list',
-          'ordered-list',
-          'check',
-          'outdent',
-          'indent',
-          '|',
-          'quote',
-          'line',
-          'code',
-          'inline-code',
-          'insert-before',
-          'insert-after',
-          '|',
-          'upload',
-          // 'record',
-          'table',
-          '|',
-          'undo',
-          'redo',
-          '|',
-          'edit-mode',
-          {
-            name: 'more',
-            toolbar: [
-              'fullscreen',
-              'both',
-              'preview',
-              'info'
-            ],
-          }]
+      let toolbar = [
+        'emoji',
+        'headings',
+        'bold',
+        'italic',
+        'strike',
+        'link',
+        '|',
+        'list',
+        'ordered-list',
+        'check',
+        'outdent',
+        'indent',
+        '|',
+        'quote',
+        'line',
+        'code',
+        'inline-code',
+        'insert-before',
+        'insert-after',
+        '|',
+        'upload',
+        // 'record',
+        'table',
+        '|',
+        'undo',
+        'redo',
+        '|',
+        'edit-mode',
+        {
+          name: 'more',
+          toolbar: [
+            'fullscreen',
+            'both',
+            'preview',
+            'info'
+          ],
+        }]
       return new Vue.Vditor(data.id, {
         toolbar,
         mode: 'sv',
@@ -180,9 +246,7 @@ export default {
           url: this.tokenURL.URL,
           linkToImgUrl: this.tokenURL.linkToImageURL,
           token: this.tokenURL.token,
-          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
-          replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
-          replace('/\\s/g', '')
+          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
         },
         height: data.height,
         counter: 102400,
@@ -211,11 +275,24 @@ export default {
 
       if (!(isJPG || isPNG)) {
         this.$message.error('上传图标只能是 JPG 或者 PNG 格式!');
+        return false;
       }
       if (!isLt2M) {
         this.$message.error('上传图标大小不能超过 2MB!');
+        return false;
       }
-      return (isJPG || isPNG) && isLt2M;
+
+      this.fileToBase64(file);
+      return false;
+    },
+    fileToBase64(file) {
+      let _ts = this;
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        _ts.$set(_ts, 'tagIconPath', this.result);
+        _ts.$refs.cropper.replace(this.result);
+      }
     },
     async updateTag() {
       let _ts = this;
@@ -240,6 +317,24 @@ export default {
           _ts.$set(_ts, 'notificationFlag', false);
         }
       })
+    },
+    reset() {
+      this.$refs.cropper.reset();
+    },
+    // get image data for post processing, e.g. upload or setting image src
+    cropImage() {
+      let _ts = this;
+      try {
+        _ts.cropImg = _ts.$refs.cropper.getCroppedCanvas().toDataURL();
+        let tag = _ts.tag;
+        tag.tagIconPath = _ts.cropImg;
+        _ts.$set(_ts, 'tag', tag);
+        _ts.$set(_ts, 'tagIconPath', _ts.cropImg);
+        _ts.$message.success('已裁剪 !');
+      } catch (e) {
+        _ts.$message.error('图片获取失败 !');
+        return;
+      }
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -275,14 +370,14 @@ export default {
       return '关闭提示';
     });
     let _ts = this;
-    this.$store.commit('setActiveMenu', 'admin-tag-post');
-    this.$axios.$get('/api/upload/simple/token').then(function (res) {
+    _ts.$store.commit('setActiveMenu', 'admin-tag-post');
+    _ts.$axios.$get('/api/upload/simple/token').then(function (res) {
       if (res) {
         _ts.$store.commit('setUploadHeaders', res.uploadToken);
         _ts.$set(_ts, 'tokenURL', {
-          token: responseData.uploadToken || '',
-          URL: responseData.uploadURL || '',
-          linkToImageURL: responseData.linkToImageURL || ''
+          token: res.uploadToken || '',
+          URL: res.uploadURL || '',
+          linkToImageURL: res.linkToImageURL || ''
         })
       }
     });
@@ -313,5 +408,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~vditor/src/assets/scss/index.scss";
+@import "~vditor/src/assets/scss/index.scss";
 </style>
