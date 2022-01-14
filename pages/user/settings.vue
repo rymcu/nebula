@@ -18,6 +18,10 @@
             <i class="el-icon-unlock"></i>
             <span slot="title">账户安全</span>
           </el-menu-item>
+          <el-menu-item index="login-record">
+            <i class="el-icon-monitor"></i>
+            <span slot="title">登录记录</span>
+          </el-menu-item>
           <el-menu-item v-show="false" index="notification">
             <i class="el-icon-bell"></i>
             <span slot="title">通知方式</span>
