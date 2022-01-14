@@ -8,7 +8,8 @@ export const state = () => {
     oauth: null,
     userInfo: null,
     locale: 'zh_CN',
-    uploadHeaders: ''
+    uploadHeaders: '',
+    fingerprint: ''
   }
 }
 
@@ -34,6 +35,9 @@ export const mutations = {
       account: this.state.userInfo.account
     }
     localStorage.setItem('user', JSON.stringify(user))
+  },
+  setFingerprint (state, fingerprint) {
+    state.fingerprint = fingerprint
   }
 }
 

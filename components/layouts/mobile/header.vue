@@ -195,12 +195,55 @@
             }
           })
         }
+      },
+      browserFingerprint() {
+        let _ts = this
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        let txt = 'https://rymcu.com/';
+        ctx.textBaseline = "top";
+        ctx.font = "14px 'Arial'";
+        ctx.textBaseline = "rymcu";
+        ctx.fillStyle = "#f60";
+        ctx.fillRect(125,1,62,20);
+        ctx.fillStyle = "#069";
+        ctx.fillText(txt, 2, 15);
+        ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+        ctx.fillText(txt, 4, 17);
+        let b64 = canvas.toDataURL().replace("data:image/png;base64,","");
+        let bin = atob(b64);
+        let fingerprint = _ts.bin2hex(bin.slice(-16,-12));
+        _ts.$store.commit('setFingerprint', fingerprint);
+      },
+      bin2hex(str) {
+        let _ts = this
+        let result = "";
+        for (let i = 0; i < str.length; i++) {
+          let c = str.charCodeAt(i);
+          // 高字节
+          result += _ts.byte2Hex(c >> 8 & 0xff);
+          // 低字节
+          result += _ts.byte2Hex(c & 0xff);
+        }
+        return result;
+      },
+      byte2Hex(b) {
+        if (b < 0x10) {
+          return "0" + b.toString(16);
+        } else {
+          return b.toString(16);
+        }
       }
     },
     mounted() {
-      let user = this.user;
+      let _ts = this
+      let user = _ts.user;
       if (user) {
-        this.getUnreadNotifications();
+        _ts.getUnreadNotifications();
+      }
+      let fingerprint = _ts.$store.state.fingerprint
+      if (!fingerprint) {
+        _ts.browserFingerprint();
       }
     }
 

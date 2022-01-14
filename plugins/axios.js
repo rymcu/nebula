@@ -3,6 +3,10 @@ import {Message} from 'element-ui'
 const Cookie = process.client ? require('js-cookie') : undefined
 export default function ({app, $axios, store, redirect}) {
   $axios.onRequest(config => {
+    let fingerprint = store.state.fingerprint;
+    if (fingerprint) {
+      config.headers['fingerprint'] = fingerprint
+    }
     let token = store.state.oauth?.accessToken;
     if (token) {
       // if (!(config.url.indexOf('console') > -1 || config.url.indexOf('comments') > -1)) {
