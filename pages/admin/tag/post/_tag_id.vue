@@ -187,7 +187,7 @@ export default {
         'insert-before',
         'insert-after',
         '|',
-        'upload',
+        // 'upload',
         // 'record',
         'table',
         '|',
@@ -240,13 +240,6 @@ export default {
             // LazyLoadImage();
             // Vue.Vditor.highlightRender({style: 'github'}, element, this.contentEditor);
           }
-        },
-        upload: {
-          max: 10 * 1024 * 1024,
-          url: this.tokenURL.URL,
-          linkToImgUrl: this.tokenURL.linkToImageURL,
-          token: this.tokenURL.token,
-          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
         },
         height: data.height,
         counter: 102400,
