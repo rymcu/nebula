@@ -7597,16 +7597,13 @@ sass-graph@2.2.5:
     scss-tokenizer "^0.2.3"
     yargs "^13.3.2"
 
-sass-loader@^10.2.0:
-  version "10.2.0"
-  resolved "https://registry.nlark.com/sass-loader/download/sass-loader-10.2.0.tgz#3d64c1590f911013b3fa48a0b22a83d5e1494716"
-  integrity sha1-PWTBWQ+REBOz+kigsiqD1eFJRxY=
+sass-loader@^12.4.0:
+  version "12.4.0"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-12.4.0.tgz#260b0d51a8a373bb8e88efc11f6ba5583fea0bcf"
+  integrity sha512-7xN+8khDIzym1oL9XyS6zP6Ges+Bo2B2xbPrjdMHEYyV3AQYhd/wXeru++3ODHF0zMjYmVadblSKrPrjEkL8mg==
   dependencies:
     klona "^2.0.4"
-    loader-utils "^2.0.0"
     neo-async "^2.6.2"
-    schema-utils "^3.0.0"
-    semver "^7.3.2"
 
 save-svg-as-png@^1.4.17:
   version "1.4.17"
@@ -7840,10 +7837,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
   resolved "https://registry.npm.taobao.org/signal-exit/download/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha1-oUEMLt2PB3sItOJTyOrPyvBXRhw=
 
-simple-icons@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/simple-icons/-/simple-icons-6.3.0.tgz#6264af23ade10a6fd6405f6ab89a81cfe4ba2ddd"
-  integrity sha512-EiphqFkv9uh+X0DtTjY5r7SHbZxgCxD0xZUP73yJBEO6FfiIPs4iozFpT9vlg66/lbLGEDxoX5UWiinizl2JMQ==
+simple-icons@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/simple-icons/-/simple-icons-6.7.0.tgz#45263b5cd624f26f8f11c8ce1cf814be07de41dc"
+  integrity sha512-bEqOxIkVGTX/Dlq84bXM3ohzRkwE/kpUloSTNvKb7QDTR35ufxMthK3u6kZy2SbmbhFKSpM3Jc8tgAzgfzwV5w==
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
@@ -8837,10 +8834,10 @@ vary@^1.1.2, vary@~1.1.2:
   resolved "https://registry.nlark.com/vary/download/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vditor@^3.8.10:
-  version "3.8.10"
-  resolved "https://registry.yarnpkg.com/vditor/-/vditor-3.8.10.tgz#1f1c973c6124f3242aab53fbcd41a2ecfb16b11e"
-  integrity sha512-n15aA9cgcE52EJgW357HX9oFSAAiFFwICwpjDYrZPHZhVKdrdpbG3GBBYUzyiqRvLtD3LPET1IBaHGiF+8dO6g==
+vditor@^3.8.11:
+  version "3.8.11"
+  resolved "https://registry.yarnpkg.com/vditor/-/vditor-3.8.11.tgz#cf0684446807a308eb53874a2647ba98927cd0dd"
+  integrity sha512-nwS2TLgu3DnHdfxcjnUESg/qbnYU0YR9YAvn2IKBK/F36h4k1BMqjsfEQqE4TL2RH5RGIapcQfAdJ9xF1iQNWw==
   dependencies:
     diff-match-patch "^1.0.5"
 
