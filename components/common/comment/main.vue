@@ -12,7 +12,7 @@
           <el-drawer
             :visible.sync="drawer"
             :direction="direction"
-            size="40%">
+            size="50%">
             <el-col slot="title">
               <el-col>
                 <el-avatar v-show="commentAuthorAvatar" :src="commentAuthorAvatar"></el-avatar>
