@@ -34,7 +34,17 @@ export const state = () => {
     user: getDefaultUsersData(),
     role: getDefaultRolesData(),
     article: getDefaultArticlesData(),
-    comment: getDefaultCommentsData()
+    comment: getDefaultCommentsData(),
+    tabs: [
+      {
+        title: 'Dashboard',
+        name: 'admin-dashboard',
+        path: '/admin/dashboard',
+        icon: 'el-icon-s-data',
+        closable: false
+      }
+    ],
+    activeTab: 'admin-dashboard'
   }
 }
 
@@ -63,6 +73,16 @@ export const mutations = {
     if (article.idArticle === action.idArticle) {
       article.articlePerfect = action.articlePerfect
     }
+  },
+  updateTags(state, action) {
+    state.tabs = action
+  },
+  pushTags(state, action) {
+    let tabs = state.tabs
+    tabs.push(action)
+  },
+  updateActiveTab(state, action) {
+    state.activeTab = action
   }
 }
 

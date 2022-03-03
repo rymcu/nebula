@@ -6,46 +6,26 @@
           :default-active="getActiveMenu"
           class="el-menu-vertical-demo"
           @select="handleSelectMenu">
-          <el-menu-item index="admin-dashboard">
-            <i class="el-icon-s-data"></i>
-            <span slot="title">Dashboard</span>
-          </el-menu-item>
-          <el-menu-item index="admin-articles">
-            <i class="el-icon-s-custom"></i>
-            <span slot="title">文章管理</span>
-          </el-menu-item>
-          <el-menu-item index="admin-comments">
-            <i class="el-icon-s-custom"></i>
-            <span slot="title">评论管理</span>
-          </el-menu-item>
-          <el-menu-item index="admin-users">
-            <i class="el-icon-s-custom"></i>
-            <span slot="title">用户管理</span>
-          </el-menu-item>
-          <el-menu-item index="admin-roles">
-            <i class="el-icon-s-check"></i>
-            <span slot="title">角色管理</span>
-          </el-menu-item>
-          <el-menu-item index="admin-topics">
-            <i class="el-icon-postcard"></i>
-            <span slot="title">专题管理</span>
-          </el-menu-item>
-          <el-menu-item index="admin-tags">
-            <i class="el-icon-price-tag"></i>
-            <span slot="title">标签管理</span>
-          </el-menu-item>
-          <el-menu-item index="admin-banks">
-            <i class="el-icon-office-building"></i>
-            <span slot="title">银行管理</span>
-          </el-menu-item>
-          <el-menu-item index="admin-bank-accounts">
-            <i class="el-icon-bank-card"></i>
-            <span slot="title">银行卡管理</span>
-          </el-menu-item>
+          <template v-for="menu in menus">
+            <el-menu-item :key="menu.name" :index="menu.name">
+              <i :class="menu.icon"></i>
+              <span slot="title">{{ menu.title }}</span>
+            </el-menu-item>
+          </template>
         </el-menu>
       </el-col>
       <el-col :span="20">
-        <nuxt :nuxt-child-key="$route.name" />
+        <el-tabs v-model="editableTabsValue" type="card" @tab-remove="handleRemoveTab" @tab-click="handleClick">
+          <el-tab-pane
+            :key="item.name"
+            v-for="(item, index) in editableTabs"
+            :label="item.title"
+            :name="item.name"
+            :closable="item.closable"
+          >
+            <nuxt keep-alive :nuxt-child-key="item.name"/>
+          </el-tab-pane>
+        </el-tabs>
       </el-col>
     </el-col>
     <el-col v-else class="text-center">
@@ -61,31 +41,162 @@
 </template>
 
 <script>
-  export default {
-    name: "Admin",
-    computed: {
-      getActiveMenu () {
-        return this.$store.state.activeMenu;
+import _ from 'lodash'
+
+export default {
+  name: "Admin",
+  data() {
+    return {
+      menus: [
+        {
+          title: 'Dashboard',
+          name: 'admin-dashboard',
+          path: '/admin/dashboard',
+          icon: 'el-icon-s-data',
+          closable: false
+        },
+        {
+          title: '文章管理',
+          name: 'admin-articles',
+          path: '/admin/articles',
+          icon: 'el-icon-s-custom',
+          closable: true
+        },
+        {
+          title: '评论管理',
+          name: 'admin-comments',
+          path: '/admin/comments',
+          icon: 'el-icon-s-custom',
+          closable: true
+        },
+        {
+          title: '用户管理',
+          name: 'admin-users',
+          path: '/admin/users',
+          icon: 'el-icon-s-custom',
+          closable: true
+        },
+        {
+          title: '角色管理',
+          name: 'admin-roles',
+          path: '/admin/roles',
+          icon: 'el-icon-s-check',
+          closable: true
+        },
+        {
+          title: '专题管理',
+          name: 'admin-topics',
+          path: '/admin/topics',
+          icon: 'el-icon-postcard',
+          closable: true
+        },
+        {
+          title: '标签管理',
+          name: 'admin-tags',
+          path: '/admin/tags',
+          icon: 'el-icon-price-tag',
+          closable: true
+        },
+        {
+          title: '银行管理',
+          name: 'admin-banks',
+          path: '/admin/banks',
+          icon: 'el-icon-office-building',
+          closable: true
+        },
+        {
+          title: '银行卡管理',
+          name: 'admin-bank-accounts',
+          path: '/admin/bank-accounts',
+          icon: 'el-icon-bank-card',
+          closable: true
+        }
+      ]
+    }
+  },
+  computed: {
+    editableTabs() {
+      return this.$store.state.admin.tabs;
+    },
+    editableTabsValue: {
+      get() {
+        return this.$store.state.admin.activeTab;
       },
-      hasPermissions () {
-        return this.$store.getters.hasPermissions('blog_admin');
+      set(value) {
+        this.$store.commit('admin/updateActiveTab', value);
       }
     },
-    methods: {
-      handleSelectMenu(item) {
-        let _ts = this;
-        let activeMenu = _ts.$store.state.activeMenu;
-        if (activeMenu !== item) {
-          _ts.$store.commit('setActiveMenu', item);
-          _ts.$router.push(
-            {
-              name: item
+    getActiveMenu() {
+      return this.$store.state.activeMenu;
+    },
+    hasPermissions() {
+      return this.$store.getters.hasPermissions('blog_admin');
+    }
+  },
+  methods: {
+    handleRemoveTab(targetName) {
+      let tabs = this.editableTabs;
+      let activeName = this.editableTabsValue;
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1];
+            if (nextTab) {
+              activeName = nextTab.name;
             }
-          )
-        }
+          }
+        });
+      }
+      this.$store.commit('admin/updateActiveTab', activeName);
+
+      this.$store.commit('admin/updateTags', tabs.filter(tab => tab.name !== targetName))
+
+      this.$router.push({
+        name: activeName
+      })
+    },
+    handleClick(item) {
+      let _ts = this
+      this.$store.commit('admin/updateActiveTab', item.name);
+      let result = _.findIndex(_ts.editableTabs, function (tab) {
+        return tab.name === item.name;
+      })
+      if (result === -1) {
+        let index = _.findIndex(_ts.menus, function (menu) {
+          return menu.name === item.name;
+        })
+        _ts.$store.commit('admin/pushTags', _ts.menus[index])
+      }
+      _ts.$router.push({
+        name: item.name
+      })
+    },
+    handleSelectTab(item) {
+      let _ts = this
+      this.$store.commit('admin/updateActiveTab', item);
+      let result = _.findIndex(_ts.editableTabs, function (tab) {
+        return tab.name === item;
+      })
+      if (result === -1) {
+        let index = _.findIndex(_ts.menus, function (menu) {
+          return menu.name === item;
+        })
+        _ts.$store.commit('admin/pushTags', _ts.menus[index])
+      }
+      _ts.$router.push({
+        name: item
+      })
+    },
+    handleSelectMenu(item) {
+      let _ts = this;
+      let activeMenu = _ts.$store.state.activeMenu;
+      if (activeMenu !== item) {
+        _ts.$store.commit('setActiveMenu', item);
+        _ts.handleSelectTab(item)
       }
     }
   }
+}
 </script>
 
 <style scoped>
