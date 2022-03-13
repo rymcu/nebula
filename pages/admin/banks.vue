@@ -90,13 +90,13 @@ export default {
   fetch({store, params, error}) {
     return Promise.all([
       store
-        .dispatch('bank/fetchList', params)
+        .dispatch('currency-rule/fetchList', params)
         .catch(err => error({statusCode: 404}))
     ])
   },
   computed: {
     ...mapState({
-      banks: state => state.bank.list.data.banks,
+      banks: state => state["currency-rule"].list.data.banks,
       pagination: state => state.bank.list.data.pagination
     })
   },

@@ -152,7 +152,7 @@ export default {
     toggleStatus() {},
     setPreference(index, idArticle) {
       let _ts = this;
-      _ts.$axios.$patch("/api/article/update-perfect", {
+      _ts.$axios.$patch("/api/admin/article/update-perfect", {
         idArticle: idArticle,
         articlePerfect: '1'
       }).then(function (res) {

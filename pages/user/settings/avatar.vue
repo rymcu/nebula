@@ -140,7 +140,6 @@ export default {
       const isPNG = file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!(isJPG || isPNG)) {
-
         this.$message.error('上传头像只能是 JPG 或者 PNG 格式!');
         return false;
       }

@@ -59,14 +59,14 @@ export default {
           title: '文章管理',
           name: 'admin-articles',
           path: '/admin/articles',
-          icon: 'el-icon-s-custom',
+          icon: 'el-icon-tickets',
           closable: true
         },
         {
           title: '评论管理',
           name: 'admin-comments',
           path: '/admin/comments',
-          icon: 'el-icon-s-custom',
+          icon: 'el-icon-chat-line-square',
           closable: true
         },
         {
@@ -109,6 +109,13 @@ export default {
           name: 'admin-bank-accounts',
           path: '/admin/bank-accounts',
           icon: 'el-icon-bank-card',
+          closable: true
+        },
+        {
+          title: '货币规则',
+          name: 'admin-currency-rules',
+          path: '/admin/currency-rules',
+          icon: 'el-icon-document',
           closable: true
         }
       ]
