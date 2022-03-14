@@ -24,6 +24,7 @@
                   </el-menu-item>
                 </el-submenu>
               </el-submenu>
+              <el-menu-item index="open-data">开放数据</el-menu-item>
             </el-menu>
           </el-col>
         </el-row>
@@ -249,6 +250,11 @@ export default {
             break;
           case 'taobao':
             window.open("https://rymcu.taobao.com?utm_source=rymcu.com");
+            break;
+          case 'open-data':
+            _ts.$router.push({
+              path: '/open-data'
+            })
             break;
           default:
             _ts.$router.push(
