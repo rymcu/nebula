@@ -205,7 +205,13 @@
       <div id="lastThirtyDays" style="width: 100%;height: 500px;"></div>
     </el-col>
     <el-col class="mt-2rem">
+      <div id="lastThirtyDays2" style="width: 100%;height: 500px;"></div>
+    </el-col>
+    <el-col class="mt-2rem">
       <div id="history" style="width: 100%;height: 500px;"></div>
+    </el-col>
+    <el-col class="mt-2rem">
+      <div id="history2" style="width: 100%;height: 500px;"></div>
     </el-col>
     <el-col>
       <el-dialog :visible.sync="dialogVisible" title="发放新手奖励">
@@ -295,7 +301,7 @@ export default {
           }
         },
         legend: {
-          data: ["文章", "用户", "浏览量"]
+          data: ["文章", "用户"]
         },
         xAxis: {
           type: 'category',
@@ -317,6 +323,44 @@ export default {
             type: 'line',
             smooth: true,
             areaStyle: {}
+          }]
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+
+      let myChart2 = this.$echarts.init(document.getElementById('lastThirtyDays2'));
+      // 指定图表的配置项和数据
+      let option2 = {
+        title: {
+          text: '最近 30 天'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+        legend: {
+          data: ["访客数", "浏览量"]
+        },
+        xAxis: {
+          type: 'category',
+          data: data.dates
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: '访客数',
+            data: data.visitIps,
+            type: 'line',
+            smooth: true,
+            areaStyle: {}
           },
           {
             name: '浏览量',
@@ -328,7 +372,7 @@ export default {
       };
 
       // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+      myChart2.setOption(option2);
     },
     initHistoryCharts(data) {
       let myChart = this.$echarts.init(document.getElementById('history'));
@@ -347,7 +391,7 @@ export default {
           }
         },
         legend: {
-          data: ["文章", "用户", "浏览量"]
+          data: ["文章", "用户"]
         },
         xAxis: {
           type: 'category',
@@ -369,6 +413,43 @@ export default {
             type: 'line',
             smooth: true,
             areaStyle: {}
+          }]
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+
+      let myChart2 = this.$echarts.init(document.getElementById('history2'));
+      // 指定图表的配置项和数据
+      let option2 = {
+        title: {
+          text: '历史'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
+        legend: {
+          data: ["访客数", "浏览量"]
+        },
+        xAxis: {
+          type: 'category',
+          data: data.dates
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+            name: '访客数',
+            data: data.visitIps,
+            type: 'line',
+            smooth: true,
+            areaStyle: {}
           },
           {
             name: '浏览量',
@@ -380,7 +461,7 @@ export default {
       };
 
       // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+      myChart2.setOption(option2);
     },
     getUserPath(nickname) {
       return `/user/${nickname}`

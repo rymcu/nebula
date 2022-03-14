@@ -11,7 +11,8 @@ const getDefaultLastThirtyDaysData = () => {
     dates: [],
     articles: [],
     users: [],
-    visits: []
+    visits: [],
+    visitIps: []
   }
 }
 
