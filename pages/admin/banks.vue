@@ -90,7 +90,7 @@ export default {
   fetch({store, params, error}) {
     return Promise.all([
       store
-        .dispatch('currency-rule/fetchList', params)
+        .dispatch('bank/fetchList', params)
         .catch(err => error({statusCode: 404}))
     ])
   },
