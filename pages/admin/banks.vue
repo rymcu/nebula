@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     ...mapState({
-      banks: state => state["currency-rule"].list.data.banks,
+      banks: state => state.bank.list.data.banks,
       pagination: state => state.bank.list.data.pagination
     })
   },
