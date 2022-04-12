@@ -26,7 +26,7 @@
     "simple-icons": "^6.12.0",
     "sockjs-client": "^1.5.2",
     "stompjs": "^2.3.3",
-    "vditor": "^3.8.11",
+    "vditor": "^3.8.13",
     "vue-cropperjs": "^4.2.0",
     "vuejs-avataaars": "^4.0.1"
   },

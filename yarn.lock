@@ -8869,10 +8869,10 @@ vary@^1.1.2, vary@~1.1.2:
   resolved "https://registry.nlark.com/vary/download/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vditor@^3.8.11:
-  version "3.8.11"
-  resolved "https://registry.yarnpkg.com/vditor/-/vditor-3.8.11.tgz#cf0684446807a308eb53874a2647ba98927cd0dd"
-  integrity sha512-nwS2TLgu3DnHdfxcjnUESg/qbnYU0YR9YAvn2IKBK/F36h4k1BMqjsfEQqE4TL2RH5RGIapcQfAdJ9xF1iQNWw==
+vditor@^3.8.13:
+  version "3.8.13"
+  resolved "https://registry.yarnpkg.com/vditor/-/vditor-3.8.13.tgz#9f4a549fd559e14fe65cc188ceadba61051db57c"
+  integrity sha512-vp6OF1n9wIduKtLvvTYtn+7Gr1Az6MqDIEBpLzik+PTQ208YjrcQ+Ba4AHXMMvJgDtbYP3PdY8OixWKecFzo2A==
   dependencies:
     diff-match-patch "^1.0.5"
 
