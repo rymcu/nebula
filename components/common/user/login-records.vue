@@ -28,6 +28,7 @@
       <el-pagination
         :hide-on-single-page="true"
         @current-change="currentChange"
+        @size-change="sizeChange"
         :current-page="records.pagination.currentPage"
         :page-sizes="[10, 20, 50, 100]"
         :page-size="records.pagination.pageSize"
@@ -56,14 +57,19 @@ export default {
     return {}
   },
   methods: {
+    sizeChange(size) {
+      let _ts = this;
+      let search = {
+        size: size,
+        page: _ts.records.pagination.currentPage
+      }
+      _ts.$emit('currentChange', search);
+    },
     currentChange(page) {
       let _ts = this;
-      let startDate = _ts.searchDate[0]
-      let endDate = _ts.searchDate[1]
       let search = {
         page: page,
-        startDate: startDate,
-        endDate: endDate
+        size: _ts.records.pagination.pageSize
       }
       _ts.$emit('currentChange', search);
     }

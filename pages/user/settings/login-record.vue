@@ -32,13 +32,15 @@ export default {
       _ts.$axios.$get('api/user-info/login-records', {
         params: {
           idUser: _ts.idUser,
-          page: search.page
+          page: search.page || 1,
+          rows: search.size || 10
         }
       }).then(function (res) {
         if (res) {
           _ts.records = res
         }
       })
+
     },
     getData() {
       let _ts = this
