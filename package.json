@@ -33,7 +33,7 @@
   "devDependencies": {
     "@nuxtjs/proxy": "^2.1.0",
     "lodash-webpack-plugin": "^0.11.6",
-    "node-sass": "^5.0.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^10.2.0"
   }
 }
