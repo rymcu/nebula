@@ -40,7 +40,7 @@
               <el-avatar v-show="!comment.commenter.userAvatarURL"
                          src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
             </el-col>
-            <el-col :xs="21" :sm="23" :xl="23" style="padding-bottom: 10px;" v-if="comment.status === 0">
+            <el-col :xs="21" :sm="23" :xl="23" style="padding-bottom: 10px;" v-if="comment.commentStatus === '0'">
               <el-col style="margin-left: 1rem;">
                 <el-col v-show="comment.commentOriginalCommentId">
                   <el-col :span="16">
