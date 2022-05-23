@@ -19,44 +19,44 @@ export default {
     _initEditor(data) {
       let _ts = this;
 
-        let toolbar = [
-          'emoji',
-          'headings',
-          'bold',
-          'italic',
-          'strike',
-          'link',
-          '|',
-          'list',
-          'ordered-list',
-          'check',
-          'outdent',
-          'indent',
-          '|',
-          'quote',
-          'line',
-          'code',
-          'inline-code',
-          'insert-before',
-          'insert-after',
-          '|',
-          'upload',
-          // 'record',
-          'table',
-          '|',
-          'undo',
-          'redo',
-          '|',
-          'edit-mode',
-          {
-            name: 'more',
-            toolbar: [
-              'fullscreen',
-              'both',
-              'preview',
-              'info'
-            ],
-          }]
+      let toolbar = [
+        'emoji',
+        'headings',
+        'bold',
+        'italic',
+        'strike',
+        'link',
+        '|',
+        'list',
+        'ordered-list',
+        'check',
+        'outdent',
+        'indent',
+        '|',
+        'quote',
+        'line',
+        'code',
+        'inline-code',
+        'insert-before',
+        'insert-after',
+        '|',
+        'upload',
+        // 'record',
+        'table',
+        '|',
+        'undo',
+        'redo',
+        '|',
+        'edit-mode',
+        {
+          name: 'more',
+          toolbar: [
+            'fullscreen',
+            'both',
+            'preview',
+            'info'
+          ],
+        }]
       return new Vue.Vditor(data.id, {
         toolbar,
         mode: 'wysiwyg',
@@ -117,15 +117,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  @import "~vditor/src/assets/scss/index.scss";
+<style lang="less">
+@import "~vditor/src/assets/less/index.less";
 
-  .guides__wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: block;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    box-sizing: border-box;
-  }
+.guides__wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: block;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
 </style>

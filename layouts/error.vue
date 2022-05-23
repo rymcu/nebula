@@ -43,15 +43,15 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  $z-index-top: 99999;
-  $white: #fff;
+<style lang="less" scoped>
+  @z-index-top: 99999;
+  @white: #fff;
 
-  $module-bg: var(rgba($white, 0.6));
+  @module-bg: var(rgba(@white, 0.6));
 
-  $black-light: #555555;
+  @black-light: #555555;
 
-  $transition-time-slow: .38s;
+  @transition-time-slow: .38s;
 
   .error {
     top: 0;
@@ -60,12 +60,12 @@
     height: 100%;
     position: fixed;
     overflow: hidden;
-    z-index: $z-index-top;
+    z-index: @z-index-top;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $white;
+    background-color: @white;
 
     @keyframes error-item {
       0% {
@@ -82,8 +82,8 @@
       > .error-code,
       > .error-link,
       > .error-wrapper-message {
-        color: $black-light;
-        animation: error-item ease-out both .6s $transition-time-slow;
+        color: @black-light;
+        animation: error-item ease-out both .6s @transition-time-slow;
         text-shadow: 5px 5px 5px #616161;
       }
 
@@ -113,18 +113,18 @@
 
   .error-image {
     width: 28rem;
-    animation: error-item ease-out both .6s $transition-time-slow;
+    animation: error-item ease-out both .6s @transition-time-slow;
   }
 
   .error-code {
     text-transform: uppercase;
-    animation: error-item ease-out both .6s $transition-time-slow;
+    animation: error-item ease-out both .6s @transition-time-slow;
     color: #616161;
     font-size: 5em;
     text-shadow: 5px 5px 5px #616161;
   }
 
   .link {
-    color: $black-light;
+    color: @black-light;
   }
 </style>

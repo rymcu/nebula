@@ -117,8 +117,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "~vditor/src/assets/scss/index.scss";
+<style lang="less">
+  @import "~vditor/src/assets/less/index.less";
 
 .guides__wrapper {
   max-width: 1200px;

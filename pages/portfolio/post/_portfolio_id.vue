@@ -435,8 +435,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "~vditor/src/assets/scss/index.scss";
+<style lang="less">
+  @import "~vditor/src/assets/less/index.less";
 
 .preview-area {
   width: 16rem;
