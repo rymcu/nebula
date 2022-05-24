@@ -59,6 +59,7 @@
 <script>
   import Vue from 'vue';
   import {mapState} from 'vuex';
+  import apiConfig from '~/config/api.config';
 
   export default {
     name: "PostArticle",
@@ -160,6 +161,7 @@
           toolbar,
           mode: 'sv',
           tab: '\t',
+          cdn: apiConfig.VDITOR,
           cache: {
             enable: this.$route.params.article_id ? false : true,
             id: this.$route.params.article_id ? this.$route.params.article_id : '',
@@ -192,6 +194,9 @@
               }
               // LazyLoadImage();
               // Vue.Vditor.highlightRender({style: 'github'}, element, this.contentEditor);
+            },
+            theme: {
+              cdn: apiConfig.VDITOR_CSS
             }
           },
           upload: {

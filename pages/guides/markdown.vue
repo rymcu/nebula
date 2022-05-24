@@ -12,6 +12,7 @@
 <script>
 import Vue from 'vue';
 import markdownGuide from 'static/guides/markdown.txt';
+import apiConfig from '~/config/api.config';
 
 export default {
   name: "markdown",
@@ -61,6 +62,7 @@ export default {
         toolbar,
         mode: 'wysiwyg',
         tab: '\t',
+        cdn: apiConfig.VDITOR,
         cache: {
           enable: false
         },
@@ -89,6 +91,9 @@ export default {
             if (element.style.display === 'none') {
               return
             }
+          },
+          theme: {
+            cdn: apiConfig.VDITOR_CSS
           }
         },
         height: data.height,

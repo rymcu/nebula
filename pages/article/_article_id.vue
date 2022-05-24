@@ -167,6 +167,7 @@ import PortfoliosWidget from '~/components/widget/portfolios';
 import EditTags from '~/components/widget/tags';
 import 'vditor/dist/css/content-theme/light.css';
 import {buymeacoffee} from "simple-icons"
+import apiConfig from '~/config/api.config';
 
 export default {
   name: "ArticleDetail",
@@ -408,15 +409,19 @@ export default {
       // //const outLineElement = document.getElementById("articleToC");
       // VditorPreview.setContentTheme('light');
       Vue.VditorPreview.codeRender(previewElement, 'zh_CN');
-      Vue.VditorPreview.highlightRender({"enable": true, "lineNumber": true, "style": "github"}, previewElement);
+      Vue.VditorPreview.highlightRender({
+        "enable": true,
+        "lineNumber": true,
+        "style": "github"
+      }, previewElement, apiConfig.VDITOR);
       Vue.VditorPreview.mathRender(previewElement, {
-        math: {"engine": "KaTeX", "inlineDigit": false, "macros": {}},
+        math: {"engine": "KaTeX", "inlineDigit": false, "macros": {}}, cdn: apiConfig.VDITOR
       });
-      Vue.VditorPreview.mermaidRender(previewElement);
-      Vue.VditorPreview.graphvizRender(previewElement);
-      Vue.VditorPreview.chartRender(previewElement);
-      Vue.VditorPreview.mindmapRender(previewElement);
-      Vue.VditorPreview.abcRender(previewElement);
+      Vue.VditorPreview.mermaidRender(previewElement, apiConfig.VDITOR);
+      Vue.VditorPreview.graphvizRender(previewElement, apiConfig.VDITOR);
+      Vue.VditorPreview.chartRender(previewElement, apiConfig.VDITOR);
+      Vue.VditorPreview.mindmapRender(previewElement, apiConfig.VDITOR);
+      Vue.VditorPreview.abcRender(previewElement, apiConfig.VDITOR);
       Vue.VditorPreview.mediaRender(previewElement);
       Vue.VditorPreview.lazyLoadImageRender(previewElement);
       //VditorPreview.outlineRender(previewElement, outLineElement);
@@ -433,7 +438,7 @@ export default {
 </script>
 
 <style lang="less">
-  @import "~vditor/src/assets/less/index.less";
+@import "~vditor/src/assets/less/index.less";
 
 .article__wrapper {
   max-width: 980px;

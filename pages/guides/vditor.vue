@@ -11,6 +11,7 @@
 
 <script>
 import Vue from 'vue';
+import apiConfig from '~/config/api.config';
 
 export default {
   name: "vditor",
@@ -60,6 +61,7 @@ export default {
         toolbar,
         mode: 'wysiwyg',
         tab: '\t',
+        cdn: apiConfig.VDITOR,
         cache: {
           enable: false
         },
@@ -88,6 +90,9 @@ export default {
             if (element.style.display === 'none') {
               return
             }
+          },
+          theme: {
+            cdn: apiConfig.VDITOR_CSS
           }
         },
         height: data.height,

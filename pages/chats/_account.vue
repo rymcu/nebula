@@ -39,6 +39,7 @@
 import Vue from 'vue';
 import {mapState} from 'vuex';
 import sockClient from '~/plugins/sockjs';
+import apiConfig from '~/config/api.config';
 
 export default {
   name: "Chat",
@@ -115,6 +116,7 @@ export default {
         toolbar,
         mode: 'sv',
         tab: '\t',
+        cdn: apiConfig.VDITOR,
         cache: {
           enable: this.postId ? false : true,
           id: this.postId ? this.postId : '',
@@ -135,6 +137,9 @@ export default {
             }
             // LazyLoadImage();
             // Vue.Vditor.highlightRender({style:'github'}, element, document);
+          },
+          theme: {
+            cdn: apiConfig.VDITOR_CSS
           }
         },
         upload: {

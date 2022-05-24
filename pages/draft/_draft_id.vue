@@ -143,15 +143,19 @@
         // //const outLineElement = document.getElementById("articleToC");
         // VditorPreview.setContentTheme('light');
         Vue.VditorPreview.codeRender(previewElement, 'zh_CN');
-        Vue.VditorPreview.highlightRender({"enable": true, "lineNumber": false, "style": "github"}, previewElement);
+        Vue.VditorPreview.highlightRender({
+          "enable": true,
+          "lineNumber": true,
+          "style": "github"
+        }, previewElement, apiConfig.VDITOR);
         Vue.VditorPreview.mathRender(previewElement, {
-          math: {"engine": "KaTeX", "inlineDigit": false, "macros": {}},
+          math: {"engine": "KaTeX", "inlineDigit": false, "macros": {}}, cdn: apiConfig.VDITOR
         });
-        Vue.VditorPreview.mermaidRender(previewElement, ".language-mermaid");
-        Vue.VditorPreview.graphvizRender(previewElement);
-        Vue.VditorPreview.chartRender(previewElement);
-        Vue.VditorPreview.mindmapRender(previewElement);
-        Vue.VditorPreview.abcRender(previewElement);
+        Vue.VditorPreview.mermaidRender(previewElement, apiConfig.VDITOR);
+        Vue.VditorPreview.graphvizRender(previewElement, apiConfig.VDITOR);
+        Vue.VditorPreview.chartRender(previewElement, apiConfig.VDITOR);
+        Vue.VditorPreview.mindmapRender(previewElement, apiConfig.VDITOR);
+        Vue.VditorPreview.abcRender(previewElement, apiConfig.VDITOR);
         Vue.VditorPreview.mediaRender(previewElement);
         Vue.VditorPreview.lazyLoadImageRender(previewElement);
         //VditorPreview.outlineRender(previewElement, outLineElement);

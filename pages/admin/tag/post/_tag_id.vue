@@ -122,6 +122,7 @@ import Vue from "vue";
 import {mapState} from 'vuex';
 import VueCropper from "vue-cropperjs";
 import 'cropperjs/dist/cropper.css';
+import apiConfig from '~/config/api.config';
 
 export default {
   name: "PostTag",
@@ -208,6 +209,7 @@ export default {
         toolbar,
         mode: 'sv',
         tab: '\t',
+        cdn: apiConfig.VDITOR,
         cache: {
           enable: this.$route.params.tag_id ? false : true,
           id: this.$route.params.tag_id ? this.$route.params.tag_id : '',
@@ -239,6 +241,9 @@ export default {
             }
             // LazyLoadImage();
             // Vue.Vditor.highlightRender({style: 'github'}, element, this.contentEditor);
+          },
+          theme: {
+            cdn: apiConfig.VDITOR_CSS
           }
         },
         height: data.height,
