@@ -1,6 +1,12 @@
 <template>
   <client-only>
     <el-row>
+      <el-col v-if="hasUnReadNotification" style="text-align: right;padding: 20px;">
+        <el-link rel="nofollow" :underline="false"
+                 @click="readAll()">
+          <i class="el-icon-check"></i> 一键标记已读
+        </el-link>
+      </el-col>
       <el-col v-for="notification in notifications.notifications" :key="notification.idNotification">
         <el-col v-if="notification.dataType == 0">
           <el-col :xs="16" :sm="20" :xl="20">
@@ -80,6 +86,18 @@ export default {
       type: Object
     }
   },
+  computed: {
+    hasUnReadNotification: function () {
+      let nums = 0;
+      let notifications = this.notifications.notifications;
+      for (const index in notifications) {
+        if (notifications[index].hasRead === '0') {
+          nums++;
+        }
+      }
+      return nums > 0;
+    }
+  },
   methods: {
     currentChange(page) {
       this.$emit('currentChange', page);
@@ -87,6 +105,13 @@ export default {
     read(id) {
       let _ts = this;
       this.$axios.$put('/api/notification/read/' + id).then(function () {
+        _ts.$store.commit('notification/updateState', true)
+        _ts.$store.dispatch('notification/fetchList', {page: 1})
+      }).catch(error => console.log(error));
+    },
+    readAll() {
+      let _ts = this;
+      this.$axios.$put('/api/notification/read-all').then(function () {
         _ts.$store.commit('notification/updateState', true)
         _ts.$store.dispatch('notification/fetchList', {page: 1})
       }).catch(error => console.log(error));
