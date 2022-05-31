@@ -154,13 +154,13 @@ export default {
           })
           break;
         case "2":
-          _ts.$store.dispatch('user/fetchFollowerList', {
+          _ts.$store.dispatch('user/fetchFollowingList', {
             account: _ts.$route.params.account,
             page: _ts.$route.query.page || 1
           })
           break;
         default:
-          _ts.$store.dispatch('user/fetchFollowingList', {
+          _ts.$store.dispatch('user/fetchFollowerList', {
             account: _ts.$route.params.account,
             page: _ts.$route.query.page || 1
           })
