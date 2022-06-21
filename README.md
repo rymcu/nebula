@@ -93,7 +93,7 @@ nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，�
 - 感谢 `JetBrains` 对本项目的帮助,为作者提供了开源许可版 `JetBrains` 全家桶
  
  
-![JetBrains](assets/jetbrains.png)
+![JetBrains](assets/jb_beam.svg)
 
 ## Build Setup
 
