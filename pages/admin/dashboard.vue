@@ -256,11 +256,11 @@ export default {
       store
         .dispatch('dashboard/fetchDashboard', params)
         .catch(err => error({statusCode: 404})),
-      store.dispatch("dashboard/fetchLastThirtyDays"),
-      store.dispatch("dashboard/fetchHistory"),
-      store.dispatch("dashboard/fetchNewUsers"),
-      store.dispatch("dashboard/fetchNewBankAccounts"),
-      store.dispatch("dashboard/fetchNewArticles")
+      store.dispatch("dashboard/fetchLastThirtyDays", params),
+      store.dispatch("dashboard/fetchHistory", params),
+      store.dispatch("dashboard/fetchNewUsers", params),
+      store.dispatch("dashboard/fetchNewBankAccounts", params),
+      store.dispatch("dashboard/fetchNewArticles", params)
     ])
   },
   computed: {

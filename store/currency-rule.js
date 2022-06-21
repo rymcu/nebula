@@ -1,8 +1,8 @@
-export const BANK_API_PATH = '/api/admin/bank'
+export const RULE_API_PATH = '/api/admin/rule/currency'
 
 const getDefaultListData = () => {
   return {
-    banks: [],
+    rules: [],
     pagination: {}
   }
 }
@@ -31,16 +31,11 @@ export const actions = {
       return true;
     }
     // 清空已有数据
-    commit('updateListData', getDefaultListData())
+    commit('updateListData', [])
     commit('updateListFetching', true)
-    let data = {
-      page: params.page || 1
-    }
 
     return this.$axios
-      .$get(`${BANK_API_PATH}/list`, {
-        params: data
-      })
+      .$get(`${RULE_API_PATH}/list`)
       .then(response => {
         commit('updateListFetching', false);
         commit('updateListData', response);
@@ -51,4 +46,3 @@ export const actions = {
       });
   }
 }
-

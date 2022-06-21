@@ -21,6 +21,12 @@
         </el-form-item>
       </el-form>
     </el-col>
+    <el-col>
+      <h1>双重验证</h1>
+    </el-col>
+    <el-col>
+      <el-button type="primary" round plain @click="open2FA">开启</el-button>
+    </el-col>
     <el-dialog
       title="更换邮箱"
       :visible.sync="dialogVisible"
@@ -48,12 +54,27 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-dialog
+      title="双重验证"
+      :visible.sync="secretKeyDialogVisible"
+      width="475px"
+      :before-close="hideSecretKeyDialog"
+      center>
+      <el-row style="text-align: center;">
+        <el-col>
+          <qrcode :value="secretKey" :options="{ width: 20 }"></qrcode>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </el-row>
 </template>
 
 <script>
+import Vue from 'vue';
 import {mapState} from 'vuex';
+import VueQrCode from '@chenfengyuan/vue-qrcode';
 
+Vue.component(VueQrCode.name, VueQrCode);
 export default {
   name: "security",
   computed: {
@@ -74,7 +95,9 @@ export default {
       dialogVisible: false,
       loading: false,
       loadText: '发送验证码',
-      btnLoading: false
+      btnLoading: false,
+      secretKeyDialogVisible: false,
+      secretKey: ''
     }
   },
   methods: {
@@ -183,6 +206,18 @@ export default {
           }
         }
       })
+    },
+    open2FA () {
+      let _ts = this;
+      _ts.$axios.$get('/api/auth/tow-factor/gen-key').then(function (res) {
+        if (res) {
+          _ts.secretKey = res.secretKey
+          _ts.$set(_ts, 'secretKeyDialogVisible', true);
+        }
+      })
+    },
+    hideSecretKeyDialog () {
+      this.$set(this, 'secretKeyDialogVisible', false);
     }
   },
   mounted() {

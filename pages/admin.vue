@@ -159,7 +159,10 @@ export default {
       this.$store.commit('admin/updateTags', tabs.filter(tab => tab.name !== targetName))
 
       this.$router.push({
-        name: activeName
+        name: activeName,
+        params: {
+          reset: '0'
+        }
       })
     },
     handleClick(item) {
@@ -175,12 +178,16 @@ export default {
         _ts.$store.commit('admin/pushTags', _ts.menus[index])
       }
       _ts.$router.push({
-        name: item.name
+        name: item.name,
+        params: {
+          reset: '0'
+        }
       })
     },
     handleSelectTab(item) {
       let _ts = this
       this.$store.commit('admin/updateActiveTab', item);
+      let reset = '0'
       let result = _.findIndex(_ts.editableTabs, function (tab) {
         return tab.name === item;
       })
@@ -189,9 +196,13 @@ export default {
           return menu.name === item;
         })
         _ts.$store.commit('admin/pushTags', _ts.menus[index])
+        reset = '1'
       }
       _ts.$router.push({
-        name: item
+        name: item,
+        params: {
+          reset: reset
+        }
       })
     },
     handleSelectMenu(item) {

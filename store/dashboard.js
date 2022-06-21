@@ -75,6 +75,9 @@ export const mutations = {
 
 export const actions = {
   fetchDashboard({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateDashboardData', getDefaultDashboardData())
     commit('updateDashboardFetching', true)
@@ -91,6 +94,9 @@ export const actions = {
       });
   },
   fetchLastThirtyDays({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateLastThirtyDaysData', getDefaultLastThirtyDaysData())
     commit('updateDashboardFetching', true)
@@ -107,6 +113,9 @@ export const actions = {
       });
   },
   fetchHistory({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateHistoryData', getDefaultLastThirtyDaysData())
     commit('updateDashboardFetching', true)
@@ -123,6 +132,9 @@ export const actions = {
       });
   },
   fetchNewUsers({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateNewUsersData', getDefaultNewUserData())
     commit('updateDashboardFetching', true)
@@ -139,6 +151,9 @@ export const actions = {
       });
   },
   fetchNewBankAccounts({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateNewBankAccountsData', getDefaultNewBankAccountData())
     commit('updateDashboardFetching', true)
@@ -155,6 +170,9 @@ export const actions = {
       });
   },
   fetchNewArticles({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateNewArticlesData', getDefaultNewBankAccountData())
     commit('updateDashboardFetching', true)

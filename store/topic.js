@@ -68,6 +68,9 @@ export const mutations = {
 
 export const actions = {
   fetchList({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateListData', getDefaultListData())
     commit('updateListFetching', true)

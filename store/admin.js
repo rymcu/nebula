@@ -88,6 +88,9 @@ export const mutations = {
 
 export const actions = {
   fetchUsers({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateUsersData', getDefaultUsersData())
     commit('updateFetching', true)
@@ -111,6 +114,9 @@ export const actions = {
       });
   },
   fetchRoles({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateRolesData', getDefaultRolesData())
     commit('updateFetching', true)
@@ -134,6 +140,9 @@ export const actions = {
       });
   },
   fetchArticles({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateArticlesData', getDefaultArticlesData())
     commit('updateFetching', true)
@@ -158,6 +167,9 @@ export const actions = {
       });
   },
   fetchComments({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
     // 清空已有数据
     commit('updateCommentsData', getDefaultArticlesData())
     commit('updateFetching', true)

@@ -14,16 +14,7 @@
               <el-menu-item index="index">首页</el-menu-item>
               <el-menu-item index="topic">专题</el-menu-item>
               <el-menu-item index="portfolios">作品集</el-menu-item>
-              <el-submenu index="store">
-                <template slot="title">RYMCU Store</template>
-                <el-menu-item index="taobao">淘宝店铺</el-menu-item>
-                <el-submenu index="weixin">
-                  <template slot="title">微信</template>
-                  <el-menu-item index="mini" style="height: 200px;">
-                    <img src="@/assets/weixinStore.jpg" style="width: 200px;"/>
-                  </el-menu-item>
-                </el-submenu>
-              </el-submenu>
+              <el-menu-item index="products">产品</el-menu-item>
               <el-menu-item index="open-data">开放数据</el-menu-item>
             </el-menu>
           </el-col>
@@ -243,6 +234,11 @@ export default {
           case 'portfolios':
             _ts.$router.push({
               path: '/portfolios?page=1'
+            })
+            break;
+          case 'products':
+            _ts.$router.push({
+              path: '/products?page=1'
             })
             break;
           case 'github':

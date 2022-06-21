@@ -2,8 +2,8 @@
   <el-row>
     <el-col :xs="24" :xl="24">
       <div class="card card-profile">
-        <div v-if="user.userHomeBImgURL" class="card-header"
-             :style="{backgroundImage:'url('+user.userHomeBImgURL+')', backgroundSize:'percentage', backgroundPosition:'50%'}"></div>
+        <div v-if="user.bgImgUrl" class="card-header"
+             :style="{backgroundImage:'url('+user.bgImgUrl+')', backgroundSize:'cover', backgroundPosition:'50%'}"></div>
         <div v-else class="card-header"
              :style="{backgroundImage:'url(' + backgroundImage + ')', backgroundSize:'800px auto', backgroundPosition:'50%'}"></div>
         <div class="card-body text-center">
