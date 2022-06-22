@@ -1,35 +1,52 @@
 <template>
   <el-row class="product__wrapper">
-    <el-col :span="8">
-      <el-card :body-style="{ padding: '0px' }">
-        <img src="https://static.rymcu.com/article/1648960741563.jpg"
-             class="image">
-        <div style="padding: 14px;">
-          <span>Nebula Pi</span>
-          <div class="bottom clearfix">
-            <el-button type="text" class="button">立即购买</el-button>
-            <el-button type="text" class="button" @click="handleClick">相关内容</el-button>
-          </div>
-        </div>
-      </el-card>
+    <el-col>
+      <product-list :products="products" @currentChange="currentChangeProduct"></product-list>
     </el-col>
   </el-row>
 </template>
 
 <script>
+import {mapState} from "vuex";
+import ProductList from "~/components/common/product/list";
+
 export default {
   name: "products",
+  components: {ProductList},
+  fetch({store, query, error}) {
+    return Promise.all([
+      store
+        .dispatch('product/fetchList', {page: query.page || 1})
+        .catch(err => error({statusCode: 404}))
+    ])
+  },
+  watch: {
+    '$route.query': function () {
+      this.$store.dispatch('product/fetchList', {page: this.$route.query.page || 1})
+    }
+  },
+  computed: {
+    ...mapState({
+      products: state => state.product.list.data
+    })
+  },
   data() {
     return {
       currentDate: new Date().toLocaleString()
     };
   },
   methods: {
-    handleClick() {
+    currentChangeProduct(page) {
       this.$router.push({
-        path: "/nebula-pi"
-      });
+        name: 'products',
+        query: {
+          page: page
+        }
+      })
     }
+  },
+  mounted() {
+    this.$store.commit('setActiveMenu', 'products');
   }
 }
 </script>
