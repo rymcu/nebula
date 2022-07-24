@@ -1,7 +1,7 @@
 <template>
   <el-row class="wrapper">
     <el-col :xs="24" :sm="24" :xl="24" style="margin: 0 auto;">
-      <el-col v-for="article in articles.articles" :key="article.idArticle" style="padding-bottom: 1rem;">
+      <el-col v-for="article in articles.list" :key="article.idArticle" style="padding-bottom: 1rem;">
         <el-card>
           <div class="card-body d-flex flex-column">
             <el-link :href="article.articleLink" style="margin-bottom: .5rem;">
@@ -50,11 +50,11 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination :hide-on-single-page="true" v-model="articles.pagination"
+          <el-pagination :hide-on-single-page="true"
                          layout="prev, pager, next"
-                         :page-size="articles.pagination.pageSize"
-                         :current-page="articles.pagination.currentPage"
-                         :total="articles.pagination.total"
+                         :page-size="articles.pageSize"
+                         :current-page="articles.pageNum"
+                         :total="articles.total"
                          prev-text="上一页"
                          next-text="下一页"
                          @current-change="currentChange">

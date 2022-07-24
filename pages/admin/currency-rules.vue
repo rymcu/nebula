@@ -8,7 +8,7 @@
     </el-col>
     <el-col>
       <el-table
-        :data="rules"
+        :data="rules.list"
         style="width: 100%">
         <el-table-column
           label="规则名称"
@@ -45,11 +45,11 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="rules.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="rules.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="rules.total">
       </el-pagination>
     </el-col>
     <el-col>
@@ -90,8 +90,7 @@ export default {
   },
   computed: {
     ...mapState({
-      rules: state => state["currency-rule"].list.data.rules,
-      pagination: state => state["currency-rule"].list.data.pagination
+      rules: state => state["currency-rule"].list.data
     })
   },
   data() {
@@ -114,7 +113,7 @@ export default {
     handleSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('bank/fetchList', {
-        page: _ts.pagination.currentPage,
+        page: _ts.rules.pageNum,
         rows: pageSize
       })
     },
@@ -122,7 +121,7 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('bank/fetchList', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.rules.pageSize
       })
     },
     showTransfer(index, bank) {

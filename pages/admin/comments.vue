@@ -11,15 +11,15 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="comments.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="comments.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="comments.total">
       </el-pagination>
     </el-col>
     <el-col>
-      <el-col v-for="comment in comments" :key="comment.idComment">
+      <el-col v-for="comment in comments.list" :key="comment.idComment">
         <el-card style="margin-top: 1rem;padding-bottom: 10px;" :id="'comment-' + comment.idComment">
           <el-col style="margin-bottom: 1rem;">
             <el-link :href="comment.commentSharpUrl">
@@ -82,11 +82,11 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="comments.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="comments.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="comments.total">
       </el-pagination>
     </el-col>
   </el-row>
@@ -106,8 +106,7 @@ export default {
   },
   computed: {
     ...mapState({
-      comments: state => state.admin.comment.comments,
-      pagination: state => state.admin.comment.pagination
+      comments: state => state.admin.comments
     })
   },
   data() {
@@ -137,7 +136,7 @@ export default {
     handleSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('admin/fetchComments', {
-        page: _ts.pagination.currentPage,
+        page: _ts.comments.pageNum,
         rows: pageSize
       })
     },
@@ -145,7 +144,7 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('admin/fetchComments', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.comments.pageSize
       })
     },
     toggleStatus() {}

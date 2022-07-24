@@ -11,16 +11,16 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="articles.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="articles.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="articles.total">
       </el-pagination>
     </el-col>
     <el-col>
       <el-table
-        :data="articles"
+        :data="articles.list"
         style="width: 100%">
         <el-table-column
           label="#"
@@ -82,11 +82,11 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="articles.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="articles.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="articles.total">
       </el-pagination>
     </el-col>
     <el-col>
@@ -119,8 +119,7 @@ export default {
   },
   computed: {
     ...mapState({
-      articles: state => state.admin.article.articles,
-      pagination: state => state.admin.article.pagination
+      articles: state => state.admin.articles
     })
   },
   data() {

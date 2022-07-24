@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <el-row class="row-cards row-deck" :gutter="20">
-      <el-col :span="8" v-for="product in products.products" :key="product.idProduct" style="margin-right: 20px;">
+      <el-col :span="8" v-for="product in products.list" :key="product.idProduct" style="margin-right: 20px;">
         <el-card :body-style="{ padding: '20px' }">
           <el-col :span="24">
             <el-image :src="product.productImgUrl"

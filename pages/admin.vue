@@ -117,6 +117,13 @@ export default {
           path: '/admin/currency-rules',
           icon: 'el-icon-document',
           closable: true
+        },
+        {
+          title: '产品管理',
+          name: 'admin-products',
+          path: '/admin/products',
+          icon: 'el-icon-box',
+          closable: true
         }
       ]
     }

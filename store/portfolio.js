@@ -53,12 +53,10 @@ export const mutations = {
     state.detail.data = action.portfolio
   },
   updateArticleList(state, action) {
-    state.articles.articles = action.articles
-    state.articles.pagination = action.pagination
+    state.articles = action
   },
   updateUnbindArticleList(state, action) {
-    state.unbindArticles.articles = action.articles
-    state.unbindArticles.pagination = action.pagination
+    state.unbindArticles = action
   },
 
   // 更新作品集阅读全文状态

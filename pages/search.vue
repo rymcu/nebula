@@ -7,13 +7,13 @@
     </el-col>
     <el-col>
       <el-tabs v-model="activeName">
-        <el-tab-pane :label="'文章 (' + getLength(articles.pagination) + ')'" name="articles">
+        <el-tab-pane :label="'文章 (' + getLength(articles) + ')'" name="articles">
           <article-list :articles="articles" @currentChange="currentChangeArticle"/>
         </el-tab-pane>
-        <el-tab-pane :label="'用户 (' + getLength(users.pagination) + ')'" name="users">
+        <el-tab-pane :label="'用户 (' + getLength(users) + ')'" name="users">
           <user-list :users="users" @currentChange="currentChangeUser"/>
         </el-tab-pane>
-        <el-tab-pane :label="'作品集 (' + getLength(portfolios.pagination) + ')'" name="portfolios">
+        <el-tab-pane :label="'作品集 (' + getLength(portfolios) + ')'" name="portfolios">
           <portfolio-list :portfolios="portfolios" @currentChange="currentChangePortfolio"/>
         </el-tab-pane>
       </el-tabs>

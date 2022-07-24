@@ -306,7 +306,7 @@
             _ts.$store.commit('article/clearDetailData')
             _ts.$set(_ts, 'notificationFlag', false);
             _ts.$router.push({
-              path: `/article/${res.id}`
+              path: `/article/${res}`
             })
           }
         })
@@ -343,7 +343,7 @@
             _ts.contentEditor.setValue('');
             _ts.$set(_ts, 'notificationFlag', false);
             _ts.$router.push({
-              path: `/draft/${res.id}`
+              path: `/draft/${res}`
             })
           }
         })

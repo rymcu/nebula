@@ -9,7 +9,7 @@
     <el-col style="margin: .5rem;">
       <el-button size="small" @click="createTopic" plain>创建专题</el-button>
     </el-col>
-    <el-col :span="8" style="margin-bottom: .5rem;" v-for="topic in topics" :key="topic.idTopic">
+    <el-col :span="8" style="margin-bottom: .5rem;" v-for="topic in topics.list" :key="topic.idTopic">
       <el-card>
         <div class="card-body d-flex flex-column">
           <el-col :span="4" style="text-align: right;">
@@ -48,8 +48,7 @@
     },
     computed: {
       ...mapState({
-        topics: state => state.topic.list.data.topics,
-        pagination: state => state.topic.list.data.pagination
+        topics: state => state.topic.list.data
       })
     },
     methods: {

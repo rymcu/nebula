@@ -51,7 +51,7 @@ export const mutations = {
     state.detail.fetching = action
   },
   updateDetailData(state, action) {
-    state.detail.data = action.article
+    state.detail.data = action
   },
   clearDetailData(state, action) {
     state.detail.data = {}
@@ -103,7 +103,7 @@ export const actions = {
     // 当前页判断
     let currentData = JSON.parse(JSON.stringify(state)).list.data
     let topicUri = JSON.parse(JSON.stringify(state)).topicUri
-    if (Number(params.page) === currentData.pagination.currentPage) {
+    if (Number(params.page) === currentData.pageNum) {
       if (topicUri && topicUri === params.topic_uri) {
         commit('updateListFetching', false)
         return

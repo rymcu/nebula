@@ -29,7 +29,7 @@ export const mutations = {
   },
   updateListData(state, action) {
     state.data =  {
-      data: action.comments,
+      data: action,
       pagination: {
         page: 1
       }
