@@ -39,7 +39,7 @@ export const actions = {
     let currentData = JSON.parse(JSON.stringify(state)).list.data
     let updateState = state.updateState
     if (!updateState) {
-      if (Number(params.page) === currentData?.pagination.currentPage) {
+      if (Number(params.page) === currentData?.pageNum) {
         commit('updateListFetching', false)
         return
       }

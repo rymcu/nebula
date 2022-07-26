@@ -76,7 +76,7 @@ export const actions = {
     // 清空已有数据
     commit('updateListFetching', true)
     let currentData = JSON.parse(JSON.stringify(state)).list.data
-    if (Number(params.page) === currentData.pagination.currentPage) {
+    if (Number(params.page) === currentData.pageNum) {
       commit('updateListFetching', false)
       return
     }
