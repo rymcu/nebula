@@ -76,7 +76,7 @@ export const actions = {
 
     // 清空数据
     // isRestart && commit('updateListData', getDefaultListData())
-    commit('updateListData', getDefaultListData())
+    // commit('updateListData', getDefaultListData())
     commit('updateListFetching', true)
 
     return this.$axios
