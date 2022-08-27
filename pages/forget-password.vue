@@ -47,12 +47,10 @@ export default {
       };
       _ts.$axios.$patch("/api/console/forget-password", data).then(function (res) {
         if (res) {
-          _ts.$message(res.message);
-          if (res.flag === 1) {
-            _ts.$router.push({
-              name: 'login'
-            })
-          }
+          _ts.$message("修改成功，正在跳转登录界面！");
+          _ts.$router.push({
+            name: 'login'
+          })
         }
       })
     }

@@ -159,7 +159,7 @@ export default {
     toggleStatus(index, user) {
       let _ts = this;
       let title, status;
-      if (user.status == 0) {
+      if (user.status === '0') {
         title = '禁用';
         status = 1;
       } else {
@@ -175,9 +175,7 @@ export default {
           idUser: user.idUser,
           status: status
         }).then(function (res) {
-          if (res && res.message) {
-            _ts.$message.error(res.message);
-          } else {
+          if (res) {
             _ts.$message({
               type: 'success',
               message: title + '成功!'
@@ -213,14 +211,11 @@ export default {
         idRole: _ts.idRole
       };
       _ts.$axios.$patch('/api/admin/user/update-role', data).then(function (res) {
-        if (res && res.message) {
-          _ts.$message.error(res.message);
-        } else {
+        if (res) {
           _ts.$message({
             message: '授权成功',
             type: 'success'
           });
-
           _ts.$set(_ts, 'dialogVisible', false);
           _ts.$set(_ts, 'idUser', 0);
           _ts.$set(_ts, 'idRole', 0);

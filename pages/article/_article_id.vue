@@ -372,12 +372,8 @@ export default {
         idArticle: _ts.article.idArticle
       }).then(function (res) {
         if (res) {
-          if (res.success) {
-            _ts.$message.success(res.message);
-            _ts.$store.dispatch('article/updateThumbsUpCount', {thumbsUpNumber: res.thumbsUpNumber})
-          } else {
-            _ts.$message.error(_ts.message);
-          }
+          _ts.$message.success("点赞成功");
+          _ts.$store.dispatch('article/updateThumbsUpCount', {thumbsUpNumber: res})
         }
       })
     },
@@ -388,12 +384,8 @@ export default {
         dataId: _ts.article.idArticle
       }).then(function (res) {
         if (res) {
-          if (res.success) {
-            _ts.$message.success(res.message);
-            _ts.$store.dispatch('article/updateSponsorCount', {sponsorNumber: 1})
-          } else {
-            _ts.$message.error(_ts.message);
-          }
+          _ts.$message.success('赞赏成功');
+          _ts.$store.dispatch('article/updateSponsorCount', {sponsorNumber: 1})
         }
       })
     },

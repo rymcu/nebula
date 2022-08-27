@@ -50,7 +50,7 @@ export const mutations = {
     state.detail.fetching = action
   },
   updateDetailData(state, action) {
-    state.detail.data = action.portfolio
+    state.detail.data = action
   },
   updateArticleList(state, action) {
     state.articles = action

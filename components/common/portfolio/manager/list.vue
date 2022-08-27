@@ -97,7 +97,7 @@
             sortNo: article.sortNo
           }).then(function (res) {
             if (res) {
-              _ts.$message(res.message);
+              _ts.$message("更新成功!");
             }
           })
         } else {
@@ -118,7 +118,7 @@
             }
           }).then(function (res) {
             if (res) {
-              _ts.$message(res.message);
+              _ts.$message('操作成功!');
               _ts.currentChange(_ts.articles.pageNum);
             }
           })
