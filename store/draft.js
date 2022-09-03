@@ -26,6 +26,7 @@ export const mutations = {
     state.list.fetching = action
   },
   updateListData(state, action) {
+    console.log(action)
     state.list.data = action
   },
   // 文章详情
@@ -33,7 +34,7 @@ export const mutations = {
     state.detail.fetching = action
   },
   updateDetailData(state, action) {
-    state.detail.data = action.article
+    state.detail.data = action
   }
 }
 

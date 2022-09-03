@@ -50,15 +50,13 @@ export const mutations = {
     state.detail.fetching = action
   },
   updateDetailData(state, action) {
-    state.detail.data = action.portfolio
+    state.detail.data = action
   },
   updateArticleList(state, action) {
-    state.articles.articles = action.articles
-    state.articles.pagination = action.pagination
+    state.articles = action
   },
   updateUnbindArticleList(state, action) {
-    state.unbindArticles.articles = action.articles
-    state.unbindArticles.pagination = action.pagination
+    state.unbindArticles = action
   },
 
   // 更新作品集阅读全文状态
@@ -78,7 +76,7 @@ export const actions = {
     // 清空已有数据
     commit('updateListFetching', true)
     let currentData = JSON.parse(JSON.stringify(state)).list.data
-    if (Number(params.page) === currentData.pagination.currentPage) {
+    if (Number(params.page) === currentData.pageNum) {
       commit('updateListFetching', false)
       return
     }

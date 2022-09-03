@@ -20,9 +20,14 @@
             <el-input type="textarea" v-model="user.signature"></el-input>
           </el-form-item>
           <el-form-item style="text-align: right;">
-            <el-button type="primary" round plain @click="updateUserInfo">保存</el-button>
+            <el-button type="primary" round plain @click="updateUserInfo">保存基本信息</el-button>
           </el-form-item>
         </el-form>
+      </el-col>
+      <el-col>
+        <h1>社交信息</h1>
+      </el-col>
+      <el-col>
         <el-form :model="userExtend" ref="userExtend" label-width="100px">
           <el-form-item label="博客" prop="signature">
             <el-input placeholder="设置后将会公开你的博客" v-model="userExtend.blog">
@@ -47,7 +52,7 @@
             </el-input>
           </el-form-item>
           <el-form-item style="text-align: right;">
-            <el-button type="primary" round plain @click="updateUserExtend">保存</el-button>
+            <el-button type="primary" round plain @click="updateUserExtend">保存社交信息</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -87,12 +92,12 @@
         let _ts = this;
         _ts.$axios.$get('/api/user-info/detail/' + _ts.idUser).then(function (res) {
           if (res) {
-            if (res.message) {
-              _ts.$message.error(res.message);
-            } else {
-              _ts.$set(_ts, 'user', res.user);
-              _ts.$set(_ts, 'userExtend', res.userExtend);
-            }
+            _ts.$set(_ts, 'user', res);
+          }
+        })
+        _ts.$axios.$get('/api/user-info/detail/' + _ts.idUser + '/extend-info').then(function (res) {
+          if (res) {
+            _ts.$set(_ts, 'userExtend', res);
           }
         })
       },
@@ -104,8 +109,8 @@
             nickname: _ts.user.nickname
           }
         }).then(function (res) {
-          if (res && res.message) {
-            _ts.$message.error(res.message);
+          if (!res) {
+            _ts.$message.error('昵称已被占用!');
           }
         })
       },
@@ -120,13 +125,9 @@
           if (valid) {
             _ts.$axios.$patch('/api/user-info/update', user).then(function (res) {
               if (res) {
-                if (res.message) {
-                  _ts.$message.error(res.message);
-                } else {
-                  _ts.$set(_ts, 'user', res.user);
-                  _ts.$store.commit('setUserInfo', res.user);
-                  _ts.$message.success('更新成功 !');
-                }
+                _ts.$set(_ts, 'user', res);
+                _ts.$store.commit('setUserInfo', res);
+                _ts.$message.success('更新成功 !');
               }
             })
           } else {
@@ -139,12 +140,8 @@
         let userExtend = _ts.userExtend;
         _ts.$axios.$patch('/api/user-info/update-extend', userExtend).then(function (res) {
           if (res) {
-            if (res.message) {
-              _ts.$message.error(res.message);
-            } else {
-              _ts.$set(_ts, 'userExtend', res.userExtend);
-              _ts.$message.success('更新成功 !');
-            }
+            _ts.$set(_ts, 'userExtend', res);
+            _ts.$message.success('更新成功 !');
           }
         })
       }

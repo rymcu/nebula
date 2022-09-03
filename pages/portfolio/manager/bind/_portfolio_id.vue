@@ -78,6 +78,9 @@
           )
         }
       }
+    },
+    mounted() {
+      this.$store.commit('setActiveMenu', 'portfolioBind');
     }
   }
 </script>

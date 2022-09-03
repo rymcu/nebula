@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col v-for="article in articles.articles" :key="article.idArticle" style="padding-top: 1rem;">
+    <el-col v-for="article in articles.list" :key="article.idArticle" style="padding-top: 1rem;">
       <el-card>
         <div class="card-body d-flex flex-column">
           <el-link rel="nofollow" :underline="false" style="margin-bottom: .5rem;">
@@ -15,10 +15,10 @@
     </el-col>
     <el-col>
       <div class="vertical-container text-center" style="padding-top: 10px;">
-        <el-pagination :hide-on-single-page="true" v-model="articles.pagination"
+        <el-pagination :hide-on-single-page="true"
                        layout="prev, pager, next"
-                       :current-page="articles.pagination.currentPage"
-                       :total="articles.pagination.total"
+                       :current-page="articles.pageNum"
+                       :total="articles.total"
                        prev-text="上一页"
                        next-text="下一页"
                        @current-change="currentChange">
@@ -54,7 +54,7 @@
         }).then(function (res) {
           _ts.$set(_ts, 'loading', false);
           if (res) {
-            _ts.$message(res.message);
+            _ts.$message('绑定成功!');
             _ts.currentChange(1);
           }
         })

@@ -43,7 +43,7 @@
             <h3>新增文章列表</h3>
           </el-col>
           <el-table
-            :data="articles.articles"
+            :data="articles.list"
             style="width: 100%">
             <el-table-column
               label="#"
@@ -98,18 +98,18 @@
             :hide-on-single-page="true"
             @size-change="handleArticleSizeChange"
             @current-change="handleArticleCurrentChange"
-            :current-page="articles.pagination.currentPage"
+            :current-page="articles.pageNum"
             :page-sizes="[10, 20, 50, 100]"
-            :page-size="articles.pagination.pageSize"
+            :page-size="articles.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="articles.pagination.total">
+            :total="articles.total">
           </el-pagination>
         </el-col>
         <el-col :span="24">
           <el-col :span="24" style="text-align: left;">
             <h3>新增用户列表</h3>
           </el-col>
-          <el-table :data="users.users"
+          <el-table :data="users.list"
                     style="width: 100%">
             <el-table-column
               label="#"
@@ -147,18 +147,18 @@
             :hide-on-single-page="true"
             @size-change="handleUserSizeChange"
             @current-change="handleUserCurrentChange"
-            :current-page="users.pagination.currentPage"
+            :current-page="users.pageNum"
             :page-sizes="[10, 20, 50, 100]"
-            :page-size="users.pagination.pageSize"
+            :page-size="users.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="users.pagination.total">
+            :total="users.total">
           </el-pagination>
         </el-col>
         <el-col :span="24">
           <el-col :span="24" style="text-align: left;">
             <h3>新增账户列表</h3>
           </el-col>
-          <el-table :data="bankAccounts.bankAccounts"
+          <el-table :data="bankAccounts.list"
                     style="width: 100%">
             <el-table-column
               label="#"
@@ -192,11 +192,11 @@
             :hide-on-single-page="true"
             @size-change="handleBankAccountSizeChange"
             @current-change="handleBankAccountCurrentChange"
-            :current-page="bankAccounts.pagination.currentPage"
+            :current-page="bankAccounts.pageNum"
             :page-sizes="[10, 20, 50, 100]"
-            :page-size="bankAccounts.pagination.pageSize"
+            :page-size="bankAccounts.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="bankAccounts.pagination.total">
+            :total="bankAccounts.total">
           </el-pagination>
         </el-col>
       </div>
@@ -549,7 +549,7 @@ export default {
     handleArticleSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('dashboard/fetchNewArticles', {
-        page: _ts.pagination.currentPage,
+        page: _ts.pageNum,
         rows: pageSize
       })
     },
@@ -557,13 +557,13 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('dashboard/fetchNewArticles', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.pageSize
       })
     },
     handleUserSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('dashboard/fetchNewUsers', {
-        page: _ts.pagination.currentPage,
+        page: _ts.pageNum,
         rows: pageSize
       })
     },
@@ -571,13 +571,13 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('dashboard/fetchNewUsers', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.pageSize
       })
     },
     handleBankAccountSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('dashboard/fetchNewBankAccounts', {
-        page: _ts.pagination.currentPage,
+        page: _ts.pageNum,
         rows: pageSize
       })
     },
@@ -585,7 +585,7 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('dashboard/fetchNewBankAccounts', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.pageSize
       })
     },
   },

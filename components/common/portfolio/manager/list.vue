@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col>
-      <el-table :data="articles.articles" style="width: 100%">
+      <el-table :data="articles.list" style="width: 100%">
         <el-table-column
           label="#"
           width="40"
@@ -34,10 +34,10 @@
     </el-col>
     <el-col>
       <div class="vertical-container text-center" style="padding-top: 10px;">
-        <el-pagination :hide-on-single-page="true" v-model="articles.pagination"
+        <el-pagination :hide-on-single-page="true"
                        layout="prev, pager, next"
-                       :current-page="articles.pagination.currentPage"
-                       :total="articles.pagination.total"
+                       :current-page="articles.pageNum"
+                       :total="articles.total"
                        prev-text="上一页"
                        next-text="下一页"
                        @current-change="currentChange">
@@ -72,11 +72,6 @@
     data() {
       return {
         articles: {
-          articles: [],
-          pagination: {
-            total: 0,
-            currentPage: 1
-          }
         }
       }
     },
@@ -88,7 +83,7 @@
         let _ts = this;
         const responseTopData = await this.$axios.$get('/api/console/portfolio/' + _ts.idPortfolio + '/articles?page='+page);
         if (responseTopData) {
-          responseTopData.pagination.currentPage = page;
+          responseTopData.pageNum = page;
           _ts.$set(_ts, 'articles', responseTopData);
           window.scrollTo(0, 0);
         }
@@ -102,7 +97,7 @@
             sortNo: article.sortNo
           }).then(function (res) {
             if (res) {
-              _ts.$message(res.message);
+              _ts.$message("更新成功!");
             }
           })
         } else {
@@ -123,8 +118,8 @@
             }
           }).then(function (res) {
             if (res) {
-              _ts.$message(res.message);
-              _ts.currentChange(_ts.articles.pagination.currentPage);
+              _ts.$message('操作成功!');
+              _ts.currentChange(_ts.articles.pageNum);
             }
           })
         }).catch(() => {

@@ -76,14 +76,11 @@ export default {
         idArticle: _ts.idArticle,
         articleTags: _ts.articleTags.join(',')
       }).then(function (res) {
+        console.log(res)
         if (res) {
-          if (res.success) {
-            _ts.$emit('closeDialog');
-          } else {
-            _ts.$message(res.message)
-          }
+          _ts.$emit('closeDialog');
         } else {
-          _ts.$message("更新失败!")
+          _ts.$message(res.message)
         }
       })
     }

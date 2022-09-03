@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <el-row class="row-cards row-deck" :gutter="20">
-      <el-col :xs="24" :sm="12" :md="12" v-for="portfolio in portfolios.portfolios" :key="portfolio.idPortfolio">
+      <el-col :xs="24" :sm="12" :md="12" v-for="portfolio in portfolios.list" :key="portfolio.idPortfolio">
         <el-col v-if="portfolio.headImgUrl" style="margin-bottom: 20px;">
           <el-card :body-style="{ padding: '20px' }">
             <el-col :span="12">
@@ -45,10 +45,10 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center" style="padding-top: 10px;">
-          <el-pagination :hide-on-single-page="true" v-model="portfolios.pagination"
+          <el-pagination :hide-on-single-page="true"
                          layout="prev, pager, next"
-                         :current-page="portfolios.pagination.currentPage"
-                         :total="portfolios.pagination.total"
+                         :current-page="portfolios.pageNum"
+                         :total="portfolios.total"
                          prev-text="上一页"
                          next-text="下一页"
                          @current-change="currentChange">

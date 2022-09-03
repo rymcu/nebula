@@ -69,7 +69,7 @@
                 </client-only>
               </el-col>
               <el-col v-if="isShare" style="margin-bottom: 1rem;">
-                <share-box :url="shareData.shareUrl"></share-box>
+                <share-box :url="shareUrl"></share-box>
               </el-col>
               <el-col v-if="article.portfolios && article.portfolios.length > 0">
                 <portfolios-widget :portfolios="article.portfolios"></portfolios-widget>
@@ -257,7 +257,7 @@ export default {
       isShare: false,
       dialogVisible: false,
       isPerfect: false,
-      shareData: {}
+      shareUrl: ''
     }
   },
   methods: {
@@ -283,12 +283,12 @@ export default {
           if (_ts.user) {
             _ts.$axios.$get('/api/article/' + _ts.article.idArticle + '/share').then(function (res) {
               if (res) {
-                _ts.$set(_ts, 'shareData', res);
+                _ts.$set(_ts, 'shareUrl', res);
                 _ts.$set(_ts, 'isShare', true);
               }
             });
           } else {
-            _ts.$set(_ts, 'shareData', {shareUrl: _ts.article.articlePermalink});
+            _ts.$set(_ts, 'shareUrl', _ts.article.articlePermalink);
             _ts.$set(_ts, 'isShare', true);
           }
         }
@@ -372,12 +372,8 @@ export default {
         idArticle: _ts.article.idArticle
       }).then(function (res) {
         if (res) {
-          if (res.success) {
-            _ts.$message.success(res.message);
-            _ts.$store.dispatch('article/updateThumbsUpCount', {thumbsUpNumber: res.thumbsUpNumber})
-          } else {
-            _ts.$message.error(_ts.message);
-          }
+          _ts.$message.success("点赞成功");
+          _ts.$store.dispatch('article/updateThumbsUpCount', {thumbsUpNumber: res})
         }
       })
     },
@@ -388,12 +384,8 @@ export default {
         dataId: _ts.article.idArticle
       }).then(function (res) {
         if (res) {
-          if (res.success) {
-            _ts.$message.success(res.message);
-            _ts.$store.dispatch('article/updateSponsorCount', {sponsorNumber: 1})
-          } else {
-            _ts.$message.error(_ts.message);
-          }
+          _ts.$message.success('赞赏成功');
+          _ts.$store.dispatch('article/updateSponsorCount', {sponsorNumber: 1})
         }
       })
     },

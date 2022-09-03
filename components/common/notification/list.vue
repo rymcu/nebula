@@ -7,7 +7,7 @@
           <i class="el-icon-check"></i> 一键标记已读
         </el-link>
       </el-col>
-      <el-col v-for="notification in notifications.notifications" :key="notification.idNotification">
+      <el-col v-for="notification in notifications.list" :key="notification.idNotification">
         <el-col v-if="notification.dataType == 0">
           <el-col :xs="16" :sm="20" :xl="20">
             <el-link rel="nofollow" :underline="false" @click="onRouter(notification)" style="font-size: 1.1em;"
@@ -63,11 +63,11 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination :hide-on-single-page="true" v-model="notifications.pagination"
+          <el-pagination :hide-on-single-page="true"
                          layout="prev, pager, next"
-                         :page-size="notifications.pagination.pageSize"
-                         :current-page="notifications.pagination.currentPage"
-                         :total="notifications.pagination.total"
+                         :page-size="notifications.pageSize"
+                         :current-page="notifications.pageNum"
+                         :total="notifications.total"
                          prev-text="上一页"
                          next-text="下一页"
                          @current-change="currentChange">
@@ -89,7 +89,7 @@ export default {
   computed: {
     hasUnReadNotification: function () {
       let nums = 0;
-      let notifications = this.notifications.notifications;
+      let notifications = this.notifications.list;
       for (const index in notifications) {
         if (notifications[index].hasRead === '0') {
           nums++;

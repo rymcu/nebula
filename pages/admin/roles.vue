@@ -9,7 +9,7 @@
     <el-col>
       <el-button type="primary" @click="showAddDialog" plain>添加角色</el-button>
       <el-table
-        :data="roles"
+        :data="roles.list"
         style="width: 100%;margin-top: 1rem;">
         <el-table-column
           label="#"
@@ -57,11 +57,11 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="roles.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="roles.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="roles.total">
       </el-pagination>
     </el-col>
     <el-col>
@@ -100,8 +100,7 @@
     },
     computed: {
       ...mapState({
-        pagination: state => state.admin.role.pagination,
-        roles: state => state.admin.role.roles
+        roles: state => state.admin.roles
       })
     },
     data() {
@@ -181,7 +180,7 @@
       handleSizeChange(pageSize) {
         let _ts = this;
         _ts.$store.dispatch('admin/fetchRoles', {
-          page: _ts.pagination.currentPage,
+          page: _ts.roles.pageNum,
           rows: pageSize
         })
       },
@@ -189,7 +188,7 @@
         let _ts = this;
         _ts.$store.dispatch('admin/fetchRoles', {
           page: page,
-          rows: _ts.pagination.pageSize
+          rows: _ts.roles.pageSize
         })
       }
     }

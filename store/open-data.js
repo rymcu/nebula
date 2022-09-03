@@ -1,5 +1,3 @@
-import {DASHBOARD_API_PATH} from "@/store/dashboard";
-
 /**
  * Created on 2022/3/14 13:54.
  * @author ronger

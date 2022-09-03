@@ -8,7 +8,7 @@
     </el-col>
     <el-col>
       <el-table
-        :data="banks"
+        :data="banks.list"
         style="width: 100%">
         <el-table-column
           label="#"
@@ -52,11 +52,11 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="banks.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="banks.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="banks.total">
       </el-pagination>
     </el-col>
     <el-col>
@@ -96,8 +96,7 @@ export default {
   },
   computed: {
     ...mapState({
-      banks: state => state.bank.list.data.banks,
-      pagination: state => state.bank.list.data.pagination
+      banks: state => state.bank.list.data
     })
   },
   data() {
@@ -120,7 +119,7 @@ export default {
     handleSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('bank/fetchList', {
-        page: _ts.pagination.currentPage,
+        page: _ts.banks.pageNum,
         rows: pageSize
       })
     },
@@ -128,7 +127,7 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('bank/fetchList', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.banks.pageSize
       })
     },
     showTransfer(index, bank) {

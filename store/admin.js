@@ -28,13 +28,21 @@ const getDefaultCommentsData = () => {
   }
 }
 
+const getDefaultProductsData = () => {
+  return {
+    products: [],
+    pagination: {}
+  }
+}
+
 export const state = () => {
   return {
     fetching: false,
-    user: getDefaultUsersData(),
-    role: getDefaultRolesData(),
-    article: getDefaultArticlesData(),
-    comment: getDefaultCommentsData(),
+    users: getDefaultUsersData(),
+    roles: getDefaultRolesData(),
+    articles: getDefaultArticlesData(),
+    comments: getDefaultCommentsData(),
+    products: getDefaultProductsData(),
     tabs: [
       {
         title: 'Dashboard',
@@ -53,25 +61,24 @@ export const mutations = {
     state.fetching = action
   },
   updateUsersData(state, action) {
-    state.user.users = action.users
-    state.user.pagination = action.pagination
+    state.users = action
   },
   updateRolesData(state, action) {
-    state.role.roles = action.roles
-    state.role.pagination = action.pagination
+    state.roles = action
   },
   updateArticlesData(state, action) {
-    state.article.articles = action.articles
-    state.article.pagination = action.pagination
+    state.articles = action
   },
   updateCommentsData(state, action) {
-    state.comment.comments = action.comments
-    state.comment.pagination = action.pagination
+    state.comments = action
+  },
+  updateProductsData(state, action) {
+    state.products = action
   },
   updateArticlePreference(state, action) {
-    let article = state.article.articles[action.index]
-    if (article.idArticle === action.idArticle) {
-      article.articlePerfect = action.articlePerfect
+    let articles = state.articles.list[action.index]
+    if (articles.idArticle === action.idArticle) {
+      articles.articlePerfect = action.articlePerfect
     }
   },
   updateTags(state, action) {
@@ -171,7 +178,7 @@ export const actions = {
       return true;
     }
     // 清空已有数据
-    commit('updateCommentsData', getDefaultArticlesData())
+    commit('updateCommentsData', getDefaultCommentsData())
     commit('updateFetching', true)
 
     let data = {
@@ -186,6 +193,32 @@ export const actions = {
       .then(response => {
         commit('updateFetching', false);
         commit('updateCommentsData', response);
+      })
+      .catch(error => {
+        console.log(error);
+        commit('updateFetching', false);
+      });
+  },
+  fetchProducts({commit}, params = {}) {
+    if (params && params.reset === '0') {
+      return true;
+    }
+    // 清空已有数据
+    commit('updateProductsData', getDefaultProductsData())
+    commit('updateFetching', true)
+
+    let data = {
+      page: params.page || 1,
+      rows: params.rows || 10
+    }
+
+    return this.$axios
+      .$get(`${ADMIN_API_PATH}/products`, {
+        params: data
+      })
+      .then(response => {
+        commit('updateFetching', false);
+        commit('updateProductsData', response);
       })
       .catch(error => {
         console.log(error);

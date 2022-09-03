@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <el-row :gutter="20">
-      <el-col :span="8" v-for="user in users.users" :key="user.idUser" style="margin-bottom: 1rem;">
+      <el-col :span="8" v-for="user in users.list" :key="user.idUser" style="margin-bottom: 1rem;">
         <el-card shadow="always" :body-style="{textAlign: 'center', paddingBottom: '20'}">
           <el-col :span="24">
             <el-link target="_blank" :href="'/user/' + user.account" class="text-default" :underline="false">
@@ -30,10 +30,10 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination :hide-on-single-page="true" v-model="users.pagination"
+          <el-pagination :hide-on-single-page="true"
                          layout="prev, pager, next"
-                         :current-page="users.pagination.currentPage"
-                         :total="users.pagination.total"
+                         :current-page="users.pageNum"
+                         :total="users.total"
                          @current-change="currentChange">
           </el-pagination>
         </div>

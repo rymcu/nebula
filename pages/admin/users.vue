@@ -8,7 +8,7 @@
     </el-col>
     <el-col>
       <el-table
-        :data="users"
+        :data="users.list"
         style="width: 100%">
         <el-table-column
           label="#"
@@ -89,11 +89,11 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="users.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="users.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="users.total">
       </el-pagination>
     </el-col>
     <el-col>
@@ -129,9 +129,8 @@ export default {
   },
   computed: {
     ...mapState({
-      users: state => state.admin.user.users,
-      pagination: state => state.admin.user.pagination,
-      roles: state => state.admin.role.roles
+      users: state => state.admin.users,
+      roles: state => state.admin.roles.list
     })
   },
   data() {
@@ -160,7 +159,7 @@ export default {
     toggleStatus(index, user) {
       let _ts = this;
       let title, status;
-      if (user.status == 0) {
+      if (user.status === '0') {
         title = '禁用';
         status = 1;
       } else {
@@ -176,9 +175,7 @@ export default {
           idUser: user.idUser,
           status: status
         }).then(function (res) {
-          if (res && res.message) {
-            _ts.$message.error(res.message);
-          } else {
+          if (res) {
             _ts.$message({
               type: 'success',
               message: title + '成功!'
@@ -196,7 +193,7 @@ export default {
     handleSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('admin/fetchUsers', {
-        page: _ts.pagination.currentPage,
+        page: _ts.users.pageNum,
         rows: pageSize
       })
     },
@@ -204,7 +201,7 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('admin/fetchUsers', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.users.pageSize
       })
     },
     updateRole() {
@@ -214,9 +211,7 @@ export default {
         idRole: _ts.idRole
       };
       _ts.$axios.$patch('/api/admin/user/update-role', data).then(function (res) {
-        if (res && res.message) {
-          _ts.$message.error(res.message);
-        } else {
+        if (res) {
           _ts.$message({
             message: '授权成功',
             type: 'success'

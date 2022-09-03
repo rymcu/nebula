@@ -332,14 +332,10 @@ export default {
           }
         }).then(function (res) {
           if (res) {
-            if (res.message) {
-              _ts.$message(res.message);
-            } else {
-              _ts.$set(_ts, 'notificationFlag', false);
-              _ts.$router.push({
-                path: '/user/' + _ts.$store.state.userInfo?.account
-              })
-            }
+            _ts.$set(_ts, 'notificationFlag', false);
+            _ts.$router.push({
+              path: '/user/' + _ts.$store.state.userInfo?.account
+            })
           }
         })
       }).catch(() => {

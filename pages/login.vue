@@ -101,15 +101,15 @@ export default {
                 return false;
               }
               let auth = {
-                accessToken: res.user.token,
-                idUser: res.user.idUser,
-                role: res.user.weights
+                accessToken: res.token,
+                idUser: res.idUser,
+                role: res.weights
               }
 
               let user = {
-                nickname: res.user.nickname,
-                avatarURL: res.user.avatarUrl,
-                account: res.user.account
+                nickname: res.nickname,
+                avatarURL: res.avatarUrl || 'https://static.rymcu.com/article/1578475481946.png',
+                account: res.account
               }
               _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
               localStorage.setItem('user', JSON.stringify(user))

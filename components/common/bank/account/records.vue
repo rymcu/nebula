@@ -19,7 +19,7 @@
     </el-col>
     <el-col>
       <el-table
-        :data="records.records"
+        :data="records.list"
         style="width: 100%">
         <el-table-column
           label="流水号"
@@ -89,11 +89,11 @@
       <el-pagination
         :hide-on-single-page="true"
         @current-change="currentChange"
-        :current-page="records.pagination.currentPage"
+        :current-page="records.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="records.pagination.pageSize"
+        :page-size="records.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="records.pagination.total">
+        :total="records.total">
       </el-pagination>
     </el-col>
   </el-row>

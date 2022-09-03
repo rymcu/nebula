@@ -8,7 +8,7 @@
     </el-col>
     <el-col>
       <el-table
-        :data="bankAccounts"
+        :data="bankAccounts.list"
         style="width: 100%">
         <el-table-column
           label="#"
@@ -54,11 +54,11 @@
         :hide-on-single-page="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pagination.currentPage"
+        :current-page="bankAccounts.pageNum"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="pagination.pageSize"
+        :page-size="bankAccounts.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
+        :total="bankAccounts.total">
       </el-pagination>
     </el-col>
     <el-dialog :title="'卡号：' + bankAccount + ' 的交易记录'" :visible.sync="dialogVisible">
@@ -85,8 +85,7 @@ export default {
   },
   computed: {
     ...mapState({
-      bankAccounts: state => state["bank-account"].list.data.bankAccounts,
-      pagination: state => state["bank-account"].list.data.pagination,
+      bankAccounts: state => state["bank-account"].list.data,
       records: state => state["bank-account"].records.data
     })
   },
@@ -108,7 +107,7 @@ export default {
     handleSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('bank-account/fetchList', {
-        page: _ts.pagination.currentPage,
+        page: _ts.bankAccounts.pageNum,
         rows: pageSize
       })
     },
@@ -116,7 +115,7 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('bank-account/fetchList', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.bankAccounts.pageSize
       })
     },
     transactionRecords(index, bankAccount) {

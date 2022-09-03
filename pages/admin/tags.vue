@@ -10,7 +10,7 @@
       <el-button size="small" @click="createTag" plain>创建标签</el-button>
       <el-button size="small" @click="cleanUnusedTag" plain>清除未使用标签</el-button>
     </el-col>
-    <el-col v-for="tag in tags" :key="tag.idTag">
+    <el-col v-for="tag in tags.list" :key="tag.idTag">
       <el-card style="margin: .5rem;">
         <el-col :span="1">
           <el-avatar shape="square" :src="tag.tagIconPath" fit="scale-down"></el-avatar>
@@ -32,10 +32,10 @@
     </el-col>
     <el-col>
       <div class="vertical-container text-center">
-        <el-pagination :hide-on-single-page="true" v-model="pagination"
+        <el-pagination :hide-on-single-page="true"
                        layout="prev, pager, next"
-                       :current-page="pagination.currentPage"
-                       :total="pagination.total"
+                       :current-page="tags.pageNum"
+                       :total="tags.total"
                        @current-change="currentChange">
         </el-pagination>
       </div>
@@ -57,8 +57,7 @@
     },
     computed: {
       ...mapState({
-        tags: state => state.tag.list.data.tags,
-        pagination: state => state.tag.list.data.pagination
+        tags: state => state.tag.list.data
       })
     },
     methods: {
@@ -73,7 +72,7 @@
             if (res && res.message){
               _ts.$message.error(res.message);
             } else {
-              const p = _ts.pagination.currentPage;
+              const p = _ts.tags.pageNum;
               _ts.currentChange(p);
               _ts.$message({
                 type: 'success',

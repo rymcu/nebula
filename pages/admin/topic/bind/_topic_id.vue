@@ -14,7 +14,7 @@
           <el-button @click="getTags()" slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </el-col>
-      <el-col v-for="tag in tags" :key="tag.idTag">
+      <el-col v-for="tag in tags.list" :key="tag.idTag">
         <el-card style="margin: .5rem;">
           <el-col :span="1">
             <el-avatar shape="square" :src="tag.tagIconPath" fit="scale-down"></el-avatar>
@@ -36,10 +36,10 @@
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
-          <el-pagination :hide-on-single-page="true" v-model="pagination"
+          <el-pagination :hide-on-single-page="true"
                          layout="prev, pager, next"
-                         :current-page="pagination.currentPage"
-                         :total="pagination.total"
+                         :current-page="tags.pageNum"
+                         :total="tags.total"
                          @current-change="currentChange">
           </el-pagination>
         </div>
@@ -64,8 +64,7 @@ export default {
   computed: {
     ...mapState({
       topic: state => state.topic.detail.data,
-      tags: state => state.topic.tags.data.tags,
-      pagination: state => state.topic.tags.data.pagination
+      tags: state => state.topic.tags.data
     })
   },
   data() {
@@ -93,18 +92,16 @@ export default {
           idTag: idTag,
           idTopic: _ts.topic.idTopic
         }).then(function (res) {
-          if (res && res.message) {
-            _ts.$message.error(res.message);
-          } else {
-            _ts.currentChange(_ts.pagination.currentPage);
+          if (res) {
+            _ts.currentChange(_ts.tags.pageNum);
           }
         })
       }).catch(() => {
-        _ts.currentChange(_ts.pagination.currentPage);
+        _ts.currentChange(_ts.tags.pageNum);
       });
     },
     getTags() {
-      this.currentChange(this.pagination.currentPage);
+      this.currentChange(this.tags.pageNum);
     }
   },
   mounted() {
