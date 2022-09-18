@@ -6,9 +6,7 @@ RUN mkdir -p /opt/app
 WORKDIR /opt/app
 
 # 将代码复制到容器中
-COPY package.json /opt/app
-COPY yarn.lock /opt/app
-COPY pm2.sh /opt/app
+COPY . /opt/app
 
 RUN cd /opt/app
 # 添加权限，防止依赖无法安装
@@ -17,8 +15,6 @@ RUN chmod -R 777 *
 RUN chmod u+x pm2.sh
 RUN yarn --registry=https://registry.npm.taobao.org
 RUN npm i pm2 -g --registry=https://registry.npm.taobao.org
-# 将代码复制到容器中
-COPY . .
 RUN npm run build
 
 RUN ls -l -a
