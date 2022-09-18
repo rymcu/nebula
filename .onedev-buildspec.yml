@@ -1,20 +1,35 @@
 version: 18
 jobs:
-- name: Build Docker Image
-  jobExecutor: internal
+- name: vue ci
   steps:
-  - !BuildImageStep
-    name: Build Docker Image
-    dockerfile: '@project_name@/Dockerfile'
-    tags: rymcu/nebula:latest
-    publish: false
+  - !CheckoutStep
+    name: checkout
+    cloneCredential: !DefaultCredential {}
+    withLfs: false
+    withSubmodules: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !SetBuildVersionStep
+    name: set build version
+    buildVersion: '@script:builtin:node:determine-project-version@'
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !CommandStep
+    name: build & test
+    runInContainer: true
+    image: node:16.17.0-alpine
+    interpreter: !DefaultInterpreter
+      commands:
+      - npm install
+      - npx nuxt build
+    useTTY: false
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
   triggers:
-  - !TagCreateTrigger
-    projects: nebula
+  - !BranchUpdateTrigger {}
   retryCondition: never
   maxRetries: 3
   retryDelay: 30
   cpuRequirement: 250
   memoryRequirement: 256
+  caches:
+  - key: npm-cache
+    path: /root/.npm
   timeout: 3600
