@@ -5,7 +5,7 @@ jobs:
   steps:
   - !BuildImageStep
     name: Build Docker Image
-    dockerfile: ./Dockerfile
+    dockerfile: '@project_name@/Dockerfile'
     tags: rymcu/nebula:latest
     publish: false
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
