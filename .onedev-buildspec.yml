@@ -33,3 +33,26 @@ jobs:
   - key: npm-cache
     path: /root/.npm
   timeout: 3600
+- name: Build Docker Image
+  jobExecutor: internal
+  steps:
+  - !CheckoutStep
+    name: Checkout Code
+    cloneCredential: !DefaultCredential {}
+    withLfs: false
+    withSubmodules: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !BuildImageStep
+    name: Build Docker Image
+    tags: rymcu/nebula:latest
+    publish: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !TagCreateTrigger
+    projects: nebula
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  cpuRequirement: 250
+  memoryRequirement: 256
+  timeout: 3600
