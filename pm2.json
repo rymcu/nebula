@@ -5,15 +5,15 @@
   "script": "./node_modules/nuxt/bin/nuxt.js",
   "args": "start",
   "env": {
-    "NODE_ENV": "production",
-    "VUE_APP_TITLE": "production"
+    "NODE_ENV": "production"
+  },
+  "env_test": {
+    "NODE_ENV": "test"
   },
   "env_dev": {
-    "NODE_ENV": "development",
-    "VUE_APP_TITLE": "development"
+    "NODE_ENV": "development"
   },
   "env_prod": {
-    "NODE_ENV": "production",
-    "VUE_APP_TITLE": "production"
+    "NODE_ENV": "production"
   }
 }
