@@ -18,7 +18,7 @@ jobs:
     image: node:16.17.0-alpine
     interpreter: !DefaultInterpreter
       commands:
-      - npm install
+      - yarn --registry=https://registry.npm.taobao.org
       - npx nuxt build
     useTTY: false
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
