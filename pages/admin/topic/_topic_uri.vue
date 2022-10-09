@@ -77,7 +77,8 @@ export default {
     }
     return params.topic_uri
   },
-  fetch({store, params, error}) {
+  fetch() {
+    let {store, params, error} = this.$nuxt.context
     return Promise.all([
       store.dispatch('topic/fetchDetail', params)
         .catch(err => error({statusCode: 404})),

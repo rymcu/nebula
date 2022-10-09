@@ -39,7 +39,8 @@
 
   export default {
     name: "topics",
-    fetch({store, params, error}) {
+    fetch() {
+      let {store, params, error} = this.$nuxt.context
       return Promise.all([
         store
           .dispatch('topic/fetchList', params)

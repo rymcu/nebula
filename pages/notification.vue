@@ -17,7 +17,8 @@
     components: {
       NotificationList
     },
-    fetch({store, query, error}) {
+    fetch() {
+      let {store, query, error} = this.$nuxt.context
       return Promise.all([
         store
           .dispatch('notification/fetchList', {page: query.page || 1})
