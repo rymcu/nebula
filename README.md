@@ -94,6 +94,7 @@ nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，�
  
  
 ![JetBrains](assets/jb_beam.svg)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frymcu%2Fnebula.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frymcu%2Fnebula?ref=badge_shield)
 
 ## Build Setup
 
@@ -126,3 +127,7 @@ $ npm generate
 
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frymcu%2Fnebula.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frymcu%2Fnebula?ref=badge_large)

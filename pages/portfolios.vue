@@ -16,7 +16,8 @@ import PortfolioList from "~/components/common/portfolio/list";
 export default {
   name: "Portfolios",
   components: {PortfolioList},
-  fetch({store, query, error}) {
+  fetch() {
+    let {store, params, error} = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('portfolio/fetchList', {page: query.page || 1})

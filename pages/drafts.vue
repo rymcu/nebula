@@ -16,7 +16,8 @@
     components: {
       DraftList
     },
-    fetch({store, error}) {
+    fetch() {
+      let {store, error} = this.$nuxt.context
       return Promise.all([
         store
           .dispatch('draft/fetchList')
