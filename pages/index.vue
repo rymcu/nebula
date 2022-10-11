@@ -11,7 +11,8 @@ import {mapState} from 'vuex';
 
 export default {
   name: 'Index',
-  fetch({store, query}) {
+  fetch() {
+    let {store, query, error} = this.$nuxt.context
     return Promise.all([
       store.dispatch('article/fetchList', {page: query.page || 1}),
       store.dispatch('article/fetchAnnouncementList', {page: query.page || 1})

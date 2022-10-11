@@ -13,7 +13,8 @@ import ProductList from "~/components/common/product/list";
 export default {
   name: "products",
   components: {ProductList},
-  fetch({store, query, error}) {
+  fetch() {
+    let {store, params, error} = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('product/fetchList', {page: query.page || 1})

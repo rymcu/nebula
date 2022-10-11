@@ -91,7 +91,8 @@
 
   export default {
     name: "roles",
-    fetch({store, params, error}) {
+    fetch() {
+      let {store, params, error} = this.$nuxt.context
       return Promise.all([
         store
           .dispatch('admin/fetchRoles', params)
