@@ -34,7 +34,6 @@ jobs:
     path: /root/.npm
   timeout: 3600
 - name: Build Docker Image
-  jobExecutor: internal
   steps:
   - !CheckoutStep
     name: Checkout Code
@@ -47,7 +46,49 @@ jobs:
     tags: rymcu/nebula:latest
     publish: false
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  jobExecutor: internal
   triggers:
+  - !TagCreateTrigger
+    projects: nebula
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  cpuRequirement: 250
+  memoryRequirement: 256
+  timeout: 3600
+- name: Pull from GitHub
+  steps:
+  - !PullRepository
+    name: Pull from GitHub
+    remoteUrl: https://github.com/ronger-x/nebula
+    syncToChildProject: false
+    passwordSecret: access_token
+    refs: refs/heads/* refs/tags/*
+    withLfs: false
+    force: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !ScheduleTrigger
+    cronExpression: 0 0 1 * * ?
+    projects: nebula
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  cpuRequirement: 250
+  memoryRequirement: 256
+  timeout: 3600
+- name: Push to GitHub
+  steps:
+  - !PushRepository
+    name: Push to GitHub
+    remoteUrl: https://github.com/ronger-x/nebula
+    passwordSecret: access_token
+    withLfs: false
+    force: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !BranchUpdateTrigger
+    projects: nebula
   - !TagCreateTrigger
     projects: nebula
   retryCondition: never
