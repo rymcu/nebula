@@ -14,7 +14,7 @@ export default {
   name: "products",
   components: {ProductList},
   fetch() {
-    let {store, params, error} = this.$nuxt.context
+    let {store, query, error} = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('product/fetchList', {page: query.page || 1})

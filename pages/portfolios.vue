@@ -17,7 +17,7 @@ export default {
   name: "Portfolios",
   components: {PortfolioList},
   fetch() {
-    let {store, params, error} = this.$nuxt.context
+    let {store, query, error} = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('portfolio/fetchList', {page: query.page || 1})
