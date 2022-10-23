@@ -123,6 +123,8 @@ export default {
                 })
               }
             }
+          },functions(error) {
+            _ts.$set(_ts, 'loginLoading', false);
           })
         } else {
           return false;
