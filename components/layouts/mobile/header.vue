@@ -178,6 +178,9 @@
             Cookie.remove('auth')
             _ts.$store.commit('setAuth', null)
             item = 'login';
+            _ts.$router.push({
+              path: '/'
+            })
             break;
           default:
             _ts.$router.push({
