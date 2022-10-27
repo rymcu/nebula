@@ -78,7 +78,7 @@
         portfolio: state => state.portfolio.detail.data
       }),
       isAuthor() {
-        let account = this.$store.state.userInfo?.nickname;
+        let account = this.$store.state.auth.user?.nickname;
         if (account) {
           if (account === this.portfolio.portfolioAuthorName) {
             return true;

@@ -53,6 +53,7 @@ import {mapState} from 'vuex';
 
 export default {
   name: "adminTopicBindTag",
+  middleware: 'auth',
   fetch({store, params, error}) {
     let _ts = this;
     return Promise.all([

@@ -48,6 +48,7 @@
 
   export default {
     name: "tags",
+    middleware: 'auth',
     fetch() {
       let {store, params, error} = this.$nuxt.context
       return Promise.all([

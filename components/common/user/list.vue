@@ -48,7 +48,7 @@ export default {
   name: "UserList",
   computed: {
     ...mapState({
-      userInfo: state => state.oauth
+      userInfo: state => state.auth.user
     })
   },
   props: {

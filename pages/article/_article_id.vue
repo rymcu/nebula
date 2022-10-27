@@ -82,7 +82,7 @@
             <el-col v-if="article.portfolios && article.portfolios.length > 0">
               <portfolios-widget :portfolios="article.portfolios"></portfolios-widget>
             </el-col>
-            <el-col v-if="user">
+            <el-col v-if="loggedIn">
               <el-tooltip class="item" effect="dark" content="酷" placement="top-start">
                 <el-button type="text" style="font-size: 1.2rem;" @click="thumbsUp">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -192,11 +192,12 @@ export default {
       article: state => state.article.detail.data,
       isFetching: state => state.article.detail.fetching,
       isMobile: state => state.global.isMobile,
-      user: state => state.oauth,
-      avatar: state => state.userInfo?.avatarURL
+      loggedIn: state => state.auth.loggedIn,
+      user: state => state.auth.user,
+      avatar: state => state.auth.user.avatarUrl
     }),
     hasPermissions() {
-      let account = this.$store.state.userInfo?.nickname;
+      let account = this.$store.state.auth.user?.nickname;
       if (account) {
         if (account === this.article.articleAuthor.userNickname) {
           return true;
@@ -205,7 +206,7 @@ export default {
       return false;
     },
     isAdmin() {
-      return this.$store.getters.hasPermissions('blog_admin');
+      return this.$auth.hasScope('admin') || this.$auth.hasScope('blog_admin');
     },
     routeArticleId() {
       return Number(this.$route.params.article_id);

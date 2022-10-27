@@ -65,9 +65,10 @@
 
   export default {
     name: "account",
+    middleware: 'auth',
     computed: {
       ...mapState({
-        idUser: state => state.oauth.idUser
+        idUser: state => state.auth.user.idUser
       })
     },
     data() {

@@ -107,6 +107,7 @@ import EditTags from '~/components/widget/tags';
 
 export default {
   name: "articles",
+  middleware: 'auth',
   components: {
     EditTags
   },
