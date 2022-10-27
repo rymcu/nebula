@@ -123,7 +123,7 @@ export default {
                 })
               }
             }
-          },functions(error) {
+          },function(error) {
             _ts.$set(_ts, 'loginLoading', false);
           })
         } else {
