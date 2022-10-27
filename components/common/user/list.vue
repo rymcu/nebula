@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="24">
               <el-link target="_blank" :href="'/user/' + user.account" class="text-default">
-                <span style="font-size: 20px;font-weight: bold;">{{ user.nickname }}</span>
+                <span style="font-size: 20px;font-weight: bold;" v-html="user.nickname"></span>
               </el-link>
           </el-col>
           <el-col :span="24" style="padding: 1rem 0;">
