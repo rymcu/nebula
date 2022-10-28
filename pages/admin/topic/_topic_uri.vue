@@ -71,6 +71,7 @@ import {mapState} from 'vuex';
 
 export default {
   name: "adminTopicDetail",
+  middleware: 'auth',
   validate({params, store}) {
     if (typeof params.topic_uri === 'undefined') {
       return true;
@@ -94,7 +95,7 @@ export default {
       tags: state => state.topic.tags.data
     }),
     hasPermissions() {
-      return this.$store.getters.hasPermissions('topic');
+      return this.$auth.hasScope('topic');
     }
   },
   methods: {

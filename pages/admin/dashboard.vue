@@ -248,6 +248,7 @@ import EditTags from '~/components/widget/tags';
 Vue.prototype.$echarts = echarts;
 export default {
   name: "Dashboard",
+  middleware: 'auth',
   components: {
     EditTags
   },

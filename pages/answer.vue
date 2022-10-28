@@ -62,6 +62,7 @@ import {mapState} from 'vuex';
 
 export default {
   name: "answer",
+  middleware: 'auth',
   fetch({store, params, error}) {
     return Promise.all([
       store

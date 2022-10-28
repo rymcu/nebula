@@ -47,12 +47,13 @@
 <script>
   export default {
     name: "Settings",
+    middleware: 'auth',
     computed: {
       getActiveMenu () {
         return this.$store.state.activeMenu;
       },
       isLogin () {
-        return this.$store.state.oauth;
+        return this.$store.state.auth.user;
       }
     },
     data() {

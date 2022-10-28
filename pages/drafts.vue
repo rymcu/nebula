@@ -13,6 +13,7 @@
 
   export default {
     name: "Drafts",
+    middleware: 'auth',
     components: {
       DraftList
     },
@@ -27,7 +28,7 @@
     computed: {
       ...mapState({
         articles: state => state.draft.list.data,
-        user: state => state.oauth
+        user: state => state.auth.user
       })
     },
     mounted() {

@@ -124,6 +124,7 @@ import apiConfig from '~/config/api.config';
 
 export default {
   name: "adminTopicPost",
+  middleware: 'auth',
   components: {
     VueCropper
   },

@@ -1,7 +1,5 @@
 import { isServer } from '~/environment'
 
-const cookieParser = isServer ? require('cookieparser') : undefined
-
 export const state = () => {
   return {
     activeMenu: 'index',
@@ -14,27 +12,11 @@ export const state = () => {
 }
 
 export const mutations = {
-  setAuth (state, auth) {
-    state.oauth = auth
-  },
-  setUser (state, data) {
-    state.userInfo = data
-  },
   setActiveMenu (state, activeMenu) {
     state.activeMenu = activeMenu
   },
   setUploadHeaders(state, data){
     state.uploadHeaders = data
-  },
-  setUserInfo(state, data) {
-    state.userInfo.avatarURL = data.avatarUrl;
-    state.userInfo.nickname = data.nickname;
-    let user = {
-      nickname: data.nickname,
-      avatarURL: data.avatarUrl,
-      account: this.state.userInfo.account
-    }
-    localStorage.setItem('user', JSON.stringify(user))
   },
   setFingerprint (state, fingerprint) {
     state.fingerprint = fingerprint
@@ -65,17 +47,6 @@ export const actions = {
         // 移动端
         store.commit('global/updateMobileState', true)
     }
-    let auth = null
-    if (req.headers.cookie) {
-      const parsed = cookieParser.parse(req.headers.cookie)
-      try {
-        auth = JSON.parse(parsed.auth)
-      } catch (err) {
-        // No valid cookie found
-        console.log(err);
-      }
-      store.commit('setAuth', auth)
-    }
 
     const initFetchAppData = [
       // 内容数据
@@ -84,38 +55,5 @@ export const actions = {
     ]
 
     return Promise.all(initFetchAppData)
-  }
-}
-
-export const getters = {
-  hasPermissions: (state) => (scenes) => {
-    let hasPermissions = false;
-    const role = state.oauth?.role
-    if (role) {
-      switch (scenes) {
-        case 'user':
-          hasPermissions = role < 5;
-          break;
-        case 'role':
-          hasPermissions = role < 2;
-          break;
-        case 'topic':
-          hasPermissions = role < 3;
-          break;
-        case 'tag':
-          hasPermissions = role < 3;
-          break;
-        case 'admin':
-          hasPermissions = role < 2;
-          break;
-        case 'blog_admin':
-          hasPermissions = role < 3;
-          break;
-        default:
-          hasPermissions = false;
-          this.commit('logout');
-      }
-    }
-    return hasPermissions;
   }
 }

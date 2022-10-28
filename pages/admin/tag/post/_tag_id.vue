@@ -126,6 +126,7 @@ import apiConfig from '~/config/api.config';
 
 export default {
   name: "PostTag",
+  middleware: 'auth',
   components: {
     VueCropper
   },
