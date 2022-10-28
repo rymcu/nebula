@@ -83,17 +83,9 @@ export default {
       _ts.$refs.user.validate(async (valid) => {
         if (valid) {
           _ts.$set(_ts, 'loginLoading', true);
-          setTimeout(function () {
-            _ts.$set(_ts, 'loginLoading', false);
-          }, 10000);
-
-
-          let fingerprint = _ts.$store.state.fingerprint;
-
           let data = {
             account: _ts.user.account,
-            password: _ts.user.password,
-            fingerprint: fingerprint
+            password: _ts.user.password
           }
           try {
             let response = await _ts.$auth.loginWith('local', {data: data})
@@ -107,7 +99,9 @@ export default {
                 })
               }
             }
+            _ts.$set(_ts, 'loginLoading', false);
           } catch (err) {
+            _ts.$set(_ts, 'loginLoading', false);
             console.log(err)
           }
         } else {
