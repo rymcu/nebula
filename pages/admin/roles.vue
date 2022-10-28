@@ -91,6 +91,7 @@
 
   export default {
     name: "roles",
+    middleware: 'auth',
     fetch() {
       let {store, params, error} = this.$nuxt.context
       return Promise.all([

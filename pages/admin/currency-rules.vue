@@ -81,6 +81,7 @@ import {mapState} from 'vuex';
 
 export default {
   name: "currency-rules",
+  middleware: 'auth',
   fetch() {
     let {store, params, error} = this.$nuxt.context
     return Promise.all([

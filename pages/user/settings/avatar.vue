@@ -81,6 +81,7 @@ import 'cropperjs/dist/cropper.css';
 const {generateRandomAvatar} = require('~/plugins/avataaars/generator/generateAvatar');
 export default {
   name: "avatar",
+  middleware: 'auth',
   components: {
     Avataaars,
     VueCropper
@@ -90,7 +91,7 @@ export default {
       uploadHeaders: state => {
         return {'X-Upload-Token': state.uploadHeaders}
       },
-      idUser: state => state.oauth.idUser
+      idUser: state => state.auth.user.idUser
     })
   },
   data() {

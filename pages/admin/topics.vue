@@ -39,6 +39,7 @@
 
   export default {
     name: "topics",
+    middleware: 'auth',
     fetch() {
       let {store, params, error} = this.$nuxt.context
       return Promise.all([

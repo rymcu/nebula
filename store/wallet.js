@@ -39,10 +39,10 @@ export const mutations = {
 
 export const actions = {
   // 获取账户详情
-  fetchDetail({commit}, params = {}) {
+  fetchDetail({commit}) {
     commit('updateDetailFetching', true)
     return this.$axios
-      .$get(`${WALLET_API_PATH}/${params.idUser}`)
+      .$get(`${WALLET_API_PATH}/detail`)
       .then(response => {
         return new Promise(resolve => {
           commit('updateDetailData', response)
@@ -64,7 +64,6 @@ export const actions = {
     return this.$axios
       .$get(`${WALLET_API_PATH}/transaction-records`, {
         params: {
-          idUser: params.idUser,
           startDate: params.startDate,
           endDate: params.endDate,
           page: params.page || 1

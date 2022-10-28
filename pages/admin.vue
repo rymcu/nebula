@@ -45,6 +45,7 @@ import _ from 'lodash'
 
 export default {
   name: "Admin",
+  middleware: 'auth',
   data() {
     return {
       menus: [
@@ -144,7 +145,7 @@ export default {
       return this.$store.state.activeMenu;
     },
     hasPermissions() {
-      return this.$store.getters.hasPermissions('blog_admin');
+      return this.$auth.hasScope('admin') || this.$auth.hasScope('blog_admin');
     }
   },
   methods: {

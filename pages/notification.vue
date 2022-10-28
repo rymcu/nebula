@@ -13,7 +13,7 @@
 
   export default {
     name: "Notification",
-    middleware: 'authenticated',
+    middleware: 'auth',
     components: {
       NotificationList
     },
@@ -33,7 +33,7 @@
     computed: {
       ...mapState({
         notifications: state => state.notification.list.data,
-        user: state => state.oauth
+        user: state => state.auth.user
       })
     },
     methods: {

@@ -61,8 +61,8 @@
               </el-link>
             </el-popover>
           </div>
-          <div v-if="oauth">
-            <div v-if="oauth.idUser !== user.idUser">
+          <div v-if="auth.user">
+            <div v-if="auth.user.idUser !== user.idUser">
               <el-button type="primary" v-if="isFollow" @click="cancelFollowUser(user.idUser)" plain>取消关注</el-button>
               <el-button type="primary" v-else @click="followUser(user.idUser)" plain>关注</el-button>
               <el-button v-show="false" @click="gotoChats" plain>聊天</el-button>
@@ -176,7 +176,7 @@ export default {
       portfolios: state => state.user.portfolios,
       followers: state => state.user.followers,
       followings: state => state.user.followings,
-      oauth: state => state.oauth
+      auth: state => state.auth.user
     })
   },
   data() {
@@ -227,7 +227,7 @@ export default {
     },
     followUser(idUser) {
       let _ts = this;
-      if (_ts.oauth) {
+      if (_ts.auth) {
         _ts.$axios.$post('/api/follow', {
           followingId: idUser,
           followingType: 0
@@ -241,7 +241,7 @@ export default {
     },
     cancelFollowUser(idUser) {
       let _ts = this;
-      if (_ts.oauth) {
+      if (_ts.auth) {
         _ts.$axios.$post('/api/follow/cancel-follow', {
           followingId: idUser,
           followingType: 0
@@ -265,7 +265,7 @@ export default {
   mounted() {
     let _ts = this;
     this.$store.commit('setActiveMenu', 'user');
-    if (_ts.oauth) {
+    if (_ts.auth) {
       _ts.$axios.$get('/api/follow/is-follow', {
         params: {
           followingId: _ts.user.idUser,

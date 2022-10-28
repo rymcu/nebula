@@ -71,6 +71,7 @@
 
   export default {
     name: "DraftDetail",
+    middleware: 'auth',
     validate({params, store}) {
       return params.draft_id && !isNaN(Number(params.draft_id))
     },
@@ -86,17 +87,17 @@
         article: state => state.draft.detail.data,
         isFetching: state => state.draft.detail.fetching,
         isMobile: state => state.global.isMobile,
-        user: state => state.oauth,
-        avatar: state => state.userInfo?.avatarURL
+        user: state => state.auth.user,
+        avatar: state => state.auth.user?.avatarURL
       }),
       hasPermissions() {
-        let account = this.$store.state.userInfo?.nickname;
+        let account = this.$store.state.auth.user?.nickname;
         if (account) {
           if (account === this.article?.articleAuthor?.userNickname) {
             return true;
           }
         }
-        return this.$store.getters.hasPermissions('blog_admin');
+        return this.$auth.hasScope('blog_admin');
       },
       routeArticleId() {
         return Number(this.$route.params.draft_id)

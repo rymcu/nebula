@@ -45,7 +45,7 @@ export default {
   name: "Chat",
   computed: {
     ...mapState({
-      user: state => state.userInfo
+      user: state => state.auth.user
     })
   },
   data() {

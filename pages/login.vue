@@ -54,10 +54,9 @@
 <script>
 import {mapState} from 'vuex';
 
-const Cookie = process.client ? require('js-cookie') : undefined
 export default {
   name: "login",
-  middleware: 'notAuthenticated',
+  middleware: 'auth',
   data() {
     return {
       user: {
@@ -81,40 +80,17 @@ export default {
   methods: {
     login() {
       let _ts = this;
-      _ts.$refs.user.validate((valid) => {
+      _ts.$refs.user.validate(async (valid) => {
         if (valid) {
           _ts.$set(_ts, 'loginLoading', true);
-          setTimeout(function () {
-            _ts.$set(_ts, 'loginLoading', false);
-          }, 10000);
-
           let data = {
             account: _ts.user.account,
             password: _ts.user.password
           }
-
-          _ts.$axios.$post('/api/console/login', data).then(function (res) {
-            _ts.$set(_ts, 'loginLoading', false);
-            if (res) {
-              if (res.message) {
-                _ts.$message(res.message);
-                return false;
-              }
-              let auth = {
-                accessToken: res.token,
-                idUser: res.idUser,
-                role: res.weights
-              }
-
-              let user = {
-                nickname: res.nickname,
-                avatarURL: res.avatarUrl || 'https://static.rymcu.com/article/1578475481946.png',
-                account: res.account
-              }
-              _ts.$store.commit('setAuth', auth) // mutating to store for client rendering
-              localStorage.setItem('user', JSON.stringify(user))
-              _ts.$store.commit('setUser', user) // mutating to store for client rendering
-              Cookie.set('auth', auth, { expires: 7 })
+          try {
+            let response = await _ts.$auth.loginWith('local', {data: data})
+            if (response.success) {
+              _ts.$auth.setUserToken(response.data.token, response.data.refreshToken);
               if (_ts.historyUrl) {
                 window.location.href = _ts.historyUrl
               } else {
@@ -123,9 +99,11 @@ export default {
                 })
               }
             }
-          },function(error) {
             _ts.$set(_ts, 'loginLoading', false);
-          })
+          } catch (err) {
+            _ts.$set(_ts, 'loginLoading', false);
+            console.log(err)
+          }
         } else {
           return false;
         }
