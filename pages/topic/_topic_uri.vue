@@ -22,7 +22,8 @@ export default {
       topic => topic.topicUri === params.topic_uri
     )
   },
-  fetch({store, params, query}) {
+  fetch() {
+    let {store, params, query} = this.$nuxt.context
     params.page = query.page || 1
     return Promise.all([
       store.dispatch('article/fetchList', params)

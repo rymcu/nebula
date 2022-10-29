@@ -194,7 +194,7 @@ export default {
       isMobile: state => state.global.isMobile,
       loggedIn: state => state.auth.loggedIn,
       user: state => state.auth.user,
-      avatar: state => state.auth.user.avatarUrl
+      avatar: state => state.auth.user?.avatarUrl
     }),
     hasPermissions() {
       let account = this.$store.state.auth.user?.nickname;

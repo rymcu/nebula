@@ -91,7 +91,7 @@
             return true;
           }
         }
-        return this.$auth.hasScope('blog_admin');
+        return this.$auth.hasScope('blog_admin') || this.$auth.hasScope('admin');
       }
     },
     data() {

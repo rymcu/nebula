@@ -57,6 +57,7 @@ import {mapState} from 'vuex';
 export default {
   name: "login",
   middleware: 'auth',
+  auth: 'guest',
   data() {
     return {
       user: {
@@ -93,10 +94,6 @@ export default {
               _ts.$auth.setUserToken(response.data.token, response.data.refreshToken);
               if (_ts.historyUrl) {
                 window.location.href = _ts.historyUrl
-              } else {
-                _ts.$router.push({
-                  name: 'index'
-                })
               }
             }
             _ts.$set(_ts, 'loginLoading', false);
@@ -144,8 +141,14 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit('setActiveMenu', 'login');
-    this.$set(this, 'historyUrl', this.$route.query.historyUrl || '');
+    let _ts = this
+    _ts.$store.commit('setActiveMenu', 'login');
+    _ts.$set(_ts, 'historyUrl', _ts.$route.query.historyUrl || '');
+    // if (_ts.$auth.loggedIn) {
+    //   _ts.$router.push({
+    //     name: 'index'
+    //   })
+    // }
   }
 }
 </script>
