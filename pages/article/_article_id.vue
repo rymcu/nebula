@@ -144,7 +144,7 @@
       </el-card>
     </el-col>
     <el-col>
-      <comment-box :fetching="isFetching" :user="user" :avatar="avatar" :title="article.articleTitle"
+      <comment-box :fetching="isFetching" :title="article.articleTitle"
                    :post-id="routeArticleId" :authorId="article.articleAuthorId" @gotoLogin="gotoLogin"></comment-box>
     </el-col>
     <el-col>
@@ -179,12 +179,12 @@ export default {
   validate({params, store}) {
     return params.article_id && !isNaN(Number(params.article_id))
   },
-  fetch({store, params, error}) {
+  fetch() {
+    let {store, params, error} = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('article/fetchDetail', params)
-        .catch(err => error({statusCode: 404})),
-      store.dispatch('comment/fetchList', {post_id: params.article_id})
+        .catch(err => error({statusCode: 404}))
     ])
   },
   computed: {
