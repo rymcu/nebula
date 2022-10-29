@@ -176,6 +176,7 @@ export default {
       language: state => state.global.language,
       isMobile: state => state.global.isMobile,
       user: state => state.auth.user,
+      loggedIn: state => state.auth.loggedIn,
       avatar: state => state.auth.user?.avatarUrl
     }),
     isFetching() {
@@ -388,7 +389,7 @@ export default {
   async mounted() {
     let _ts = this;
     _ts.$store.commit('setActiveMenu', 'post-article');
-    if (_ts.user) {
+    if (_ts.loggedIn) {
       const responseData = await _ts.$axios.$get('/api/upload/token');
       if (responseData) {
         _ts.$set(_ts, 'tokenURL', {
