@@ -8,7 +8,8 @@ export const OPEN_DATA_API_PATH = '/api/open-data'
 
 const getDefaultDashboardData = () => {
   return {
-    dashboard: {}
+    countUserNum: 0,
+    countArticleNum: 0
   }
 }
 

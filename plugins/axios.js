@@ -23,8 +23,6 @@ export default function ({app, $axios, store, redirect}) {
           Message.error(message ? message : '服务异常')
         } else if (response.data.code === 401) {
           app.$auth.logout()
-        } else if (response.data.code === 402) {
-          app.$auth.strategy.token.reset()
         } else if (response.data.code === 404) {
           Message.error('操作失败，请稍后再试......')
         } else if (response.data.code === 500) {

@@ -61,8 +61,8 @@
               </el-link>
             </el-popover>
           </div>
-          <div v-if="auth.user">
-            <div v-if="auth.user.idUser !== user.idUser">
+          <div v-if="loggedIn">
+            <div v-if="auth.idUser !== user.idUser">
               <el-button type="primary" v-if="isFollow" @click="cancelFollowUser(user.idUser)" plain>取消关注</el-button>
               <el-button type="primary" v-else @click="followUser(user.idUser)" plain>关注</el-button>
               <el-button v-show="false" @click="gotoChats" plain>聊天</el-button>
@@ -122,7 +122,8 @@ export default {
   validate({params, store}) {
     return params.account
   },
-  fetch({store, params, query, error}) {
+  fetch() {
+    let {store, params, query, error} = this.$nuxt.context;
     params.page = query.page || 1
     return Promise.all([
       store
@@ -138,33 +139,35 @@ export default {
   watch: {
     '$route.query': function () {
       let _ts = this;
-      let activeTab = _ts.$route.query.tab || '0'
-      _ts.$set(_ts, 'activeTab', activeTab)
-      switch (_ts.activeTab) {
-        case "0":
-          _ts.$store.dispatch('user/fetchArticleList', {
-            account: _ts.$route.params.account,
-            page: _ts.$route.query.page || 1
-          })
-          break;
-        case "1":
-          _ts.$store.dispatch('user/fetchPortfolioList', {
-            account: _ts.$route.params.account,
-            page: _ts.$route.query.page || 1
-          })
-          break;
-        case "2":
-          _ts.$store.dispatch('user/fetchFollowingList', {
-            account: _ts.$route.params.account,
-            page: _ts.$route.query.page || 1
-          })
-          break;
-        default:
-          _ts.$store.dispatch('user/fetchFollowerList', {
-            account: _ts.$route.params.account,
-            page: _ts.$route.query.page || 1
-          })
-          break
+      if (_ts.$route.params.account) {
+        let activeTab = _ts.$route.query.tab || '0'
+        _ts.$set(_ts, 'activeTab', activeTab)
+        switch (_ts.activeTab) {
+          case "0":
+            _ts.$store.dispatch('user/fetchArticleList', {
+              account: _ts.$route.params.account,
+              page: _ts.$route.query.page || 1
+            })
+            break;
+          case "1":
+            _ts.$store.dispatch('user/fetchPortfolioList', {
+              account: _ts.$route.params.account,
+              page: _ts.$route.query.page || 1
+            })
+            break;
+          case "2":
+            _ts.$store.dispatch('user/fetchFollowingList', {
+              account: _ts.$route.params.account,
+              page: _ts.$route.query.page || 1
+            })
+            break;
+          default:
+            _ts.$store.dispatch('user/fetchFollowerList', {
+              account: _ts.$route.params.account,
+              page: _ts.$route.query.page || 1
+            })
+            break
+        }
       }
     }
   },
@@ -176,6 +179,7 @@ export default {
       portfolios: state => state.user.portfolios,
       followers: state => state.user.followers,
       followings: state => state.user.followings,
+      loggedIn: state => state.auth.loggedIn,
       auth: state => state.auth.user
     })
   },
@@ -215,8 +219,9 @@ export default {
       this.onRouter(key, 1)
     },
     onRouter(key, page) {
-      this.$router.push({
-        path: `/user/${this.$route.params.account}?tab=${key}&page=${page}`
+      let _ts = this
+      _ts.$router.push({
+        path: `/user/${_ts.$route.params.account}?tab=${key}&page=${page}`
       })
     },
     gotoChats() {
@@ -227,7 +232,7 @@ export default {
     },
     followUser(idUser) {
       let _ts = this;
-      if (_ts.auth) {
+      if (_ts.loggedIn) {
         _ts.$axios.$post('/api/follow', {
           followingId: idUser,
           followingType: 0
@@ -241,7 +246,7 @@ export default {
     },
     cancelFollowUser(idUser) {
       let _ts = this;
-      if (_ts.auth) {
+      if (_ts.loggedIn) {
         _ts.$axios.$post('/api/follow/cancel-follow', {
           followingId: idUser,
           followingType: 0
@@ -265,7 +270,7 @@ export default {
   mounted() {
     let _ts = this;
     this.$store.commit('setActiveMenu', 'user');
-    if (_ts.auth) {
+    if (_ts.loggedIn) {
       _ts.$axios.$get('/api/follow/is-follow', {
         params: {
           followingId: _ts.user.idUser,
