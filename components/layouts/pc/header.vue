@@ -184,42 +184,39 @@ export default {
     },
     handleSelectMenu(item) {
       let _ts = this;
-      let activeMenu = _ts.$store.state.activeMenu;
-      if (activeMenu !== item) {
-        switch (item) {
-          case 'topic':
-            _ts.$router.push({
-              path: '/topic/news?page=1'
-            })
-            break;
-          case 'portfolios':
-            _ts.$router.push({
-              path: '/portfolios?page=1'
-            })
-            break;
-          case 'products':
-            _ts.$router.push({
-              path: '/products?page=1'
-            })
-            break;
-          case 'github':
-            window.open("https://github.com/rymcu");
-            break;
-          case 'taobao':
-            window.open("https://rymcu.taobao.com?utm_source=rymcu.com");
-            break;
-          case 'open-data':
-            _ts.$router.push({
-              path: '/open-data'
-            })
-            break;
-          default:
-            _ts.$router.push(
-              {
-                path: '/'
-              }
-            )
-        }
+      switch (item) {
+        case 'topic':
+          _ts.$router.push({
+            path: '/topic/news?page=1'
+          })
+          break;
+        case 'portfolios':
+          _ts.$router.push({
+            path: '/portfolios?page=1'
+          })
+          break;
+        case 'products':
+          _ts.$router.push({
+            path: '/products?page=1'
+          })
+          break;
+        case 'github':
+          window.open("https://github.com/rymcu");
+          break;
+        case 'taobao':
+          window.open("https://rymcu.taobao.com?utm_source=rymcu.com");
+          break;
+        case 'open-data':
+          _ts.$router.push({
+            path: '/open-data'
+          })
+          break;
+        default:
+          _ts.$router.push(
+            {
+              path: '/'
+            }
+          )
       }
     },
     handleCommand(item) {
