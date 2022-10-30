@@ -154,8 +154,11 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit("setActiveMenu", "open-data");
-    this.initLastThirtyDaysCharts(this.lastThirtyDays)
+    let _ts = this
+    _ts.$store.commit("setActiveMenu", "open-data");
+    Vue.nextTick(() => {
+      _ts.initLastThirtyDaysCharts(_ts.lastThirtyDays)
+    })
   }
 }
 </script>

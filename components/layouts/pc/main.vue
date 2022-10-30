@@ -4,7 +4,7 @@
       <header-view/>
     </el-header>
     <el-main>
-      <nuxt :nuxt-child-key="$route.name" keep-alive :keep-alive-props="{max: 16}"/>
+      <nuxt keep-alive/>
     </el-main>
     <el-footer height="5rem">
       <footer-view/>

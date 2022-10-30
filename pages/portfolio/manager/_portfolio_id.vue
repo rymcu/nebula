@@ -66,7 +66,8 @@
     validate({params, store}) {
       return params.portfolio_id && !isNaN(Number(params.portfolio_id))
     },
-    fetch({store, params, error}) {
+    fetch() {
+      let {store, params, error} = this.$nuxt.context
       return Promise.all([
         store
           .dispatch('portfolio/fetchDetail', params)

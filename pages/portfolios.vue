@@ -25,8 +25,10 @@ export default {
     ])
   },
   watch: {
-    '$route.query': function () {
-      this.$store.dispatch('portfolio/fetchList', {page: this.$route.query.page || 1})
+    '$route'(to, from) {
+      if (from.query.page && to.query.page) {
+        this.$router.go()
+      }
     }
   },
   computed: {

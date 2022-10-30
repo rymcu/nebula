@@ -104,9 +104,6 @@
           path: '/admin/tag/post/' + id
         })
       }
-    },
-    mounted() {
-      this.$store.commit("setActiveMenu", "admin-tags");
     }
   }
 </script>

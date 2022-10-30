@@ -156,9 +156,6 @@ export default {
       })
     },
     handleEdit(index ,row) {}
-  },
-  mounted() {
-    this.$store.commit("setActiveMenu", "admin-products");
   }
 }
 </script>

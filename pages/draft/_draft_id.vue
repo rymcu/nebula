@@ -75,7 +75,8 @@
     validate({params, store}) {
       return params.draft_id && !isNaN(Number(params.draft_id))
     },
-    fetch({store, params, error}) {
+    fetch() {
+      let {store, params, error} = this.$nuxt.context
       return Promise.all([
         store
           .dispatch('draft/fetchDetail', params)

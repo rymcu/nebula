@@ -60,7 +60,8 @@ export default {
   validate({params, store}) {
     return params.portfolio_id && !isNaN(Number(params.portfolio_id))
   },
-  fetch({store, params, query, error}) {
+  fetch() {
+    let {store, params, query, error} = this.$nuxt.context
     params.page = query.page || 1
     return Promise.all([
       store
@@ -70,11 +71,10 @@ export default {
     ])
   },
   watch: {
-    '$route.query': function () {
-      this.$store.dispatch('portfolio/fetchArticleList', {
-        page: this.$route.query.page || 1,
-        portfolio_id: this.routePortfolioId
-      })
+    '$route'(to, from) {
+      if (from.query.page && to.query.page) {
+        this.$router.go()
+      }
     }
   },
   computed: {

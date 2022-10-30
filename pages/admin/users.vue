@@ -227,9 +227,6 @@ export default {
     getUserPath(nickname) {
       return `/user/${nickname}`
     }
-  },
-  mounted() {
-    this.$store.commit("setActiveMenu", "admin-users");
   }
 }
 </script>

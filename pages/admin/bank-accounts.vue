@@ -147,9 +147,6 @@ export default {
         endDate: endDate
       })
     }
-  },
-  mounted() {
-    this.$store.commit("setActiveMenu", "admin-bank-accounts");
   }
 }
 </script>

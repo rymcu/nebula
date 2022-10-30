@@ -151,9 +151,6 @@ export default {
         }
       })
     }
-  },
-  mounted() {
-    this.$store.commit("setActiveMenu", "admin-currency-rules");
   }
 }
 </script>
