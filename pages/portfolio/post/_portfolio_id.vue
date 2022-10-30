@@ -125,7 +125,7 @@ export default {
         return {'X-Upload-Token': state.uploadHeaders}
       },
       isAuthor() {
-        let account = this.$store.state.userInfo?.nickname;
+        let account = this.$store.state.auth.user?.nickname;
         if (account) {
           if (this.$route.params.portfolio_id) {
             if (account === this.portfolioDetail.portfolioAuthorName) {
@@ -334,7 +334,7 @@ export default {
           if (res) {
             _ts.$set(_ts, 'notificationFlag', false);
             _ts.$router.push({
-              path: '/user/' + _ts.$store.state.userInfo?.account
+              path: '/user/' + _ts.$store.state.auth.user?.account
             })
           }
         })

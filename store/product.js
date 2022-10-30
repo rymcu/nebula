@@ -42,7 +42,7 @@ export const mutations = {
     state.detail.fetching = action
   },
   updateDetailData(state, action) {
-    state.detail.data = action.product
+    state.detail.data = action
   },
   // 更新作品集阅读全文状态
   updateDetailRenderedState(state, action) {

@@ -63,6 +63,7 @@
 
   export default {
     name: "PostArticle",
+    middleware: 'auth',
     validate({params, store}) {
       if (typeof params.article_id === 'undefined') {
         return true;
@@ -80,7 +81,7 @@
         article: state => state.article.detail.data
       }),
       hasPermissions() {
-        let account = this.$store.state.userInfo?.nickname;
+        let account = this.$store.state.auth.user?.nickname;
         if (account) {
           if (this.$route.params.article_id) {
             if (account === this.article.articleAuthor.userNickname) {
@@ -90,7 +91,7 @@
             return true;
           }
         }
-        return this.$store.getters.hasPermissions('blog_admin');
+        return this.$auth.hasScope('blog_admin');
       }
     },
     data() {

@@ -83,11 +83,11 @@ export default {
       articles: state => state.portfolio.articles,
       isFetching: state => state.portfolio.detail.fetching,
       isMobile: state => state.global.isMobile,
-      user: state => state.oauth,
-      avatar: state => state.userInfo?.avatarURL
+      user: state => state.auth.user,
+      avatar: state => state.auth.user?.avatarURL
     }),
     isAuthor() {
-      let account = this.$store.state.userInfo?.nickname;
+      let account = this.$store.state.auth.user?.nickname;
       if (account) {
         if (account === this.portfolio.portfolioAuthor.userNickname) {
           return true;

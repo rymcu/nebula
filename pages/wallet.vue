@@ -1,17 +1,22 @@
 <template>
   <el-row class="wrapper">
-    <el-col>
-      <h1>账户信息</h1>
+    <el-col v-if="bankAccount">
+      <el-col>
+        <h1>账户信息</h1>
+      </el-col>
+      <el-col class="bank-account-item">
+        <span style="font-size: 24px;"> 账号:</span> <span style="color: red;">{{ bankAccount.bankAccount }}</span>
+      </el-col>
+      <el-col class="bank-account-item">
+        <span style="font-size: 24px;"> 余额:</span> <span style="color: red;">{{ bankAccount.accountBalance }}</span> <span
+        style="font-size: 24px;">巴旦木</span>
+      </el-col>
+      <el-col>
+        <records :records="records" :bankAccount="bankAccount.bankAccount" @currentChange="handleCurrentChange" @searchTransactionRecord="searchTransactionRecord"></records>
+      </el-col>
     </el-col>
-    <el-col class="bank-account-item">
-      <span style="font-size: 24px;"> 账号:</span> <span style="color: red;">{{ bankAccount.bankAccount }}</span>
-    </el-col>
-    <el-col class="bank-account-item">
-      <span style="font-size: 24px;"> 余额:</span> <span style="color: red;">{{ bankAccount.accountBalance }}</span> <span
-      style="font-size: 24px;">巴旦木</span>
-    </el-col>
-    <el-col>
-      <records :records="records" :bankAccount="bankAccount.bankAccount" @currentChange="handleCurrentChange" @searchTransactionRecord="searchTransactionRecord"></records>
+    <el-col v-else style="text-align: center;margin-top: 10vh;">
+      <el-button type="primary">开通钱包账号</el-button>
     </el-col>
   </el-row>
 </template>
@@ -26,10 +31,10 @@ export default {
   fetch({store, error}) {
     return Promise.all([
       store
-        .dispatch('wallet/fetchDetail', {idUser: store.state.oauth.idUser})
+        .dispatch('wallet/fetchDetail')
         .catch(err => error({statusCode: 404})),
       store
-        .dispatch('wallet/fetchTransactionRecordList', {idUser: store.state.oauth.idUser})
+        .dispatch('wallet/fetchTransactionRecordList')
         .catch(err => error({statusCode: 404}))
     ])
   },
@@ -47,7 +52,7 @@ export default {
     handleCurrentChange(search) {
       let _ts = this;
       _ts.$store.dispatch('wallet/fetchTransactionRecordList', {
-        idUser: _ts.$store.state.oauth.idUser,
+        idUser: _ts.$store.state.auth.user.idUser,
         startDate: search.startDate,
         endDate: search.endDate,
         page: search.page
@@ -58,7 +63,7 @@ export default {
       let startDate = dates[0]
       let endDate = dates[1]
       _ts.$store.dispatch('wallet/fetchTransactionRecordList', {
-        idUser: _ts.$store.state.oauth.idUser,
+        idUser: _ts.$store.state.auth.user.idUser,
         startDate: startDate,
         endDate: endDate
       })

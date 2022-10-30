@@ -20,7 +20,7 @@
 
     <el-col :md="10" :span="10" :xs="16" style="line-height: 60px">
       <client-only>
-        <el-col style="text-align: right;" v-if="user">
+        <el-col style="text-align: right;" v-if="loggedIn">
           <el-popover
             @show="handleShowPopover"
             placement="bottom"
@@ -76,17 +76,17 @@
           </el-link>
           <el-link :underline="false" rel="nofollow" style="margin-left: 10px;">
             <el-dropdown @command="handleCommand" trigger="click">
-              <el-avatar :src="avatarURL" size="small" v-if="avatarURL"></el-avatar>
+              <el-avatar :src="user.avatarUrl" size="small" v-if="user.avatarUrl"></el-avatar>
               <el-avatar size="small" src="https://static.rymcu.com/article/1578475481946.png" v-else></el-avatar>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item style="align-items: center;">
-                  <el-avatar :src="avatarURL" class="mr-3" size="small" style="margin-top: 1rem;"
-                             v-if="avatarURL"></el-avatar>
+                  <el-avatar :src="user.avatarUrl" class="mr-3" size="small" style="margin-top: 1rem;"
+                             v-if="user.avatarUrl"></el-avatar>
                   <el-avatar class="mr-3" size="small" src="https://static.rymcu.com/article/1578475481946.png"
                              style="margin-top: 1rem;"
                              v-else></el-avatar>
                   <el-link :underline="false" rel="nofollow" style="margin-left: 10px;margin-bottom: 1rem;">
-                    {{ nickname }}
+                    {{ user.nickname }}
                   </el-link>
                 </el-dropdown-item>
                 <el-dropdown-item command="user">个人中心</el-dropdown-item>
@@ -138,251 +138,213 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
-  import {isBrowser} from '~/environment';
-  // import sockClient from '~/plugins/sockjs';
+import {mapState} from 'vuex';
+// import sockClient from '~/plugins/sockjs';
 
-  const Cookie = process.client ? require('js-cookie') : undefined
-  export default {
-    name: "PcHeader",
-    computed: {
-      ...mapState({
-        activeMenu: state => state.activeMenu,
-        user: state => state.oauth
-      }),
-      avatarURL() {
-        let _ts = this;
-        if (isBrowser) {
-          if (!_ts.$store.state.userInfo) {
-            let user = localStorage.getItem('user');
-            if (user) {
-              _ts.$store.commit('setUser', JSON.parse(user))
-            }
-          }
-        }
-        return _ts.$store.state.userInfo?.avatarURL;
-      },
-      nickname() {
-        let _ts = this;
-        if (isBrowser) {
-          if (!_ts.$store.state.userInfo) {
-            let user = localStorage.getItem('user');
-            if (user) {
-              _ts.$store.commit('setUser', JSON.parse(user))
-            }
-          }
-        }
-        return _ts.$store.state.userInfo?.nickname;
-      },
-      account() {
-        let _ts = this;
-        if (isBrowser) {
-          if (!_ts.$store.state.userInfo) {
-            let user = localStorage.getItem('user');
-            if (user) {
-              _ts.$store.commit('setUser', JSON.parse(user))
-            }
-          }
-        }
-        return _ts.$store.state.userInfo?.account;
-      },
-      hasPermissions() {
-        return this.$store.getters.hasPermissions('blog_admin');
-      }
+export default {
+  name: "PcHeader",
+  computed: {
+    ...mapState({
+      activeMenu: state => state.activeMenu,
+      user: state => state.auth.user,
+      loggedIn: state => state.auth.loggedIn
+    }),
+    hasPermissions() {
+      return this.$auth.hasScope('admin') || this.$auth.hasScope('blog_admin');
+    }
+  },
+  data() {
+    return {
+      queryString: '',
+      timeout: null,
+      show: false,
+      notifications: [],
+      notificationNumbers: "",
+      showPopover: false,
+      autofocus: false
+    };
+  },
+  watch: {
+    user: function () {
+      this.getUnreadNotifications();
+    }
+  },
+  methods: {
+    querySearchAsync() {
+      this.$router.push({
+        path: `/search?q=${this.queryString}`
+      })
+      this.$set(this, 'showPopover', false);
+      this.$set(this, 'queryString', '');
     },
-    data() {
-      return {
-        queryString: '',
-        timeout: null,
-        show: false,
-        notifications: [],
-        notificationNumbers: "",
-        showPopover: false,
-        autofocus: false
-      };
+    handleShowPopover() {
+      setTimeout(function () {
+        document.getElementsByName("searchInput")[0].focus()
+      }, 500);
     },
-    watch: {
-      user: function () {
-        this.getUnreadNotifications();
-      }
-    },
-    methods: {
-      querySearchAsync() {
-        this.$router.push({
-          path: `/search?q=${this.queryString}`
-        })
-        this.$set(this, 'showPopover', false);
-        this.$set(this, 'queryString', '');
-      },
-      handleShowPopover() {
-        setTimeout(function () {
-          document.getElementsByName("searchInput")[0].focus()
-        }, 500);
-      },
-      handleSelectMenu(item) {
-        let _ts = this;
-        let activeMenu = _ts.$store.state.activeMenu;
-        if (activeMenu !== item) {
-          switch (item) {
-            case 'topic':
-              _ts.$router.push({
-                path: '/topic/news?page=1'
-              })
-              break;
-            case 'portfolios':
-              _ts.$router.push({
-                path: '/portfolios?page=1'
-              })
-              break;
-            case 'products':
-              _ts.$router.push({
-                path: '/products?page=1'
-              })
-              break;
-            case 'github':
-              window.open("https://github.com/rymcu");
-              break;
-            case 'taobao':
-              window.open("https://rymcu.taobao.com?utm_source=rymcu.com");
-              break;
-            case 'open-data':
-              _ts.$router.push({
-                path: '/open-data'
-              })
-              break;
-            default:
-              _ts.$router.push(
-                {
-                  path: '/'
-                }
-              )
-          }
-        }
-      },
-      handleCommand(item) {
-        let _ts = this;
+    handleSelectMenu(item) {
+      let _ts = this;
+      let activeMenu = _ts.$store.state.activeMenu;
+      if (activeMenu !== item) {
         switch (item) {
-          case 'user':
+          case 'topic':
             _ts.$router.push({
-              path: '/user/' + _ts.account
+              path: '/topic/news?page=1'
             })
             break;
-          case 'user-info':
+          case 'portfolios':
             _ts.$router.push({
-              path: '/user/settings/account'
+              path: '/portfolios?page=1'
             })
             break;
-          case 'logout':
-            Cookie.remove('auth')
-            _ts.$store.commit('setAuth', null)
-            item = 'login';
+          case 'products':
+            _ts.$router.push({
+              path: '/products?page=1'
+            })
+            break;
+          case 'github':
+            window.open("https://github.com/rymcu");
+            break;
+          case 'taobao':
+            window.open("https://rymcu.taobao.com?utm_source=rymcu.com");
+            break;
+          case 'open-data':
+            _ts.$router.push({
+              path: '/open-data'
+            })
             break;
           default:
-            _ts.$router.push({
-              name: item
-            })
-        }
-      },
-      getUnreadNotifications() {
-        let _ts = this;
-        if (_ts.user) {
-          _ts.$axios.$get('/api/notification/unread').then(function (res) {
-            if (res) {
-              _ts.$set(_ts, 'notifications', res.list);
-              _ts.$set(_ts, 'notificationNumbers', res.total === 0 ? "" : res.total);
-            }
-          })
-        }
-      },
-      login() {
-        this.$router.push({
-          path: '/login',
-          query: {
-            historyUrl: window.location.href
-          }
-        })
-      },
-      browserFingerprint() {
-        let _ts = this
-        let canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        let txt = 'https://rymcu.com/';
-        ctx.textBaseline = "top";
-        ctx.font = "14px 'Arial'";
-        ctx.textBaseline = "rymcu";
-        ctx.fillStyle = "#f60";
-        ctx.fillRect(125, 1, 62, 20);
-        ctx.fillStyle = "#069";
-        ctx.fillText(txt, 2, 15);
-        ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
-        ctx.fillText(txt, 4, 17);
-        let b64 = canvas.toDataURL().replace("data:image/png;base64,", "");
-        let bin = atob(b64);
-        let fingerprint = _ts.bin2hex(bin.slice(-16, -12));
-        _ts.$store.commit('setFingerprint', fingerprint);
-      },
-      bin2hex(str) {
-        let _ts = this
-        let result = "";
-        for (let i = 0; i < str.length; i++) {
-          let c = str.charCodeAt(i);
-          // 高字节
-          result += _ts.byte2Hex(c >> 8 & 0xff);
-          // 低字节
-          result += _ts.byte2Hex(c & 0xff);
-        }
-        return result;
-      },
-      byte2Hex(b) {
-        if (b < 0x10) {
-          return "0" + b.toString(16);
-        } else {
-          return b.toString(16);
+            _ts.$router.push(
+              {
+                path: '/'
+              }
+            )
         }
       }
     },
-    mounted() {
+    handleCommand(item) {
       let _ts = this;
-      let user = _ts.user;
-      if (user) {
-        _ts.getUnreadNotifications();
-        _ts.$store.dispatch('follow/fetchUserFollowerList');
-        _ts.$store.dispatch('follow/fetchUserFollowingList');
-        // sockClient.initSocket(this.$store.state.userInfo);
+      switch (item) {
+        case 'user':
+          _ts.$router.push({
+            path: '/user/' + _ts.user.account
+          })
+          break;
+        case 'user-info':
+          _ts.$router.push({
+            path: '/user/settings/account'
+          })
+          break;
+        case 'logout':
+          _ts.$auth.logout()
+          item = 'login';
+          break;
+        default:
+          _ts.$router.push({
+            name: item
+          })
       }
-      let fingerprint = _ts.$store.state.fingerprint
-      if (!fingerprint) {
-        _ts.browserFingerprint();
+    },
+    getUnreadNotifications() {
+      let _ts = this;
+      if (_ts.user) {
+        _ts.$axios.$get('/api/notification/unread').then(function (res) {
+          if (res) {
+            _ts.$set(_ts, 'notifications', res.list);
+            _ts.$set(_ts, 'notificationNumbers', res.total === 0 ? "" : res.total);
+          }
+        })
+      }
+    },
+    login() {
+      this.$router.push({
+        path: '/login',
+        query: {
+          historyUrl: window.location.href
+        }
+      })
+    },
+    browserFingerprint() {
+      let _ts = this
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      let txt = 'https://rymcu.com/';
+      ctx.textBaseline = "top";
+      ctx.font = "14px 'Arial'";
+      ctx.textBaseline = "rymcu";
+      ctx.fillStyle = "#f60";
+      ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = "#069";
+      ctx.fillText(txt, 2, 15);
+      ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+      ctx.fillText(txt, 4, 17);
+      let b64 = canvas.toDataURL().replace("data:image/png;base64,", "");
+      let bin = atob(b64);
+      let fingerprint = _ts.bin2hex(bin.slice(-16, -12));
+      _ts.$store.commit('setFingerprint', fingerprint);
+    },
+    bin2hex(str) {
+      let _ts = this
+      let result = "";
+      for (let i = 0; i < str.length; i++) {
+        let c = str.charCodeAt(i);
+        // 高字节
+        result += _ts.byte2Hex(c >> 8 & 0xff);
+        // 低字节
+        result += _ts.byte2Hex(c & 0xff);
+      }
+      return result;
+    },
+    byte2Hex(b) {
+      if (b < 0x10) {
+        return "0" + b.toString(16);
+      } else {
+        return b.toString(16);
       }
     }
-
+  },
+  mounted() {
+    let _ts = this;
+    let user = _ts.user;
+    if (user) {
+      _ts.getUnreadNotifications();
+      _ts.$store.dispatch('follow/fetchUserFollowerList');
+      _ts.$store.dispatch('follow/fetchUserFollowingList');
+      // sockClient.initSocket(this.$store.state.auth.user);
+    }
+    let fingerprint = _ts.$store.state.fingerprint
+    if (!fingerprint) {
+      _ts.browserFingerprint();
+    }
   }
+
+}
 </script>
 
 <style scoped>
-  .navbar-brand {
-    color: inherit;
-    margin-right: 1rem;
-    font-size: 1.25rem;
-    white-space: nowrap;
-    font-weight: 600;
-    padding: 0;
-    transition: .3s opacity;
-    line-height: 3rem;
-  }
+.navbar-brand {
+  color: inherit;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  white-space: nowrap;
+  font-weight: 600;
+  padding: 0;
+  transition: .3s opacity;
+  line-height: 3rem;
+}
 
-  .navbar-brand-img {
-    height: 3rem;
-    line-height: 3rem;
-    vertical-align: top;
-    width: auto;
-  }
+.navbar-brand-img {
+  height: 3rem;
+  line-height: 3rem;
+  vertical-align: top;
+  width: auto;
+}
 
-  .search-result-box {
-    min-width: 20vw !important;
-  }
+.search-result-box {
+  min-width: 20vw !important;
+}
 
-  .search-result-type {
-    padding-right: 5px;
-  }
+.search-result-type {
+  padding-right: 5px;
+}
 </style>

@@ -80,6 +80,7 @@ import {mapState} from 'vuex';
 
 export default {
   name: "products",
+  middleware: 'auth',
   fetch() {
     let {store, params, error} = this.$nuxt.context
     return Promise.all([

@@ -75,6 +75,7 @@ import Records from "../../components/common/bank/account/records";
 
 export default {
   name: "bank-accounts",
+  middleware: 'auth',
   components: {Records},
   fetch() {
     let {store, params, error} = this.$nuxt.context

@@ -70,9 +70,44 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
-    'js-cookie',
-    'cookieparser'
+    '@nuxtjs/auth-next'
   ],
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: false,
+      home: false
+    },
+    strategies: {
+      local: {
+        // scope: true,
+        scheme: 'refresh',
+        token: {
+          property: 'token',
+          global: true,
+          maxAge: 60 * 15,
+          // required: true,
+          type: false
+        },
+        refreshToken: {
+          property: 'refreshToken',
+          data: 'refreshToken',
+          maxAge: 60 * 60 * 2
+        },
+        user: {
+          property: 'user',
+          autoFetch: false
+        },
+        endpoints: {
+          login: { url: '/api/auth/login', method: 'post' },
+          logout: { url: '/api/auth/logout', method: 'post' },
+          refresh: { url: '/api/auth/refresh-token', method: 'post' },
+          user: { url: '/api/auth/user', method: 'get' }
+        },
+        autoLogout: false
+      }
+    }
+  },
   axios: {
     proxy: true  // 开启proxy
   },

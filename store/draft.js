@@ -26,7 +26,6 @@ export const mutations = {
     state.list.fetching = action
   },
   updateListData(state, action) {
-    console.log(action)
     state.list.data = action
   },
   // 文章详情
