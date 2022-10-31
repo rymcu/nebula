@@ -139,7 +139,7 @@ export default {
     handleSizeChange(pageSize) {
       let _ts = this;
       _ts.$store.dispatch('admin/fetchArticles', {
-        page: _ts.pagination.currentPage,
+        page: _ts.articles.pageNum,
         rows: pageSize
       })
     },
@@ -147,7 +147,7 @@ export default {
       let _ts = this;
       _ts.$store.dispatch('admin/fetchArticles', {
         page: page,
-        rows: _ts.pagination.pageSize
+        rows: _ts.articles.pageSize
       })
     },
     toggleStatus() {},
