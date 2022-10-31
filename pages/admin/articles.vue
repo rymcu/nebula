@@ -158,16 +158,14 @@ export default {
         articlePerfect: '1'
       }).then(function (res) {
         if (res) {
-          if (res.success) {
-            _ts.$store.commit('admin/updateArticlePreference', {
-              index: index,
-              idArticle: idArticle,
-              articlePerfect: '1'
-            })
-            _ts.$message.success("设置成功!");
-          } else {
-            _ts.$message.error(_ts.message);
-          }
+          _ts.$store.commit('admin/updateArticlePreference', {
+            index: index,
+            idArticle: idArticle,
+            articlePerfect: '1'
+          })
+          _ts.$message.success("设置成功!");
+        } else {
+          _ts.$message.error("设置失败!");
         }
       })
     },
@@ -178,16 +176,14 @@ export default {
         articlePerfect: '0'
       }).then(function (res) {
         if (res) {
-          if (res.success) {
-            _ts.$store.commit('admin/updateArticlePreference', {
-              index: index,
-              idArticle: idArticle,
-              articlePerfect: '0'
-            })
-            _ts.$message.success("取消成功!");
-          } else {
-            _ts.$message.error(_ts.message);
-          }
+          _ts.$store.commit('admin/updateArticlePreference', {
+            index: index,
+            idArticle: idArticle,
+            articlePerfect: '0'
+          })
+          _ts.$message.success("取消成功!");
+        } else {
+          _ts.$message.error("取消失败!");
         }
       })
     },
