@@ -593,8 +593,11 @@ export default {
   },
   mounted() {
     this.$store.commit("setActiveMenu", "admin-dashboard");
-    this.initLastThirtyDaysCharts(this.lastThirtyDays)
-    this.initHistoryCharts(this.history)
+    setTimeout(() => {
+      this.initLastThirtyDaysCharts(this.lastThirtyDays)
+      this.initHistoryCharts(this.history)  
+    }, 500);
+    
   }
 }
 </script>
