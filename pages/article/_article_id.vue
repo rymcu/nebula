@@ -335,14 +335,18 @@ export default {
         _ts.gotoLogin();
       }
     },
-    setPreference() {
+   setPreference() {
       let _ts = this;
       _ts.$axios.$patch("/api/admin/article/update-perfect", {
         idArticle: _ts.article.idArticle,
         articlePerfect: '1',
       }).then(function (res) {
-        _ts.isPerfect = !_ts.isPerfect;
-        _ts.$message.success("设置成功!");
+        if (res) {
+          _ts.$set(_ts, 'isPerfect', true);
+          _ts.$message.success("设置成功!");
+        } else {
+          _ts.$message.error("设置失败!");
+        }
       })
     },
     cancelPreference() {
@@ -351,8 +355,12 @@ export default {
         idArticle: _ts.article.idArticle,
         articlePerfect: '0',
       }).then(function (res) {
-        _ts.isPerfect = !_ts.isPerfect;
-        _ts.$message.success("设置成功!");
+        if (res) {
+          _ts.$set(_ts, 'isPerfect', false);
+          _ts.$message.success("取消成功!");
+        } else {
+          _ts.$message.error("设置失败!");
+        }
       })
     },
     thumbsUp() {
