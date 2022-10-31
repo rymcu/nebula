@@ -76,7 +76,7 @@ export default {
     redirect: {
       login: '/login',
       logout: false,
-      home: false
+      home: '/'
     },
     strategies: {
       local: {
