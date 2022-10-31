@@ -155,7 +155,9 @@ export default {
   },
   mounted() {
     this.$store.commit("setActiveMenu", "open-data");
-    this.initLastThirtyDaysCharts(this.lastThirtyDays)
+    setTimeout(() => {
+      this.initLastThirtyDaysCharts(this.lastThirtyDays)  
+    }, 500);
   }
 }
 </script>
