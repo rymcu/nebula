@@ -43,7 +43,8 @@ import { mapState } from 'vuex';
 
 export default {
   name: "currency",
-  fetch({store, params, error}) {
+  fetch() {
+    let {store, params, error} = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('rule/fetchCurrencyRules', params)

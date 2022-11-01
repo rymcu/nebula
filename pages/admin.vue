@@ -3,7 +3,7 @@
     <el-col v-if="hasPermissions" :span="20">
       <el-col :span="4">
         <el-menu
-          :default-active="getActiveMenu"
+          :default-active="activeMenu"
           class="el-menu-vertical-demo"
           @select="handleSelectMenu">
           <template v-for="menu in menus">
@@ -15,7 +15,7 @@
         </el-menu>
       </el-col>
       <el-col :span="20">
-        <el-tabs v-model="editableTabsValue" type="card" @tab-remove="handleRemoveTab" @tab-click="handleClick">
+        <el-tabs :value="editableTabsValue" type="card" @tab-remove="handleRemoveTab" @tab-click="handleClick">
           <el-tab-pane
             :key="item.name"
             v-for="(item, index) in editableTabs"
@@ -23,7 +23,7 @@
             :name="item.name"
             :closable="item.closable"
           >
-            <nuxt keep-alive :nuxt-child-key="item.name"/>
+            <nuxt-child keep-alive :keep-alive-props="{exclude: ['login', 'register', 'admin-dashboard'],max: 10}"/>
           </el-tab-pane>
         </el-tabs>
       </el-col>
@@ -42,6 +42,7 @@
 
 <script>
 import _ from 'lodash'
+import {mapState} from 'vuex';
 
 export default {
   name: "Admin",
@@ -130,23 +131,18 @@ export default {
     }
   },
   computed: {
-    editableTabs() {
-      return this.$store.state.admin.tabs;
-    },
-    editableTabsValue: {
-      get() {
+    ...mapState({
+      editableTabs() {
+        return this.$store.state.admin.tabs;
+      },
+      editableTabsValue() {
         return this.$store.state.admin.activeTab;
       },
-      set(value) {
-        this.$store.commit('admin/updateActiveTab', value);
+      activeMenu: state => state.activeMenu,
+      hasPermissions() {
+        return this.$auth.hasScope('admin') || this.$auth.hasScope('blog_admin');
       }
-    },
-    getActiveMenu() {
-      return this.$store.state.activeMenu;
-    },
-    hasPermissions() {
-      return this.$auth.hasScope('admin') || this.$auth.hasScope('blog_admin');
-    }
+    })
   },
   methods: {
     handleRemoveTab(targetName) {
@@ -162,35 +158,13 @@ export default {
           }
         });
       }
-      this.$store.commit('admin/updateActiveTab', activeName);
 
       this.$store.commit('admin/updateTags', tabs.filter(tab => tab.name !== targetName))
 
-      this.$router.push({
-        name: activeName,
-        params: {
-          reset: '0'
-        }
-      })
+      this.handleSelectMenu(activeName)
     },
     handleClick(item) {
-      let _ts = this
-      this.$store.commit('admin/updateActiveTab', item.name);
-      let result = _.findIndex(_ts.editableTabs, function (tab) {
-        return tab.name === item.name;
-      })
-      if (result === -1) {
-        let index = _.findIndex(_ts.menus, function (menu) {
-          return menu.name === item.name;
-        })
-        _ts.$store.commit('admin/pushTags', _ts.menus[index])
-      }
-      _ts.$router.push({
-        name: item.name,
-        params: {
-          reset: '0'
-        }
-      })
+      this.handleSelectMenu(item.name)
     },
     handleSelectTab(item) {
       let _ts = this
@@ -221,6 +195,9 @@ export default {
         _ts.handleSelectTab(item)
       }
     }
+  },
+  mounted() {
+    this.handleSelectMenu(this.$route.name)
   }
 }
 </script>

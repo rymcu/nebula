@@ -47,7 +47,7 @@
 
 <script>
 import Vue from 'vue';
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
 import echarts from 'echarts';
 import gzh from "assets/rymcugzh.jpg";
 
@@ -55,11 +55,11 @@ Vue.prototype.$echarts = echarts;
 export default {
   name: "openData",
   fetch() {
-    let {store, params, error} = this.$nuxt.context
+    let { store, params, error } = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('open-data/fetchLastThirtyDays', params)
-        .catch(err => error({statusCode: 404})),
+        .catch(err => error({ statusCode: 404 })),
       store.dispatch('open-data/fetchDashboard', params)
     ])
   },
@@ -156,21 +156,20 @@ export default {
   mounted() {
     this.$store.commit("setActiveMenu", "open-data");
     setTimeout(() => {
-      this.initLastThirtyDaysCharts(this.lastThirtyDays)  
+      this.initLastThirtyDaysCharts(this.lastThirtyDays)
     }, 500);
   }
 }
 </script>
 
 <style scoped>
-
 .article__wrapper {
   max-width: 980px;
   margin: 20px auto;
   display: block;
   padding-left: 1rem;
   padding-right: 1rem;
-  box-sizing: border-box;;
+  box-sizing: border-box;
 }
 
 .mt-2rem {

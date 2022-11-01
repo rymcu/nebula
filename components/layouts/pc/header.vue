@@ -90,7 +90,8 @@
                   </el-link>
                 </el-dropdown-item>
                 <el-dropdown-item command="user">个人中心</el-dropdown-item>
-                <el-dropdown-item command="answer">每日一题</el-dropdown-item>
+                <el-dropdown-item command="answer" v-if="$auth.user.bankAccount">每日一题</el-dropdown-item>
+                <el-dropdown-item command="answer" v-else :disabled="true">每日一题<small>(开通钱包账号激活)</small></el-dropdown-item>
                 <el-dropdown-item command="drafts" divided>我的草稿</el-dropdown-item>
                 <el-dropdown-item command="wallet">我的钱包</el-dropdown-item>
                 <el-dropdown-item command="user-info" divided>设置</el-dropdown-item>
@@ -184,42 +185,39 @@ export default {
     },
     handleSelectMenu(item) {
       let _ts = this;
-      let activeMenu = _ts.$store.state.activeMenu;
-      if (activeMenu !== item) {
-        switch (item) {
-          case 'topic':
-            _ts.$router.push({
-              path: '/topic/news?page=1'
-            })
-            break;
-          case 'portfolios':
-            _ts.$router.push({
-              path: '/portfolios?page=1'
-            })
-            break;
-          case 'products':
-            _ts.$router.push({
-              path: '/products?page=1'
-            })
-            break;
-          case 'github':
-            window.open("https://github.com/rymcu");
-            break;
-          case 'taobao':
-            window.open("https://rymcu.taobao.com?utm_source=rymcu.com");
-            break;
-          case 'open-data':
-            _ts.$router.push({
-              path: '/open-data'
-            })
-            break;
-          default:
-            _ts.$router.push(
-              {
-                path: '/'
-              }
-            )
-        }
+      switch (item) {
+        case 'topic':
+          _ts.$router.push({
+            path: '/topic/news?page=1'
+          })
+          break;
+        case 'portfolios':
+          _ts.$router.push({
+            path: '/portfolios?page=1'
+          })
+          break;
+        case 'products':
+          _ts.$router.push({
+            path: '/products?page=1'
+          })
+          break;
+        case 'github':
+          window.open("https://github.com/rymcu");
+          break;
+        case 'taobao':
+          window.open("https://rymcu.taobao.com?utm_source=rymcu.com");
+          break;
+        case 'open-data':
+          _ts.$router.push({
+            path: '/open-data'
+          })
+          break;
+        default:
+          _ts.$router.push(
+            {
+              path: '/'
+            }
+          )
       }
     },
     handleCommand(item) {

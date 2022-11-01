@@ -24,7 +24,8 @@ export default {
   validate({params, store}) {
     return params.product_id && !isNaN(Number(params.product_id))
   },
-  fetch({store, params, error}) {
+  fetch() {
+    let {store, params, error} = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('product/fetchDetail', params)

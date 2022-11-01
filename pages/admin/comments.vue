@@ -150,9 +150,6 @@ export default {
       })
     },
     toggleStatus() {}
-  },
-  mounted() {
-    this.$store.commit("setActiveMenu", "admin-comments");
   }
 }
 </script>

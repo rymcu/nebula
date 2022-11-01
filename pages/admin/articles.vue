@@ -200,9 +200,6 @@ export default {
     openLink(link) {
       window.open(link);
     }
-  },
-  mounted() {
-    this.$store.commit("setActiveMenu", "admin-articles");
   }
 }
 </script>

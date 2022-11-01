@@ -157,9 +157,6 @@ export default {
         }
       })
     }
-  },
-  mounted() {
-    this.$store.commit("setActiveMenu", "admin-banks");
   }
 }
 </script>

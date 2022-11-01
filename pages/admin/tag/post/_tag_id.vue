@@ -346,7 +346,6 @@ export default {
       }).then(() => {
         next();
       }).catch(() => {
-        _ts.$store.commit("setActiveMenu", "admin-tag-post");
         return false
       });
     } else {
@@ -369,7 +368,6 @@ export default {
       return '关闭提示';
     });
     let _ts = this;
-    _ts.$store.commit('setActiveMenu', 'admin-tag-post');
     _ts.$axios.$get('/api/upload/simple/token').then(function (res) {
       if (res) {
         _ts.$store.commit('setUploadHeaders', res.uploadToken);

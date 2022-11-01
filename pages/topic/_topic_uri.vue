@@ -30,12 +30,10 @@ export default {
     ])
   },
   watch: {
-    '$route.query': function () {
-      let _ts = this
-      _ts.$store.dispatch('article/fetchList', {
-        topic_uri: _ts.defaultParams.topic_uri,
-        page: _ts.defaultParams.page || 1
-      })
+    '$route'(to, from) {
+      if (from.query.page && to.query.page) {
+        this.$router.go()
+      }
     }
   },
   computed: {

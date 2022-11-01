@@ -65,9 +65,6 @@
           path: '/admin/topic/post'
         })
       }
-    },
-    mounted() {
-      this.$store.commit("setActiveMenu", "admin-topics");
     }
   }
 </script>

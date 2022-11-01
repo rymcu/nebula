@@ -42,143 +42,91 @@
           <el-col :span="24" style="text-align: left;">
             <h3>新增文章列表</h3>
           </el-col>
-          <el-table
-            :data="articles.list"
-            style="width: 100%">
-            <el-table-column
-              label="#"
-              width="60"
-              prop="idArticle">
+          <el-table :data="articles.list" style="width: 100%">
+            <el-table-column label="#" width="60" prop="idArticle">
             </el-table-column>
-            <el-table-column
-              label="标题"
-              prop="articleTitle">
+            <el-table-column label="标题" prop="articleTitle">
               <template slot-scope="scope">
-                <el-button type="text" @click="openLink(scope.row.articlePermalink)">{{ scope.row.articleTitle }}</el-button>
+                <el-button type="text" @click="openLink(scope.row.articlePermalink)">{{ scope.row.articleTitle }}
+                </el-button>
               </template>
             </el-table-column>
-            <el-table-column
-              label="标签"
-              prop="articleTitle">
+            <el-table-column label="标签" prop="articleTitle">
               <template slot-scope="scope">
-                <el-tag
-                  style="margin-left: 0.5rem;"
-                  v-for="tag in scope.row.tags"
-                  :key="tag.idTag"
-                  size="mini"
+                <el-tag style="margin-left: 0.5rem;" v-for="tag in scope.row.tags" :key="tag.idTag" size="mini"
                   effect="plain">
                   # {{ tag.tagTitle }}
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column
-              label="最后更新时间"
-              width="180"
-              prop="updatedTime">
+            <el-table-column label="最后更新时间" width="180" prop="updatedTime">
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button v-if="scope.row.articlePerfect === '1'" size="mini" @click="cancelPreference(scope.$index, scope.row.idArticle)" plain>取消优选</el-button>
-                <el-button v-else size="mini" @click="setPreference(scope.$index, scope.row.idArticle)" plain>设为优选</el-button>
-                <el-button size="mini" type="primary"
-                           @click="updateTags(scope.$index, scope.row)" plain>编辑标签
+                <el-button v-if="scope.row.articlePerfect === '1'" size="mini"
+                  @click="cancelPreference(scope.$index, scope.row.idArticle)" plain>取消优选</el-button>
+                <el-button v-else size="mini" @click="setPreference(scope.$index, scope.row.idArticle)" plain>设为优选
+                </el-button>
+                <el-button size="mini" type="primary" @click="updateTags(scope.$index, scope.row)" plain>编辑标签
                 </el-button>
                 <el-button v-if="scope.row.articleStatus === '0'" size="mini" type="danger"
-                           @click="toggleStatus(scope.$index, scope.row)" plain>下架
+                  @click="toggleStatus(scope.$index, scope.row)" plain>下架
                 </el-button>
-                <el-button v-else size="mini" type="success"
-                           @click="toggleStatus(scope.$index, scope.row)" plain>上架
+                <el-button v-else size="mini" type="success" @click="toggleStatus(scope.$index, scope.row)" plain>上架
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-col>
         <el-col>
-          <el-pagination
-            :hide-on-single-page="true"
-            @size-change="handleArticleSizeChange"
-            @current-change="handleArticleCurrentChange"
-            :current-page="articles.pageNum"
-            :page-sizes="[10, 20, 50, 100]"
-            :page-size="articles.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="articles.total">
+          <el-pagination :hide-on-single-page="true" @size-change="handleArticleSizeChange"
+            @current-change="handleArticleCurrentChange" :current-page="articles.pageNum"
+            :page-sizes="[10, 20, 50, 100]" :page-size="articles.pageSize"
+            layout="total, sizes, prev, pager, next, jumper" :total="articles.total">
           </el-pagination>
         </el-col>
         <el-col :span="24">
           <el-col :span="24" style="text-align: left;">
             <h3>新增用户列表</h3>
           </el-col>
-          <el-table :data="users.list"
-                    style="width: 100%">
-            <el-table-column
-              label="#"
-              width="40"
-              prop="idUser">
+          <el-table :data="users.list" style="width: 100%">
+            <el-table-column label="#" width="40" prop="idUser">
             </el-table-column>
-            <el-table-column
-              label="头像"
-              width="60"
-              prop="avatarUrl">
+            <el-table-column label="头像" width="60" prop="avatarUrl">
               <template slot-scope="scope">
                 <el-avatar v-if="scope.row.avatarUrl" size="medium" :src="scope.row.avatarUrl"></el-avatar>
                 <el-avatar v-else size="medium" src="https://rymcu.com/article/1578475481946.png"></el-avatar>
               </template>
             </el-table-column>
-            <el-table-column
-              label="昵称"
-              width="140"
-              prop="nickname">
+            <el-table-column label="昵称" width="140" prop="nickname">
               <template slot-scope="scope">
                 <el-link type="primary" :href="getUserPath(scope.row.account)" :underline="false">
                   {{ scope.row.nickname }}
                 </el-link>
               </template>
             </el-table-column>
-            <el-table-column
-              label="注册时间"
-              width="180"
-              prop="createdTime">
+            <el-table-column label="注册时间" width="180" prop="createdTime">
             </el-table-column>
           </el-table>
         </el-col>
         <el-col>
-          <el-pagination
-            :hide-on-single-page="true"
-            @size-change="handleUserSizeChange"
-            @current-change="handleUserCurrentChange"
-            :current-page="users.pageNum"
-            :page-sizes="[10, 20, 50, 100]"
-            :page-size="users.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="users.total">
+          <el-pagination :hide-on-single-page="true" @size-change="handleUserSizeChange"
+            @current-change="handleUserCurrentChange" :current-page="users.pageNum" :page-sizes="[10, 20, 50, 100]"
+            :page-size="users.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="users.total">
           </el-pagination>
         </el-col>
         <el-col :span="24">
           <el-col :span="24" style="text-align: left;">
             <h3>新增账户列表</h3>
           </el-col>
-          <el-table :data="bankAccounts.list"
-                    style="width: 100%">
-            <el-table-column
-              label="#"
-              width="40"
-              prop="idBank">
+          <el-table :data="bankAccounts.list" style="width: 100%">
+            <el-table-column label="#" width="40" prop="idBank">
             </el-table-column>
-            <el-table-column
-              label="银行账户"
-              width="180"
-              prop="bankAccount">
+            <el-table-column label="银行账户" width="180" prop="bankAccount">
             </el-table-column>
-            <el-table-column
-              label="账户所有者"
-              width="180"
-              prop="accountOwnerName">
+            <el-table-column label="账户所有者" width="180" prop="accountOwnerName">
             </el-table-column>
-            <el-table-column
-              label="账户余额 (巴旦木)"
-              width="180"
-              prop="accountBalance">
+            <el-table-column label="账户余额 (巴旦木)" width="180" prop="accountBalance">
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
@@ -188,15 +136,10 @@
           </el-table>
         </el-col>
         <el-col>
-          <el-pagination
-            :hide-on-single-page="true"
-            @size-change="handleBankAccountSizeChange"
-            @current-change="handleBankAccountCurrentChange"
-            :current-page="bankAccounts.pageNum"
-            :page-sizes="[10, 20, 50, 100]"
-            :page-size="bankAccounts.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="bankAccounts.total">
+          <el-pagination :hide-on-single-page="true" @size-change="handleBankAccountSizeChange"
+            @current-change="handleBankAccountCurrentChange" :current-page="bankAccounts.pageNum"
+            :page-sizes="[10, 20, 50, 100]" :page-size="bankAccounts.pageSize"
+            layout="total, sizes, prev, pager, next, jumper" :total="bankAccounts.total">
           </el-pagination>
         </el-col>
       </div>
@@ -229,10 +172,7 @@
     </el-col>
     <el-col>
       <el-dialog :visible.sync="tagsDialogVisible">
-        <edit-tags
-          :idArticle="idArticle"
-          :tags="articleTags"
-          @closeDialog="closeTagsDialog">
+        <edit-tags :idArticle="idArticle" :tags="articleTags" @closeDialog="closeTagsDialog">
         </edit-tags>
       </el-dialog>
     </el-col>
@@ -241,7 +181,7 @@
 
 <script>
 import Vue from 'vue';
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
 import echarts from 'echarts';
 import EditTags from '~/components/widget/tags';
 
@@ -253,11 +193,11 @@ export default {
     EditTags
   },
   fetch() {
-    let {store, params, error} = this.$nuxt.context
+    let { store, params, error } = this.$nuxt.context
     return Promise.all([
       store
         .dispatch('dashboard/fetchDashboard', params)
-        .catch(err => error({statusCode: 404})),
+        .catch(err => error({ statusCode: 404 })),
       store.dispatch("dashboard/fetchLastThirtyDays", params),
       store.dispatch("dashboard/fetchHistory", params),
       store.dispatch("dashboard/fetchNewUsers", params),
@@ -319,13 +259,13 @@ export default {
           smooth: true,
           areaStyle: {}
         },
-          {
-            name: '用户',
-            data: data.users,
-            type: 'line',
-            smooth: true,
-            areaStyle: {}
-          }]
+        {
+          name: '用户',
+          data: data.users,
+          type: 'line',
+          smooth: true,
+          areaStyle: {}
+        }]
       };
 
       // 使用刚指定的配置项和数据显示图表。
@@ -409,13 +349,13 @@ export default {
           smooth: true,
           areaStyle: {}
         },
-          {
-            name: '用户',
-            data: data.users,
-            type: 'line',
-            smooth: true,
-            areaStyle: {}
-          }]
+        {
+          name: '用户',
+          data: data.users,
+          type: 'line',
+          smooth: true,
+          areaStyle: {}
+        }]
       };
 
       // 使用刚指定的配置项和数据显示图表。
@@ -447,19 +387,19 @@ export default {
           type: 'value'
         },
         series: [{
-            name: '访客数',
-            data: data.visitIps,
-            type: 'line',
-            smooth: true,
-            areaStyle: {}
-          },
-          {
-            name: '浏览量',
-            data: data.visits,
-            type: 'line',
-            smooth: true,
-            areaStyle: {}
-          }]
+          name: '访客数',
+          data: data.visitIps,
+          type: 'line',
+          smooth: true,
+          areaStyle: {}
+        },
+        {
+          name: '浏览量',
+          data: data.visits,
+          type: 'line',
+          smooth: true,
+          areaStyle: {}
+        }]
       };
 
       // 使用刚指定的配置项和数据显示图表。
@@ -540,7 +480,7 @@ export default {
       _ts.$set(_ts, 'articleTags', article.articleTags);
       _ts.$set(_ts, 'tagsDialogVisible', true);
     },
-    toggleStatus() {},
+    toggleStatus() { },
     closeTagsDialog() {
       this.$set(this, 'tagsDialogVisible', false);
     },
@@ -591,9 +531,8 @@ export default {
     this.$store.commit("setActiveMenu", "admin-dashboard");
     setTimeout(() => {
       this.initLastThirtyDaysCharts(this.lastThirtyDays)
-      this.initHistoryCharts(this.history)  
+      this.initHistoryCharts(this.history)
     }, 500);
-    
   }
 }
 </script>
