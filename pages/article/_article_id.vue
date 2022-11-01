@@ -95,7 +95,7 @@
                   {{ article.articleThumbsUpCount }}
                 </el-button>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="赞赏" placement="top-start">
+              <el-tooltip v-if="article.canSponsor" class="item" effect="dark" content="赞赏" placement="top-start" :disabled="!$auth.user.bankAccount">
                 <el-button v-if="user.idUser === article.articleAuthorId" type="text"
                            style="font-size: 1.2rem;">
                   <svg width="24" height="24">

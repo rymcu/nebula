@@ -90,7 +90,8 @@
                   </el-link>
                 </el-dropdown-item>
                 <el-dropdown-item command="user">个人中心</el-dropdown-item>
-                <el-dropdown-item command="answer">每日一题</el-dropdown-item>
+                <el-dropdown-item command="answer" v-if="$auth.user.bankAccount">每日一题</el-dropdown-item>
+                <el-dropdown-item command="answer" v-else :disabled="true">每日一题<small>(开通钱包账号激活)</small></el-dropdown-item>
                 <el-dropdown-item command="drafts" divided>我的草稿</el-dropdown-item>
                 <el-dropdown-item command="wallet">我的钱包</el-dropdown-item>
                 <el-dropdown-item command="user-info" divided>设置</el-dropdown-item>
