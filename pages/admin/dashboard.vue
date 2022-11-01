@@ -532,7 +532,7 @@ export default {
     setTimeout(() => {
       this.initLastThirtyDaysCharts(this.lastThirtyDays)
       this.initHistoryCharts(this.history)
-    }, 3000);
+    }, 5000);
   }
 }
 </script>
