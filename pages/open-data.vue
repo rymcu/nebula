@@ -157,7 +157,7 @@ export default {
     this.$store.commit("setActiveMenu", "open-data");
     setTimeout(() => {
       this.initLastThirtyDaysCharts(this.lastThirtyDays)
-    }, 500);
+    }, 2000);
   }
 }
 </script>
