@@ -158,9 +158,9 @@ export default {
           if (res.message) {
             _ts.$message.error(res.message);
           } else {
-            _ts.$set(_ts, 'user', res.user);
-            _ts.$set(_ts, 'avatarUrl', res.user.avatarUrl);
-            _ts.$refs.cropper.replace(res.user.avatarUrl);
+            _ts.$set(_ts, 'user', res);
+            _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
+            _ts.$refs.cropper.replace(res.avatarUrl);
             // _ts.webImageToBase64(res.user.avatarUrl);
           }
         }
@@ -192,9 +192,9 @@ export default {
               if (res.message) {
                 _ts.$message.error(res.message);
               } else {
-                _ts.$set(_ts, 'user', res.user);
-                _ts.$set(_ts, 'avatarUrl', res.user.avatarUrl);
-                _ts.$store.commit('setUserInfo', res.user);
+                _ts.$set(_ts, 'user', res);
+                _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
+                _ts.$store.commit('setUserInfo', res);
                 _ts.$message.success('更新成功 !');
               }
             }
