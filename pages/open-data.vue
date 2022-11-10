@@ -54,8 +54,7 @@ import gzh from "assets/rymcugzh.jpg";
 Vue.prototype.$echarts = echarts;
 export default {
   name: "openData",
-  fetch() {
-    let { store, params, error } = this.$nuxt.context
+  asyncData({store, params, error}) {
     return Promise.all([
       store
         .dispatch('open-data/fetchLastThirtyDays', params)
@@ -155,9 +154,7 @@ export default {
   },
   mounted() {
     this.$store.commit("setActiveMenu", "open-data");
-    setTimeout(() => {
-      this.initLastThirtyDaysCharts(this.lastThirtyDays)
-    }, 2000);
+    this.initLastThirtyDaysCharts(this.lastThirtyDays)
   }
 }
 </script>

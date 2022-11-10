@@ -109,7 +109,7 @@ export default {
     }
     return params.portfolio_id && !isNaN(Number(params.portfolio_id))
   },
-  fetch({store, params, error}) {
+  asyncData({store, params, error}) {
     return Promise.all([
       store.dispatch('portfolio/fetchPostDetail', params)
         .catch(err => error({statusCode: 404}))

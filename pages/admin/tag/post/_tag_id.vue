@@ -136,7 +136,7 @@ export default {
     }
     return params.tag_id && !isNaN(Number(params.tag_id))
   },
-  fetch({store, params, error}) {
+  asyncData({store, params, error}) {
     return Promise.all([
       store.dispatch('tag/fetchPostDetail', params)
         .catch(err => error({statusCode: 404}))

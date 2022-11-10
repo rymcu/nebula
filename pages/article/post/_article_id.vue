@@ -70,8 +70,7 @@
       }
       return params.article_id && !isNaN(Number(params.article_id))
     },
-    fetch() {
-      let {store, params, error} = this.$nuxt.context
+    asyncData({store, params, error}) {
       return Promise.all([
         store.dispatch('article/fetchPostDetail', params)
           .catch(err => error({statusCode: 404}))
