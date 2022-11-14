@@ -1,4 +1,7 @@
 # nebula
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frymcu%2Fnebula.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frymcu%2Fnebula?ref=badge_shield)
+
 ## 💡 简介
 nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，使用 Vue + NuxtJS + Element-UI 实现
 
@@ -90,12 +93,15 @@ nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，�
 在提功能建议前可以先看一下 [计划表](https://rymcu.com/article/29) ，避免重复提议
 
 ## 鸣谢
-- 感谢 `JetBrains` 对本项目的帮助,为作者提供了开源许可版 `JetBrains` 全家桶
- 
- 
-![JetBrains](assets/jb_beam.svg)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frymcu%2Fnebula.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frymcu%2Fnebula?ref=badge_shield)
+- 感谢以下开发者对 Nebula 作出的贡献：
 
+<a href="https://github.com/rymcu/nebula/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=rymcu/nebula&max=1000" />
+</a>
+
+- 感谢 `JetBrains` 对本项目的帮助,为作者提供了开源许可版 `JetBrains` 全家桶
+
+![JetBrains](assets/jb_beam.svg)
 ## Build Setup
 
 ```bash
@@ -127,7 +133,6 @@ $ npm generate
 
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
-
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frymcu%2Fnebula.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frymcu%2Fnebula?ref=badge_large)
