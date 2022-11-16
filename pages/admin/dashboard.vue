@@ -54,7 +54,7 @@
             <el-table-column label="标签" prop="articleTitle">
               <template slot-scope="scope">
                 <el-tag style="margin-left: 0.5rem;" v-for="tag in scope.row.tags" :key="tag.idTag" size="mini"
-                  effect="plain">
+                        effect="plain">
                   # {{ tag.tagTitle }}
                 </el-tag>
               </template>
@@ -64,13 +64,14 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button v-if="scope.row.articlePerfect === '1'" size="mini"
-                  @click="cancelPreference(scope.$index, scope.row.idArticle)" plain>取消优选</el-button>
+                           @click="cancelPreference(scope.$index, scope.row.idArticle)" plain>取消优选
+                </el-button>
                 <el-button v-else size="mini" @click="setPreference(scope.$index, scope.row.idArticle)" plain>设为优选
                 </el-button>
                 <el-button size="mini" type="primary" @click="updateTags(scope.$index, scope.row)" plain>编辑标签
                 </el-button>
                 <el-button v-if="scope.row.articleStatus === '0'" size="mini" type="danger"
-                  @click="toggleStatus(scope.$index, scope.row)" plain>下架
+                           @click="toggleStatus(scope.$index, scope.row)" plain>下架
                 </el-button>
                 <el-button v-else size="mini" type="success" @click="toggleStatus(scope.$index, scope.row)" plain>上架
                 </el-button>
@@ -80,9 +81,9 @@
         </el-col>
         <el-col>
           <el-pagination :hide-on-single-page="true" @size-change="handleArticleSizeChange"
-            @current-change="handleArticleCurrentChange" :current-page="articles.pageNum"
-            :page-sizes="[10, 20, 50, 100]" :page-size="articles.pageSize"
-            layout="total, sizes, prev, pager, next, jumper" :total="articles.total">
+                         @current-change="handleArticleCurrentChange" :current-page="articles.pageNum"
+                         :page-sizes="[10, 20, 50, 100]" :page-size="articles.pageSize"
+                         layout="total, sizes, prev, pager, next, jumper" :total="articles.total">
           </el-pagination>
         </el-col>
         <el-col :span="24">
@@ -111,8 +112,10 @@
         </el-col>
         <el-col>
           <el-pagination :hide-on-single-page="true" @size-change="handleUserSizeChange"
-            @current-change="handleUserCurrentChange" :current-page="users.pageNum" :page-sizes="[10, 20, 50, 100]"
-            :page-size="users.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="users.total">
+                         @current-change="handleUserCurrentChange" :current-page="users.pageNum"
+                         :page-sizes="[10, 20, 50, 100]"
+                         :page-size="users.pageSize" layout="total, sizes, prev, pager, next, jumper"
+                         :total="users.total">
           </el-pagination>
         </el-col>
         <el-col :span="24">
@@ -137,9 +140,9 @@
         </el-col>
         <el-col>
           <el-pagination :hide-on-single-page="true" @size-change="handleBankAccountSizeChange"
-            @current-change="handleBankAccountCurrentChange" :current-page="bankAccounts.pageNum"
-            :page-sizes="[10, 20, 50, 100]" :page-size="bankAccounts.pageSize"
-            layout="total, sizes, prev, pager, next, jumper" :total="bankAccounts.total">
+                         @current-change="handleBankAccountCurrentChange" :current-page="bankAccounts.pageNum"
+                         :page-sizes="[10, 20, 50, 100]" :page-size="bankAccounts.pageSize"
+                         layout="total, sizes, prev, pager, next, jumper" :total="bankAccounts.total">
           </el-pagination>
         </el-col>
       </div>
@@ -181,7 +184,7 @@
 
 <script>
 import Vue from 'vue';
-import { mapState } from 'vuex';
+import {mapState} from 'vuex';
 import echarts from 'echarts';
 import EditTags from '~/components/widget/tags';
 
@@ -192,12 +195,11 @@ export default {
   components: {
     EditTags
   },
-  fetch() {
-    let { store, params, error } = this.$nuxt.context
+  asyncData({store, params, error}) {
     return Promise.all([
       store
         .dispatch('dashboard/fetchDashboard', params)
-        .catch(err => error({ statusCode: 404 })),
+        .catch(err => error({statusCode: 404})),
       store.dispatch("dashboard/fetchLastThirtyDays", params),
       store.dispatch("dashboard/fetchHistory", params),
       store.dispatch("dashboard/fetchNewUsers", params),
@@ -480,7 +482,7 @@ export default {
       _ts.$set(_ts, 'articleTags', article.articleTags);
       _ts.$set(_ts, 'tagsDialogVisible', true);
     },
-    toggleStatus() { },
+    toggleStatus() {},
     closeTagsDialog() {
       this.$set(this, 'tagsDialogVisible', false);
     },
@@ -529,10 +531,8 @@ export default {
   },
   mounted() {
     this.$store.commit("setActiveMenu", "admin-dashboard");
-    setTimeout(() => {
-      this.initLastThirtyDaysCharts(this.lastThirtyDays)
-      this.initHistoryCharts(this.history)
-    }, 5000);
+    this.initLastThirtyDaysCharts(this.lastThirtyDays)
+    this.initHistoryCharts(this.history)
   }
 }
 </script>
