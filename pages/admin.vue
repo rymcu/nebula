@@ -23,7 +23,8 @@
             :name="item.name"
             :closable="item.closable"
           >
-            <nuxt-child keep-alive :keep-alive-props="{exclude: ['login', 'register', 'admin-dashboard'],max: 10}"/>
+            <nuxt-child keep-alive
+                        :keep-alive-props="{include: editableTabs}"/>
           </el-tab-pane>
         </el-tabs>
       </el-col>
