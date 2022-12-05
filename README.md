@@ -106,14 +106,14 @@ nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，�
 
 ```bash
 # install dependencies
-$ npm install
+$ npm run install
 
 # serve with hot reload at localhost:3000
-$ npm dev
+$ npm run dev
 
 # build for production and launch server
-$ npm build
-$ npm start
+$ npm run build
+$ npm run start
 
 # generate static project
 $ npm generate
