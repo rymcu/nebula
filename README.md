@@ -106,17 +106,17 @@ nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，�
 
 ```bash
 # install dependencies
-$ npm run install
+$ yarn install
 
 # serve with hot reload at localhost:3000
-$ npm run dev
+$ yarn run dev
 
 # build for production and launch server
-$ npm run build
-$ npm run start
+$ yarn run build
+$ yarn run start
 
 # generate static project
-$ npm generate
+$ yarn run generate
 ```
 
 ## 项目部署
@@ -126,7 +126,7 @@ $ npm generate
 ![build](assets/build.png)
    
 3. 服务器安装 `Nodejs` 环境
-4. 项目目录下执行 `npm install`
+4. 项目目录下执行 `yarn install`
 5. 执行 `npm install pm2 -g`
 6. 执行 `pm2 list` 检查 `pm2` 是否安装好
 7. 执行 `pm2 start npm --name nebula -- run start`
