@@ -442,7 +442,7 @@ export default {
       _ts.$set(_ts, 'isEdit', true);
       _ts.$set(_ts, 'portfolio', JSON.parse(JSON.stringify(_ts.portfolioDetail)));
       _ts.$set(_ts, 'headImgUrl', _ts.portfolioDetail.headImgUrl);
-      _ts.$refs.cropper.replace(_ts.portfolioDetail.headImgUrl);
+      // _ts.$refs.cropper.replace(_ts.portfolioDetail.headImgUrl);
       portfolioContent = _ts.portfolioDetail.portfolioDescription;
     } else {
       _ts.$set(_ts, 'isEdit', false);
