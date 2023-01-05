@@ -9,15 +9,15 @@
         </el-breadcrumb>
       </div>
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="12" :offset="3">
           <el-card>
             <h1>创建作品集</h1>
             <p>作品集需要有明确的写作方向，如果您在某个领域有深度的研究，欢迎创建自己的作品集分享自己的观点</p>
-            <el-form :model="portfolio" :rules="rules" label-width="100px" ref="topic">
-              <el-form-item label="作品集名称" prop="portfolioTitle">
+            <el-form :model="portfolio" label-width="100px" ref="topic">
+              <el-form-item label="作品集名称">
                 <el-input v-model="portfolio.portfolioTitle"></el-input>
               </el-form-item>
-              <el-form-item label="作品集介绍" prop="portfolioDescription">
+              <el-form-item label="作品集介绍">
                 <div id="contentEditor"></div>
               </el-form-item>
               <el-form-item class="text-right">
@@ -27,10 +27,8 @@
               </el-form-item>
             </el-form>
           </el-card>
-
         </el-col>
         <el-col :span="6">
-
           <el-card>
             <vue-cropper
               :aspect-ratio="1"
@@ -48,31 +46,27 @@
 
             <div class="preview preview-large"/>
             <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
-            <span>
+            <div class="portfolioDescription">
               {{ portfolio.portfolioDescription }}
-            </span>
+            </div>
             <el-upload
               :before-upload="beforeAvatarUpload"
-              :http-request="requestUpload"
               :multiple="true"
               :show-file-list="false"
               action=""
               class="avatar-uploader">
               <div>
                 <el-button plain round type="primary">上传</el-button>
+                <el-button @click.prevent="reset" plain round style="margin-top: 1rem;" type="primary">重置
+                </el-button>
+                <el-button @click.prevent="cropImage" plain round type="primary">裁剪</el-button>
               </div>
             </el-upload>
-            <el-button @click.prevent="reset" plain round style="margin-top: 1rem;" type="primary">重置
-            </el-button>
-            <el-button @click.prevent="cropImage" plain round type="primary">裁剪</el-button>
+
             <p style="color: red;padding-right: 5px;">*
               <span style="color: black">上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
             </p>
-
-
           </el-card>
-
-
         </el-col>
       </el-row>
     </div>
@@ -143,14 +137,14 @@ export default {
         idPortfolio: 0,
         portfolioDescription: ''
       },
-      rules: {
-        portfolioTitle: [
-          {required: true, message: '请输入作品集名称', trigger: 'blur'}
-        ],
-        portfolioDescription: [
-          {required: true, message: '请输入作品集介绍', trigger: 'blur'}
-        ]
-      },
+      // rules: {
+      //   portfolioTitle: [
+      //     {required: true, message: '请输入作品集名称', trigger: 'blur'}
+      //   ],
+      //   portfolioDescription: [
+      //     {required: true, message: '请输入作品集介绍', trigger: 'blur'}
+      //   ]
+      // },
       loading: false,
       tokenURL: {
         URL: '',
@@ -162,16 +156,13 @@ export default {
       isEdit: false,
       autoCrop: true,
       notificationFlag: true
+      , contentHtml: {}
     }
   },
   methods: {
-    // 覆盖默认的上传行为
-    requestUpload(e) {
-      console.log('e', e)
-    },
     _initEditor(data) {
+      //初始化
       let _ts = this;
-
       let toolbar = [
         'emoji',
         'headings',
@@ -221,7 +212,12 @@ export default {
         },
         after() {
           _ts.contentEditor.setValue(data.value ? data.value : '');
+
         },
+        input: (val) => {
+          this.portfolio.portfolioDescription = val
+        },
+        typewriterMode: true,
         hint: {
           emoji: Vue.emoji
         },
@@ -237,7 +233,7 @@ export default {
           /*url: `${process.env.Server}/api/console/markdown`,*/
           parse: (element) => {
             if (element.style.display === 'none') {
-              return
+              return false
             }
             // LazyLoadImage();
             // Vue.Vditor.highlightRender({style: 'github'}, element, this.contentEditor);
@@ -252,7 +248,7 @@ export default {
           enable: data.resize,
         },
         lang: this.$store.state.locale,
-        placeholder: data.placeholder,
+        // placeholder: data.placeholder,
       })
     },
     // handleAvatarSuccess(res) {
@@ -285,7 +281,6 @@ export default {
       // this.$set(_ts, 'headImgUrl', res.data.url);
     },
     fileToBase64(file) {
-      console.log('我执行了？')
       let _ts = this;
       let reader = new FileReader();
       reader.readAsDataURL(file);
@@ -316,8 +311,6 @@ export default {
         this.$message.error('请输入必填信息');
         return false
       }
-
-
       let title = id ? '更新' : '添加';
       _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
         if (res && res.message) {
@@ -429,15 +422,19 @@ export default {
       }
     });
 
-    this.portfolioContent = '';
+    let portfolioContent = '';
     if (_ts.idPortfolio) {
-      _ts.$set(_ts, 'isEdit', true);
+      this.isEdit = true
+      // _ts.$set(_ts, 'isEdit', true);
       _ts.$set(_ts, 'portfolio', JSON.parse(JSON.stringify(_ts.portfolioDetail)));
       _ts.$set(_ts, 'headImgUrl', _ts.portfolioDetail.headImgUrl);
-      _ts.$refs.cropper.replace(_ts.portfolioDetail.headImgUrl);
-      portfolioContent = _ts.portfolioDetail.portfolioDescription;
+      if (!this.isEdit) {
+        _ts.$refs?.cropper.replace(_ts.portfolioDetail.headImgUrl);
+        portfolioContent = _ts.portfolioDetail.portfolioDescription;
+      }
+
     } else {
-      _ts.$set(_ts, 'isEdit', false);
+      this.isEdit = false
     }
 
     this.contentEditor = this._initEditor({
@@ -446,7 +443,7 @@ export default {
       height: 480,
       placeholder: '', //this.$t('inputContent', this.$store.state.locale)
       resize: false,
-      value: this.portfolioContent
+      value: this.portfolio.portfolioDescription
     });
   }
 }
@@ -494,5 +491,11 @@ export default {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   overflow: hidden;
+}
+
+.portfolioDescription {
+  min-height: 50px;
+  font-size: 12px;
+  color: #909399;
 }
 </style>

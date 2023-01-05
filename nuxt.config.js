@@ -114,7 +114,7 @@ export default {
   proxy: [  //proxy配置
     ['/api', {
       target: apiConfig.BASE,  //api请求路径
-      pathRewrite: {'^/api': isDevMode ? '/api/v1' : '/api'}  //重定向请求路径，防止路由、api路径的冲突
+      pathRewrite: {'^/api': isDevMode ? '/api' : '/api'}  //重定向请求路径，防止路由、api路径的冲突
     }],
     ['/ws', {
       target: apiConfig.BASE  //api请求路径
