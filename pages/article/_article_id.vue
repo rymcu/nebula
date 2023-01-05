@@ -20,7 +20,7 @@
               </el-col>
               <el-col :xs="9" :sm="11" :xl="11">
                 <div style="margin-left: 1rem;">
-                  <el-link :href="'/user/' + article.articleAuthor.userAccount" class="text-default">
+                  <el-link :href="'/user/' + article.articleAuthor?.userAccount" class="text-default">
                     {{ article.articleAuthorName }}
                   </el-link>
                   <small class="d-block text-muted">{{ article.timeAgo }}</small>
@@ -199,7 +199,7 @@ export default {
     hasPermissions() {
       let account = this.$store.state.auth.user?.nickname;
       if (account) {
-        if (account === this.article.articleAuthor.userNickname) {
+        if (account === this.article.articleAuthor?.userNickname) {
           return true;
         }
       }

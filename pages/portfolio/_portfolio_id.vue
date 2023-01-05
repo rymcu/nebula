@@ -23,7 +23,7 @@
             </el-col>
             <el-col style="font-size: 14px;">
               <span style="padding-right: 1rem;">作者</span>
-              <el-link target="_blank" :href="'/user/' + portfolio.portfolioAuthor.userAccount">
+              <el-link target="_blank" :href="'/user/' + portfolio.portfolioAuthor?.userAccount">
                 <el-avatar :src="portfolio.portfolioAuthorAvatarUrl" :size="16"></el-avatar>
                 {{ portfolio.portfolioAuthorName }}
               </el-link>
@@ -60,7 +60,7 @@ export default {
   validate({params, store}) {
     return params.portfolio_id && !isNaN(Number(params.portfolio_id))
   },
-  fetch() {
+  async fetch() {
     let {store, params, query, error} = this.$nuxt.context
     params.page = query.page || 1
     return Promise.all([
@@ -89,7 +89,7 @@ export default {
     isAuthor() {
       let account = this.$store.state.auth.user?.nickname;
       if (account) {
-        if (account === this.portfolio.portfolioAuthor.userNickname) {
+        if (account === this.portfolio.portfolioAuthor?.userNickname) {
           return true;
         }
       }
