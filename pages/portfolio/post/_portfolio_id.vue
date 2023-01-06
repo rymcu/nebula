@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper_portfolio" style="margin: 20px">
     <div v-if="isAuthor">
       <div style="margin-bottom: 1rem;" v-if="isEdit">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -38,6 +38,7 @@
               :checkCrossOrigin="false"
               :checkOrientation="false"
               :imgStyle="{'width': '200px'}"
+              :img="headImgUrl"
               :src="headImgUrl"
               preview=".preview"
               ref="cropper"
@@ -57,12 +58,11 @@
               class="avatar-uploader">
               <div>
                 <el-button plain round type="primary">上传</el-button>
-                <el-button @click.prevent="reset" plain round style="margin-top: 1rem;" type="primary">重置
-                </el-button>
-                <el-button @click.prevent="cropImage" plain round type="primary">裁剪</el-button>
               </div>
             </el-upload>
-
+            <el-button @click.prevent="reset" plain round style="margin-top: 1rem;" type="primary">重置
+            </el-button>
+            <el-button @click.prevent="cropImage" plain round type="primary">裁剪</el-button>
             <p style="color: red;padding-right: 5px;">*
               <span style="color: black">上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
             </p>
@@ -251,18 +251,18 @@ export default {
         // placeholder: data.placeholder,
       })
     },
-    // handleAvatarSuccess(res) {
-    //   let _ts = this;
-    //   if (res && res.data && res.data.url) {
-    //     let portfolio = _ts.portfolio;
-    //     portfolio.headImgUrl = res.data.url;
-    //     portfolio.headImgType = '0';
-    //     _ts.$set(_ts, 'portfolio', portfolio);
-    //     _ts.$set(_ts, 'headImgUrl', res.data.url);
-    //   } else {
-    //     _ts.$message.error('上传失败!');
-    //   }
-    // },
+    handleAvatarSuccess(res) {
+      let _ts = this;
+      if (res && res.data && res.data.url) {
+        let portfolio = _ts.portfolio;
+        portfolio.headImgUrl = res.data.url;
+        portfolio.headImgType = '0';
+        _ts.$set(_ts, 'portfolio', portfolio);
+        _ts.$set(_ts, 'headImgUrl', res.data.url);
+      } else {
+        _ts.$message.error('上传失败!');
+      }
+    },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
@@ -276,30 +276,21 @@ export default {
         return false;
       }
       this.fileToBase64(file);
-
-
-      // this.$set(_ts, 'headImgUrl', res.data.url);
+      return false;
     },
     fileToBase64(file) {
       let _ts = this;
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
-        let portfolio = _ts.portfolio;
-        portfolio.headImgUrl = this.result;
-        portfolio.headImgType = '0';
-        _ts.$set(_ts, 'portfolio', portfolio);
         _ts.$set(_ts, 'headImgUrl', this.result);
-        if ((_ts.portfolio.headImgUrl || undefined) != undefined) {
-          _ts.$message.success('图片上传成功，可自定义裁剪');
-        } else {
-          _ts.$message.warning('图片上传失败，请重传');
-        }
+        _ts.$refs.cropper?.replace(this.result);
       }
     },
     async updatePortfolio() {
       //headImgUrl
       let _ts = this;
+      this.cropImage()
       _ts.$set(_ts, 'loading', true);
       let id = _ts.idPortfolio;
       let portfolioDescription = _ts.contentEditor.getValue();
@@ -429,7 +420,7 @@ export default {
       _ts.$set(_ts, 'portfolio', JSON.parse(JSON.stringify(_ts.portfolioDetail)));
       _ts.$set(_ts, 'headImgUrl', _ts.portfolioDetail.headImgUrl);
       if (!this.isEdit) {
-        _ts.$refs?.cropper.replace(_ts.portfolioDetail.headImgUrl);
+        _ts.$refs?.cropper?.replace(_ts.portfolioDetail.headImgUrl);
         portfolioContent = _ts.portfolioDetail.portfolioDescription;
       }
 
@@ -452,7 +443,7 @@ export default {
 <style lang="less">
 @import "~vditor/src/assets/less/index.less";
 
-.wrapper {
+.wrapper_portfolio {
   width: 100%;
   max-width: 100%;
 }
