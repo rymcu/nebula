@@ -16,12 +16,12 @@
               </div>
             </el-col>
             <el-col :span="2" style="text-align: right;">
-              <el-avatar :src="user.avatarURL"></el-avatar>
+              <el-avatar :src="user.avatarUrl"></el-avatar>
             </el-col>
           </el-col>
           <el-col v-else>
             <el-col :span="2">
-              <el-avatar :src="to.avatarURL"></el-avatar>
+              <el-avatar :src="to.avatarUrl"></el-avatar>
             </el-col>
             <el-col :span="22" style="text-align: left;">
               <div class="to-message">
@@ -38,7 +38,6 @@
 <script>
 import Vue from 'vue';
 import {mapState} from 'vuex';
-import sockClient from '~/plugins/sockjs';
 import apiConfig from '~/config/api.config';
 
 export default {
@@ -169,15 +168,26 @@ export default {
       }
       _ts.messages.push(message);
       _ts.contentEditor.setValue('')
-      sockClient.sendMessage(message)
+      _ts.$axios.$post('/api/openai/chat', {
+        message: message.content
+      }).then(res => {
+        _ts.messages.push({
+          to: _ts.user.account,
+          from: _ts.to.account,
+          dataType: 1,
+          dataId: new Date().getTime(),
+          content: res[0].message.content
+        });
+      });
     }
   },
   async mounted() {
     let _ts = this;
-    _ts.$store.commit('setActiveMenu', 'post-article');
+    _ts.$store.commit('setActiveMenu', 'chat');
 
     let to = {
-      account: _ts.$route.params?.account
+      account: _ts.$route.params?.account,
+      avatarUrl: 'https://static.rymcu.com/article/1679539451459.jpg'
     }
 
     _ts.$set(_ts, 'to', to);
@@ -191,6 +201,14 @@ export default {
           linkToImageURL: responseData.linkToImageURL || ''
         })
       }
+      const message = {
+        to: _ts.user.account,
+        from: _ts.to.account,
+        dataType: 1,
+        dataId: new Date().getTime(),
+        content: '伟大的"坦格利安家族的风暴降生丹妮莉丝 · 铁王座的合法继承人 · 安达尔人和先民的合法女王 · 七国的守护者 · 草海上的卡丽熙 · 不焚者 · 解放者 · 傲之追猎者 · 悠米"为你服务'
+      }
+      _ts.messages.push(message);
     }
 
     if (!_ts.initEditor) {
@@ -211,7 +229,7 @@ export default {
 </script>
 
 <style lang="less">
-  @import "~vditor/src/assets/less/index.less";
+@import "~vditor/src/assets/less/index.less";
 
 .from-message {
   float: right;
