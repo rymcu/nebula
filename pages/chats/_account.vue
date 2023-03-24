@@ -8,7 +8,7 @@
         <el-button type="primary" :loading="loading" @click="send" plain>发送</el-button>
       </el-col>
       <el-col style="margin-top: 2rem;" id="messagesContent">
-        <el-col v-for="message in Array.prototype.reverse.call(messages)" :key="message.dataId">
+        <el-col v-for="message in messages" :key="message.dataId">
           <el-col v-if="message.from === user.account">
             <el-col :span="22" style="text-align: right;">
               <div class="from-message">
@@ -167,6 +167,9 @@ export default {
         content: await _ts.contentEditor.getHTML()
       }
       _ts.messages.push(message);
+      _ts.messages.sort((a, b) => {
+        return b.dataId - a.dataId;
+      });
       _ts.contentEditor.setValue('')
       _ts.$axios.$post('/api/openai/chat', {
         message: message.content
@@ -177,6 +180,9 @@ export default {
           dataType: 1,
           dataId: new Date().getTime(),
           content: res[0].message.content
+        });
+        _ts.messages.sort((a, b) => {
+          return b.dataId - a.dataId;
         });
       });
     }

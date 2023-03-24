@@ -33,7 +33,7 @@
         后发布评论
       </el-col>
       <el-col>
-        <el-col :key="comment.idComment" v-for="comment in comment.data">
+        <el-col :key="comment.idComment" v-for="comment in comments.list">
           <el-card :id="'comment-' + comment.idComment" style="margin-top: 1rem;">
             <el-col :sm="1" :xl="1" :xs="3">
               <el-avatar :src="comment.commenter.userAvatarURL" v-show="comment.commenter.userAvatarURL"></el-avatar>
@@ -131,6 +131,19 @@
             </el-col>
           </el-col>
         </el-col>
+        <el-col>
+          <div class="vertical-container text-center">
+            <el-pagination :hide-on-single-page="true"
+                           layout="prev, pager, next"
+                           :page-size="comments.pageSize"
+                           :current-page="comments.pageNum"
+                           :total="comments.total"
+                           prev-text="上一页"
+                           next-text="下一页"
+                           @current-change="currentChange">
+            </el-pagination>
+          </div>
+        </el-col>
       </el-col>
     </el-col>
   </el-row>
@@ -155,23 +168,19 @@ export default {
     title: {
       type: String,
       default: ''
-    },
-    postId: {
-      type: Number,
-      required: true
     }
   },
   fetch() {
-    let {store} = this.$nuxt.context
+    let {store, params, query} = this.$nuxt.context
     return Promise.all([
-      store.dispatch('comment/fetchList', {post_id: this.postId})
+      store.dispatch('comment/fetchList', {post_id: params.article_id, page: query.page})
     ])
   },
   computed: {
     ...mapState({
-      comment: state => state.comment.data,
-      isFetchingComment: state => state.comment.fetching,
-      isPostingComment: state => state.comment.posting,
+      comments: state => state.comment.list.data,
+      isFetchingComment: state => state.comment.list.fetching,
+      // isPostingComment: state => state.comment.posting,
       constants: state => state.global.constants,
       language: state => state.global.language,
       isMobile: state => state.global.isMobile,
@@ -200,7 +209,8 @@ export default {
       loading: false,
       commentOriginalCommentId: 0,
       commentAuthorAvatar: '',
-      commentTitle: ''
+      commentTitle: '',
+      postId: 0
     }
   },
   methods: {
@@ -384,10 +394,19 @@ export default {
     },
     isAuthor(commentAuthorId) {
       return this.authorId === commentAuthorId;
+    },
+    currentChange(page) {
+      this.$router.push({
+        path: `/article/${this.postId}`,
+        query: {
+          page: page
+        }
+      })
     }
   },
   async mounted() {
     let _ts = this;
+    _ts.$set(_ts, 'postId', _ts.$route.params.article_id);
     _ts.$store.commit('setActiveMenu', 'post-article');
     if (_ts.loggedIn) {
       const responseData = await _ts.$axios.$get('/api/upload/token');
@@ -449,6 +468,11 @@ export default {
     isFetching(isFetching) {
       if (isFetching) {
         this.cancelCommentReply()
+      }
+    },
+    '$route'(to, from) {
+      if ((to.query.page || 1) !== (from.query.page || 1)) {
+        this.$fetch()
       }
     }
   },

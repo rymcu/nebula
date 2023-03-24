@@ -145,7 +145,7 @@
     </el-col>
     <el-col>
       <comment-box :fetching="isFetching" :title="article.articleTitle"
-                   :post-id="routeArticleId" :authorId="article.articleAuthorId" @gotoLogin="gotoLogin"></comment-box>
+                   :authorId="article.articleAuthorId" @gotoLogin="gotoLogin"></comment-box>
     </el-col>
     <el-col>
       <el-dialog :visible.sync="dialogVisible">
@@ -207,9 +207,6 @@ export default {
     },
     isAdmin() {
       return this.$auth.hasScope('admin') || this.$auth.hasScope('blog_admin');
-    },
-    routeArticleId() {
-      return Number(this.$route.params.article_id);
     }
   },
   head() {
