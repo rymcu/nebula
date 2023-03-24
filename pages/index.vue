@@ -20,7 +20,7 @@ export default {
   },
   watch: {
     '$route'(to, from) {
-      if (from.query.page && to.query.page) {
+      if ((to.query.page || 1) !== (from.query.page || 1)) {
         this.$router.go()
       }
     }
