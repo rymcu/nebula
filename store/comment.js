@@ -9,34 +9,30 @@ export const LIKE_COMMENT_API_PATH = '/like/comment'
 
 const getDefaultListData = () => {
   return {
-    data: [],
+    comments: [],
     pagination: {}
   }
 }
 
 export const state = () => {
   return {
-    fetching: false,
-    posting: false,
-    data: getDefaultListData()
+    list: {
+      fetching: false,
+      data: getDefaultListData()
+    }
   }
 }
 
 export const mutations = {
   // 请求列表
   updateListFetching(state, action) {
-    state.fetching = action
+    state.list.fetching = action
   },
   updateListData(state, action) {
-    state.data =  {
-      data: action,
-      pagination: {
-        page: 1
-      }
-    }
+    state.list.data = action
   },
   clearListData(state) {
-    state.data = getDefaultListData()
+    state.list.data = getDefaultListData()
   },
 
   // 发布评论
@@ -59,28 +55,23 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchList({ commit, rootState }, params = {}) {
-    // const { SortType } = rootState.global.constants
-
-    // 修正参数
-    // params = Object.assign(
-    //   {
-    //     page: 1,
-    //     per_page: 88
-    //   },
-    //   params
-    // )
-
-    // const isRestart = params.page === 1
-    // const isDescSort = params.sort === SortType.Desc
-
-    // 清空数据
-    // isRestart && commit('updateListData', getDefaultListData())
-    // commit('updateListData', getDefaultListData())
+  fetchList({ commit, state }, params = {}) {
+    // 清空已有数据
     commit('updateListFetching', true)
+    let currentData = JSON.parse(JSON.stringify(state)).list.data
+    if (Number(params.page) === currentData.pageNum) {
+      commit('updateListFetching', false)
+      return
+    }
+    let data = {
+      page: params.page || 1
+    }
+    commit('updateListData', getDefaultListData())
 
     return this.$axios
-      .$get(COMMENT_API_PATH + `${params.post_id}/comments`)
+      .$get(COMMENT_API_PATH + `${params.post_id}/comments`, {
+        params: data
+      })
       .then(response => {
         // isDescSort && response.result.data.reverse()
         commit('updateListData', response)
