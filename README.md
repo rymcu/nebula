@@ -3,6 +3,7 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frymcu%2Fnebula.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frymcu%2Fnebula?ref=badge_shield)
 
 ## 💡 简介
+
 nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，使用 Vue + NuxtJS + Element-UI 实现
 
 与 [forest](https://github.com/rymcu/forest) （[ˈfôrəst]，n.森林）一起食用，让我们一起探索知识社区的未来。
@@ -12,7 +13,6 @@ nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，�
 在 2019 年的某一天,受到 [Hugh](https://rymcu.com/user/Hugh) 的邀请, 构建一个开源嵌入式知识学习交流平台。因此就有了 nebula 这个项目。 nebula
 在很多方面受到了 [Symphony](https://github.com/88250/symphony) 的启发,并尝试着在 [Symphony](https://github.com/88250/symphony)
 和 [B3log 思想](https://ld246.com/article/1546941897596) 的基础上进一步探索。
-
 
 ## ✨ 特性
 
@@ -93,6 +93,7 @@ nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，�
 在提功能建议前可以先看一下 [计划表](https://rymcu.com/article/29) ，避免重复提议
 
 ## 鸣谢
+
 - 感谢以下开发者对 Nebula 作出的贡献：
 
 <a href="https://github.com/rymcu/nebula/graphs/contributors">
@@ -102,37 +103,48 @@ nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，�
 - 感谢 `JetBrains` 对本项目的帮助,为作者提供了开源许可版 `JetBrains` 全家桶
 
 ![JetBrains](assets/jb_beam.svg)
+
 ## Build Setup
 
 ```bash
+# install yarn
+npm install -g yarn
+
 # install dependencies
-$ yarn install
+yarn install
 
 # serve with hot reload at localhost:3000
-$ yarn run dev
+yarn run dev
 
 # build for production and launch server
-$ yarn run build
-$ yarn run start
+yarn run build
+yarn run start
 
 # generate static project
-$ yarn run generate
+yarn run generate
 ```
 
+> 如果遇到网络超时的问题可以尝试配置国内镜像源：
+> `yarn config set registry https://registry.npm.taobao.org`
+> 和`npm config set registry https://registry.npm.taobao.org`
+
+
+
 ## 项目部署
+
 1. 关闭本地项目后,在控制台执行 `npm run build` 进行打包
 2. 拷贝以下文件至服务器
 
 ![build](assets/build.png)
-   
+
 3. 服务器安装 `Nodejs` 环境
 4. 项目目录下执行 `yarn install`
 5. 执行 `npm install pm2 -g`
 6. 执行 `pm2 list` 检查 `pm2` 是否安装好
 7. 执行 `pm2 start npm --name nebula -- run start`
 
-
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frymcu%2Fnebula.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frymcu%2Fnebula?ref=badge_large)
