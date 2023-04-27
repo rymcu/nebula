@@ -63,7 +63,7 @@ export default {
       email: 'mailto:support@rymcu.com',
       aboutMe: '/article/115',
       github: 'https://github.com/rymcu',
-      gitee: 'https://gitee.com/rymcu-community',
+      gitee: 'https://gitee.com/rymcu',
       currencyRule: '/rules/currency',
       wangBeiUrl: 'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36012302000055',
       wangBei: '赣公网安备 36012302000055号',
