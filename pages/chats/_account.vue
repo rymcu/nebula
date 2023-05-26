@@ -8,6 +8,16 @@
         <el-button type="primary" :loading="loading" @click="send" plain>发送</el-button>
       </el-col>
       <el-col style="margin-top: 2rem;" id="messagesContent">
+        <el-col v-if="message">
+          <el-col :span="2">
+            <el-avatar :src="to.avatarUrl"></el-avatar>
+          </el-col>
+          <el-col :span="22" style="text-align: left;">
+            <div class="to-message">
+              <div v-html="message"></div>
+            </div>
+          </el-col>
+        </el-col>
         <el-col v-for="message in messages" :key="message.dataId">
           <el-col v-if="message.from === user.account">
             <el-col :span="22" style="text-align: right;">
@@ -39,6 +49,7 @@
 import Vue from 'vue';
 import {mapState} from 'vuex';
 import apiConfig from '~/config/api.config';
+import 'vditor/dist/css/content-theme/light.css';
 
 export default {
   name: "Chat",
@@ -61,7 +72,10 @@ export default {
       isShow: true,
       loading: false,
       to: {},
-      messages: []
+      messages: [],
+      vueSse: null,
+      customEvents: null,
+      message: ''
     }
   },
   watch: {
@@ -159,6 +173,7 @@ export default {
     },
     async send() {
       let _ts = this;
+      _ts.message = '';
       const message = {
         to: _ts.to.account,
         from: _ts.user.account,
@@ -173,18 +188,59 @@ export default {
       _ts.contentEditor.setValue('')
       _ts.$axios.$post('/api/openai/chat', {
         message: message.content
-      }).then(res => {
+      }).then(async res => {
+        const html = await Vue.Vditor.md2html(_ts.message);
         _ts.messages.push({
           to: _ts.user.account,
           from: _ts.to.account,
           dataType: 1,
           dataId: new Date().getTime(),
-          content: res[0].message.content
+          content: html
         });
         _ts.messages.sort((a, b) => {
           return b.dataId - a.dataId;
         });
+        _ts.message = '';
       });
+    },
+    close() {
+      let _ts = this;
+      //浏览器关闭SSE连接
+      _ts.vueSse.disconnect();
+      _ts.$axios.$get(`/api/sse/close/${_ts.user.idUser}`);
+    },
+    init() {
+      //初始化 vue-sse
+      let _ts = this;
+      let vueSse = _ts.vueSse;
+      //监听 message
+      vueSse.on('message', this.handleMessage);
+      //监听 customEvents
+      vueSse.once('customEvents', this.handleCustomEvents);
+
+      //里面的 on、once、off 是用了发布订阅模式，
+      //源码 once 方法这有点小问题，写文章时改了
+      //源码但还没提PR（主要是没提过，不会弄）
+      //执行 connect（） 返回个Promise，
+      vueSse
+        .connect()
+        .then((sse) => {
+          console.log("We're connected!", sse);
+        })
+        .catch((err) => console.error('Failed make initial connection:', err));
+    },
+    //message回调
+    handleMessage(res) {
+      if (typeof res !== "undefined") {
+        this.message += res;
+      }
+    },
+    //handleCustomEvents回调
+    handleCustomEvents(res) {
+      console.log('customEvents22:', res)
+      let { data } = res;
+      console.info('customEvents:', data);
+      this.customEvents = data;
     }
   },
   async mounted() {
@@ -215,6 +271,12 @@ export default {
         content: '伟大的"坦格利安家族的风暴降生丹妮莉丝 · 铁王座的合法继承人 · 安达尔人和先民的合法女王 · 七国的守护者 · 草海上的卡丽熙 · 不焚者 · 解放者 · 傲之追猎者 · 悠米"为你服务'
       }
       _ts.messages.push(message);
+      _ts.vueSse = _ts.$sse.create({
+        url: `/api/sse/subscribe/${_ts.user.idUser}`,
+        format: 'json',
+        withCredentials: true
+      });
+      this.init();
     }
 
     if (!_ts.initEditor) {
@@ -230,6 +292,14 @@ export default {
         });
       }, 500);
     }
+  },
+  sse: {
+    //配置后自动添加断开连接事件，源码里面是做了判断，
+    //然后加在组件 beforeDestroy 生命周期里
+    cleanup: true,
+  },
+  beforeDestroy() {
+    this.close();
   }
 }
 </script>

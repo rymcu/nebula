@@ -57,7 +57,8 @@ export default {
     {src: '~/plugins/extend'},
     {src: '~/plugins/axios'},
     {src: '~/plugins/element-ui'},
-    {src: '~/plugins/vditor', ssr: false}
+    {src: '~/plugins/vditor', ssr: false},
+    {src: '~/plugins/vue-sse'}
     // {src: '~/plugins/vue-cropper', ssr: false}
   ],
   /*
@@ -99,14 +100,15 @@ export default {
           autoFetch: false
         },
         endpoints: {
-          login: { url: '/api/auth/login', method: 'post' },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          refresh: { url: '/api/auth/refresh-token', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get' }
+          login: {url: '/api/auth/login', method: 'post'},
+          logout: {url: '/api/auth/logout', method: 'post'},
+          refresh: {url: '/api/auth/refresh-token', method: 'post'},
+          user: {url: '/api/auth/user', method: 'get'}
         },
         autoLogout: false
       }
-    }
+    },
+    plugins: [{src: '~/plugins/axios', ssr: true}]
   },
   axios: {
     proxy: true  // 开启proxy
@@ -139,7 +141,7 @@ export default {
       config.module.rules[2].use[0].options.plugins = ['lodash']
     },
     babel: {
-      presets({ envName }) {
+      presets({envName}) {
         return [
           [
             '@nuxt/babel-preset-app',

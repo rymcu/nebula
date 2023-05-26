@@ -17,6 +17,8 @@
     "@nuxtjs/auth-next": "^5.0.0-1667386184.dfbbb54",
     "@nuxtjs/axios": "^5.13.1",
     "babel-plugin-lodash": "^3.3.4",
+    "core-js": "^2.6.12",
+    "defu": "^5.0.1",
     "echarts": "^4.9.0",
     "element-ui": "^2.15.12",
     "lodash": "^4.17.21",
@@ -26,9 +28,8 @@
     "simple-icons": "^6.23.0",
     "vditor": "^3.8.18",
     "vue-cropperjs": "^4.2.0",
-    "vuejs-avataaars": "^4.0.1",
-    "core-js": "^2.6.12",
-    "defu": "^5.0.1"
+    "vue-sse": "^2.5.2",
+    "vuejs-avataaars": "^4.0.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.0",
