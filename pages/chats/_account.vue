@@ -178,6 +178,7 @@ export default {
         to: _ts.to.account,
         from: _ts.user.account,
         dataType: 1,
+        role: 'user',
         dataId: new Date().getTime(),
         content: await _ts.contentEditor.getHTML()
       }
@@ -186,14 +187,13 @@ export default {
         return b.dataId - a.dataId;
       });
       _ts.contentEditor.setValue('')
-      _ts.$axios.$post('/api/openai/chat', {
-        message: message.content
-      }).then(async res => {
+      _ts.$axios.$post('/api/openai/new-chat', _ts.messages).then(async res => {
         const html = await Vue.Vditor.md2html(_ts.message);
         _ts.messages.push({
           to: _ts.user.account,
           from: _ts.to.account,
           dataType: 1,
+          role: 'assistant',
           dataId: new Date().getTime(),
           content: html
         });
@@ -237,9 +237,7 @@ export default {
     },
     //handleCustomEvents回调
     handleCustomEvents(res) {
-      console.log('customEvents22:', res)
       let { data } = res;
-      console.info('customEvents:', data);
       this.customEvents = data;
     }
   },
@@ -267,6 +265,7 @@ export default {
         to: _ts.user.account,
         from: _ts.to.account,
         dataType: 1,
+        role: 'assistant',
         dataId: new Date().getTime(),
         content: '伟大的"坦格利安家族的风暴降生丹妮莉丝 · 铁王座的合法继承人 · 安达尔人和先民的合法女王 · 七国的守护者 · 草海上的卡丽熙 · 不焚者 · 解放者 · 傲之追猎者 · 悠米"为你服务'
       }
