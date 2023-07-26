@@ -31,7 +31,10 @@
           label="标题"
           prop="articleTitle">
           <template slot-scope="scope">
-            <el-button type="text" @click="openLink(scope.row.articlePermalink)">{{ scope.row.articleTitle }}</el-button>
+            <el-button type="text" @click="openLink(scope.row.articlePermalink)">{{
+                scope.row.articleTitle
+              }}
+            </el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -52,7 +55,9 @@
           label="作者"
           width="100">
           <template slot-scope="scope">
-            <el-button type="text" @click="openLink('/user/' + scope.row.articleAuthor.userAccount)">{{ scope.row.articleAuthorName }}</el-button>
+            <el-button type="text" @click="openLink('/user/' + scope.row.articleAuthor.userAccount)">
+              {{ scope.row.articleAuthorName }}
+            </el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -62,16 +67,19 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.articlePerfect === '1'" size="mini" @click="cancelPreference(scope.$index, scope.row.idArticle)" plain>取消优选</el-button>
-            <el-button v-else size="mini" @click="setPreference(scope.$index, scope.row.idArticle)" plain>设为优选</el-button>
+            <el-button v-if="scope.row.articlePerfect === '1'" size="mini"
+                       @click="cancelPreference(scope.$index, scope.row.idArticle)" plain>取消优选
+            </el-button>
+            <el-button v-else size="mini" @click="setPreference(scope.$index, scope.row.idArticle)" plain>设为优选
+            </el-button>
             <el-button size="mini" type="primary"
                        @click="updateTags(scope.$index, scope.row)" plain>编辑标签
             </el-button>
             <el-button v-if="scope.row.articleStatus === '0'" size="mini" type="danger"
-                       @click="toggleStatus(scope.$index, scope.row)" plain>下架
+                       @click="toggleStatus(scope.row.idArticle, 1)" plain>下架
             </el-button>
             <el-button v-else size="mini" type="success"
-                       @click="toggleStatus(scope.$index, scope.row)" plain>上架
+                       @click="toggleStatus(scope.row.idArticle, 0)" plain>上架
             </el-button>
           </template>
         </el-table-column>
@@ -96,6 +104,17 @@
           :tags="articleTags"
           @closeDialog="closeTagsDialog">
         </edit-tags>
+      </el-dialog>
+      <el-dialog title="下架文章" :visible.sync="dialogFormVisible">
+        <el-form :model="article" label-width="80px">
+          <el-form-item label="下架原因">
+            <el-input type="textarea" v-model="article.remarks" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="updateStatus">确 定</el-button>
+        </div>
       </el-dialog>
     </el-col>
   </el-row>
@@ -132,7 +151,13 @@ export default {
       dialogVisible: false,
       index: Number,
       idArticle: Number,
-      articleTags: ''
+      articleTags: '',
+      dialogFormVisible: false,
+      article: {
+        idArticle: 0,
+        articleStatus: 0,
+        remarks: '低质量或无意义文章!'
+      }
     }
   },
   methods: {
@@ -150,7 +175,47 @@ export default {
         rows: _ts.articles.pageSize
       })
     },
-    toggleStatus() {},
+    toggleStatus(idArticle, status) {
+      let _ts = this;
+      _ts.article = {
+        idArticle: idArticle,
+        articleStatus: status,
+        remarks: '低质量或无意义文章!'
+      }
+      // 下架文章填写下架原因
+      if (status === 1) {
+        _ts.dialogFormVisible = true;
+      } else {
+        _ts.$confirm('此操作将发布该文章, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _ts.updateStatus();
+        }).catch(() => {
+          _ts.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
+      }
+    },
+    updateStatus() {
+      let _ts = this;
+      _ts.$axios.$patch("/api/admin/article/update-status", _ts.article).then(function (res) {
+        if (res) {
+          _ts.article = {
+            idArticle: 0,
+            articleStatus: 0,
+            remarks: '低质量或无意义文章!'
+          }
+          _ts.dialogFormVisible = false;
+          _ts.$message.success("操作成功!");
+        } else {
+          _ts.$message.error("操作失败!");
+        }
+      })
+    },
     setPreference(index, idArticle) {
       let _ts = this;
       _ts.$axios.$patch("/api/admin/article/update-perfect", {
