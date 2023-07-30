@@ -178,6 +178,17 @@
         <edit-tags :idArticle="idArticle" :tags="articleTags" @closeDialog="closeTagsDialog">
         </edit-tags>
       </el-dialog>
+      <el-dialog title="下架文章" :visible.sync="dialogFormVisible">
+        <el-form :model="article" label-width="80px">
+          <el-form-item label="下架原因">
+            <el-input type="textarea" v-model="article.remarks" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="updateStatus">确 定</el-button>
+        </div>
+      </el-dialog>
     </el-col>
   </el-row>
 </template>
@@ -224,7 +235,13 @@ export default {
       tagsDialogVisible: false,
       index: Number,
       idArticle: Number,
-      articleTags: ''
+      articleTags: '',
+      dialogFormVisible: false,
+      article: {
+        idArticle: 0,
+        articleStatus: 0,
+        remarks: '低质量或无意义文章!'
+      }
     }
   },
   methods: {
@@ -482,7 +499,47 @@ export default {
       _ts.$set(_ts, 'articleTags', article.articleTags);
       _ts.$set(_ts, 'tagsDialogVisible', true);
     },
-    toggleStatus() {},
+    toggleStatus(idArticle, status) {
+      let _ts = this;
+      _ts.article = {
+        idArticle: idArticle,
+        articleStatus: status,
+        remarks: '低质量或无意义文章!'
+      }
+      // 下架文章填写下架原因
+      if (status === 1) {
+        _ts.dialogFormVisible = true;
+      } else {
+        _ts.$confirm('此操作将发布该文章, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _ts.updateStatus();
+        }).catch(() => {
+          _ts.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
+      }
+    },
+    updateStatus() {
+      let _ts = this;
+      _ts.$axios.$patch("/api/admin/article/update-status", _ts.article).then(function (res) {
+        if (res) {
+          _ts.article = {
+            idArticle: 0,
+            articleStatus: 0,
+            remarks: '低质量或无意义文章!'
+          }
+          _ts.dialogFormVisible = false;
+          _ts.$message.success("操作成功!");
+        } else {
+          _ts.$message.error("操作失败!");
+        }
+      })
+    },
     closeTagsDialog() {
       this.$set(this, 'tagsDialogVisible', false);
     },

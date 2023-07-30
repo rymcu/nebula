@@ -1,7 +1,7 @@
 <template>
   <el-row class="wrapper">
     <el-col :xs="24" :sm="24" :xl="24" style="margin: 0 auto;">
-      <el-carousel :interval="5000" height="210px" indicator-position="outside" arrow="always">
+      <el-carousel :interval="5000" height="210px" indicator-position="outside">
         <el-carousel-item v-for="article in announcements.list" :key="article.idArticle">
           <el-card>
             <div class="card-body d-flex flex-column">
