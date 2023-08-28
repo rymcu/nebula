@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <pc-main-view v-if="!isMobile"/>
-    <mobile-main-view v-else/>
-  </div>
+  <body >
+  <pc-main-view v-if="!isMobile"  />
+  <mobile-main-view v-else/>
+  </body>
 </template>
 <script>
 import Vue from 'vue';
@@ -15,25 +15,34 @@ export default Vue.extend({
     PcMainView,
     MobileMainView
   },
+
   computed: {
     theme() {
       return this.$store.state.global.theme
     },
     isMobile() {
       return this.$store.state.global.isMobile
-    }
+    },
+
+  },
+  methods: {
+
   }
 })
 </script>
 
 <style>
+
 body {
   margin: 0;
   display: block;
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
-  background-color: rgb(246, 247, 248);
+  /*background-color: rgb(246, 247, 248);*/
   overflow-x: hidden;
+  font-family: "PingFang SC", sans-serif;
+
+
 }
 
 a, li {
@@ -105,22 +114,27 @@ p {
 }
 
 .article-summary-md {
-  position: relative;
   line-height: 1.4em;
-  /* 3 times the line-height to show 3 lines */
-  height: 4.2em;
+  margin: 10px 0;
+  min-height: 60px;
   overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  word-break: break-all;
 }
 
-.article-summary-md::after {
-  content: "...";
-  font-weight: bold;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 0 20px 1px 45px;
-  /*background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;*/
-}
+/*.article-summary-md::after {*/
+/*  content: "...";*/
+/*  font-weight: bold;*/
+/*  position: absolute;*/
+/*  bottom: 0;*/
+/*  right: 0;*/
+/*  padding: 0 20px 1px 45px;*/
+/*  !*background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;*!*/
+/*}*/
 
 .article-summary-sd {
   position: relative;
