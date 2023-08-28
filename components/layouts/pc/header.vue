@@ -1,12 +1,10 @@
 <template>
   <el-row :gutter="20" justify="space-between" type="flex">
-
     <el-col :md="4" :span="4" :xs="8">
       <a class="navbar-brand" href="/" rel="nofollow">
         <img alt="RYMCU" class="navbar-brand-img" src="@/assets/rymcu.png">
       </a>
     </el-col>
-
     <el-col :md="14" :span="10" :xs="0" style="max-height: 58px;overflow: hidden">
       <el-menu :default-active="activeMenu" @select="handleSelectMenu" mode="horizontal"
                style="margin-top: -2px;border: 0;">
@@ -18,7 +16,7 @@
       </el-menu>
     </el-col>
 
-    <el-col :md="10" :span="10" :xs="16" style="line-height: 60px">
+    <el-col :md="10" :span="10" :xs="16" style="margin-top: 12px">
       <client-only>
         <el-col style="text-align: right;" v-if="loggedIn">
           <el-popover
@@ -39,7 +37,7 @@
                 </svg>
               </el-button>
             </el-input>
-            <el-button circle size="small" slot="reference">
+            <el-button circle size="small" slot="reference" style="background-color: transparent">
               <svg height="14" style="fill: rgba(0, 0, 0, 1);" viewBox="0 0 24 24" width="14"
                    xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -49,6 +47,7 @@
               </svg>
             </el-button>
           </el-popover>
+
           <el-link :underline="false" href="/portfolio/post" rel="nofollow"
                    style="padding-left: 10px;padding-right: 10px;">创建作品集
           </el-link>
@@ -171,6 +170,7 @@ export default {
       this.getUnreadNotifications();
     }
   },
+
   methods: {
     querySearchAsync() {
       this.$router.push({
@@ -329,6 +329,7 @@ export default {
 .navbar-brand {
   color: inherit;
   margin-right: 1rem;
+
   font-size: 1.25rem;
   white-space: nowrap;
   font-weight: 600;
@@ -338,7 +339,7 @@ export default {
 }
 
 .navbar-brand-img {
-  height: 3rem;
+  height: 60px;
   line-height: 3rem;
   vertical-align: top;
   width: auto;
@@ -351,4 +352,14 @@ export default {
 .search-result-type {
   padding-right: 5px;
 }
+
+.el-menu {
+  background-color: transparent !important;
+}
+
+.icon_sun {
+  cursor: pointer;
+  margin: 0 5px;
+}
+
 </style>
