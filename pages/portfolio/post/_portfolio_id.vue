@@ -1,89 +1,75 @@
 <template>
-  <el-row class="wrapper">
-    <el-col v-if="isAuthor">
-      <el-col style="margin-bottom: 1rem;" v-if="isEdit">
+  <div class="wrapper_portfolio" style="margin: 20px">
+    <div v-if="isAuthor">
+      <div style="margin-bottom: 1rem;" v-if="isEdit">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/portfolio/manager/' + idPortfolio }">{{ portfolio.portfolioTitle }}
           </el-breadcrumb-item>
           <el-breadcrumb-item>更新作品集</el-breadcrumb-item>
         </el-breadcrumb>
-      </el-col>
-      <el-col>
-        <h1>创建作品集</h1>
-      </el-col>
-      <el-col style="margin-bottom: 1rem;">
-        作品集需要有明确的写作方向，如果您在某个领域有深度的研究，欢迎创建自己的作品集分享自己的观点
-      </el-col>
-      <el-col>
-        <el-form :model="portfolio" :rules="rules" label-width="100px" ref="topic">
-          <el-form-item label="作品集名称" prop="portfolioTitle">
-            <el-input v-model="portfolio.portfolioTitle"></el-input>
-          </el-form-item>
-          <el-form-item label="作品集介绍" prop="portfolioDescription">
-            <div id="contentEditor"></div>
-          </el-form-item>
-          <el-form-item>
-            <el-row>
-              <el-col :span="24">
-                <vue-cropper
-                  :aspect-ratio="1 / 1"
-                  :autoCrop="autoCrop"
-                  :autoCropArea="1"
-                  :fixedNumber="[1,2]"
-                  :checkCrossOrigin="false"
-                  :checkOrientation="false"
-                  :imgStyle="{'width': '200px'}"
-                  :src="headImgUrl"
-                  preview=".preview"
-                  ref="cropper"
-                  v-if="headImgUrl"
-                />
-              </el-col>
-              <el-col :span="24" style="margin-top: 2rem;">
-                <el-col :span="8">
-                  <el-card :body-style="{ padding: '0px' }">
-                    <el-col>
-                      <div class="preview preview-large"/>
-                    </el-col>
-                    <el-col style="padding: 0 10px;">
-                      <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
-                    </el-col>
-                    <el-col class="text-muted article-summary-md" style="padding: 0 10px;">
-                      {{ portfolio.portfolioDescription }}
-                    </el-col>
-                  </el-card>
-                </el-col>
-              </el-col>
-              <el-col :span="24" style="margin-top: 2rem;">
-                <el-upload
-                  :before-upload="beforeAvatarUpload"
-                  :http-request="requestUpload"
-                  :multiple="true"
-                  :show-file-list="false"
-                  action=""
-                  class="avatar-uploader">
-                  <div>
-                    <el-button plain round type="primary">上传</el-button>
-                  </div>
-                </el-upload>
-                <el-button @click.prevent="reset" plain round style="margin-top: 1rem;" type="primary">重置</el-button>
-                <el-button @click.prevent="cropImage" plain round type="primary">裁剪</el-button>
-                <el-col>
-                  <span style="color: red;padding-right: 5px;">*</span>
-                  <span>上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
-                </el-col>
-              </el-col>
-            </el-row>
-          </el-form-item>
+      </div>
+      <el-row :gutter="20">
+        <el-col :span="12" :offset="3">
+          <el-card>
+            <h1>创建作品集</h1>
+            <p>作品集需要有明确的写作方向，如果您在某个领域有深度的研究，欢迎创建自己的作品集分享自己的观点</p>
+            <el-form :model="portfolio" label-width="100px" ref="topic">
+              <el-form-item label="作品集名称">
+                <el-input v-model="portfolio.portfolioTitle"></el-input>
+              </el-form-item>
+              <br>
+              <el-form-item label="作品集介绍">
+                <div id="contentEditor"></div>
+              </el-form-item>
+              <el-form-item class="text-right">
+                <el-button :loading="loading" @click="deletePortfolio" v-if="isEdit">删除</el-button>
+                <el-button :loading="loading" @click="updatePortfolio" v-if="isEdit">更新</el-button>
+                <el-button @click="updatePortfolio" v-else>提交</el-button>
+              </el-form-item>
+            </el-form>
+          </el-card>
+        </el-col>
+        <el-col :span="6">
+          <el-card>
+            <vue-cropper
+              :aspect-ratio="1"
+              :autoCrop="autoCrop"
+              :autoCropArea="1"
+              :fixedNumber="[1,2]"
+              :checkCrossOrigin="false"
+              :checkOrientation="false"
+              :imgStyle="{'width': '200px'}"
+              :img="headImgUrl"
+              preview=".preview"
+              ref="cropper"
+              v-if="headImgUrl"
+            />
 
-          <el-form-item class="text-right">
-            <el-button :loading="loading" @click="deletePortfolio" v-if="isEdit">删除</el-button>
-            <el-button :loading="loading" @click="updatePortfolio" v-if="isEdit">更新</el-button>
-            <el-button @click="updatePortfolio" v-else>提交</el-button>
-          </el-form-item>
-        </el-form>
-      </el-col>
-    </el-col>
+            <div class="preview preview-large"/>
+            <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
+            <div class="portfolioDescription">
+              {{ portfolio.portfolioDescription }}
+            </div>
+            <el-upload
+              :before-upload="beforeAvatarUpload"
+              :multiple="true"
+              :show-file-list="false"
+              action=""
+              class="avatar-uploader">
+              <div>
+                <el-button plain round type="primary">上传</el-button>
+              </div>
+            </el-upload>
+            <el-button @click.prevent="reset" plain round style="margin-top: 1rem;" type="primary">重置
+            </el-button>
+            <el-button @click.prevent="cropImage" plain round type="primary">裁剪</el-button>
+            <p style="color: red;padding-right: 5px;">*
+              <span style="color: black">上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
+            </p>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
     <el-col class="text-center" v-else>
       <el-alert
         :closable="false"
@@ -93,7 +79,7 @@
         type="warning">
       </el-alert>
     </el-col>
-  </el-row>
+  </div>
 </template>
 
 <script>
@@ -151,14 +137,14 @@ export default {
         idPortfolio: 0,
         portfolioDescription: ''
       },
-      rules: {
-        portfolioTitle: [
-          {required: true, message: '请输入作品集名称', trigger: 'blur'}
-        ],
-        portfolioDescription: [
-          {required: true, message: '请输入作品集介绍', trigger: 'blur'}
-        ]
-      },
+      // rules: {
+      //   portfolioTitle: [
+      //     {required: true, message: '请输入作品集名称', trigger: 'blur'}
+      //   ],
+      //   portfolioDescription: [
+      //     {required: true, message: '请输入作品集介绍', trigger: 'blur'}
+      //   ]
+      // },
       loading: false,
       tokenURL: {
         URL: '',
@@ -170,16 +156,13 @@ export default {
       isEdit: false,
       autoCrop: true,
       notificationFlag: true
+      , contentHtml: {}
     }
   },
   methods: {
-    // 覆盖默认的上传行为
-    requestUpload(e) {
-      console.log('e', e)
-    },
     _initEditor(data) {
+      //初始化
       let _ts = this;
-
       let toolbar = [
         'emoji',
         'headings',
@@ -229,7 +212,12 @@ export default {
         },
         after() {
           _ts.contentEditor.setValue(data.value ? data.value : '');
+
         },
+        input: (val) => {
+          this.portfolio.portfolioDescription = val
+        },
+        typewriterMode: true,
         hint: {
           emoji: Vue.emoji
         },
@@ -245,7 +233,7 @@ export default {
           /*url: `${process.env.Server}/api/console/markdown`,*/
           parse: (element) => {
             if (element.style.display === 'none') {
-              return
+              return false
             }
             // LazyLoadImage();
             // Vue.Vditor.highlightRender({style: 'github'}, element, this.contentEditor);
@@ -260,21 +248,21 @@ export default {
           enable: data.resize,
         },
         lang: this.$store.state.locale,
-        placeholder: data.placeholder,
+        // placeholder: data.placeholder,
       })
     },
-    // handleAvatarSuccess(res) {
-    //   let _ts = this;
-    //   if (res && res.data && res.data.url) {
-    //     let portfolio = _ts.portfolio;
-    //     portfolio.headImgUrl = res.data.url;
-    //     portfolio.headImgType = '0';
-    //     _ts.$set(_ts, 'portfolio', portfolio);
-    //     _ts.$set(_ts, 'headImgUrl', res.data.url);
-    //   } else {
-    //     _ts.$message.error('上传失败!');
-    //   }
-    // },
+    handleAvatarSuccess(res) {
+      let _ts = this;
+      if (res && res.data && res.data.url) {
+        let portfolio = _ts.portfolio;
+        portfolio.headImgUrl = res.data.url;
+        portfolio.headImgType = '0';
+        _ts.$set(_ts, 'portfolio', portfolio);
+        _ts.$set(_ts, 'headImgUrl', res.data.url);
+      } else {
+        _ts.$message.error('上传失败!');
+      }
+    },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
@@ -288,35 +276,25 @@ export default {
         return false;
       }
       this.fileToBase64(file);
-
-
-      // this.$set(_ts, 'headImgUrl', res.data.url);
+      return false;
     },
     fileToBase64(file) {
-      console.log('我执行了？')
       let _ts = this;
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
-        let portfolio = _ts.portfolio;
-        portfolio.headImgUrl = this.result;
-        portfolio.headImgType = '0';
-        _ts.$set(_ts, 'portfolio', portfolio);
         _ts.$set(_ts, 'headImgUrl', this.result);
-        if ((_ts.portfolio.headImgUrl || undefined) != undefined) {
-          _ts.$message.success('图片上传成功，可自定义裁剪');
-        } else {
-          _ts.$message.warning('图片上传失败，请重传');
-        }
+        _ts.$refs.cropper?.replace(this.result);
       }
     },
     async updatePortfolio() {
       //headImgUrl
       let _ts = this;
+      this.cropImage()
       _ts.$set(_ts, 'loading', true);
       let id = _ts.idPortfolio;
       let portfolioDescription = _ts.contentEditor.getValue();
-      let portfolioDescriptionHtml = await _ts.contentEditor.getHTML();
+      let portfolioDescriptionHtml = _ts.contentEditor.getHTML();
       let data = _ts.portfolio;
       data.portfolioDescription = portfolioDescription;
       data.portfolioDescriptionHtml = portfolioDescriptionHtml;
@@ -324,8 +302,6 @@ export default {
         this.$message.error('请输入必填信息');
         return false
       }
-
-
       let title = id ? '更新' : '添加';
       _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
         if (res && res.message) {
@@ -439,13 +415,17 @@ export default {
 
     let portfolioContent = '';
     if (_ts.idPortfolio) {
-      _ts.$set(_ts, 'isEdit', true);
+      this.isEdit = true
+      // _ts.$set(_ts, 'isEdit', true);
       _ts.$set(_ts, 'portfolio', JSON.parse(JSON.stringify(_ts.portfolioDetail)));
       _ts.$set(_ts, 'headImgUrl', _ts.portfolioDetail.headImgUrl);
-      // _ts.$refs.cropper.replace(_ts.portfolioDetail.headImgUrl);
-      portfolioContent = _ts.portfolioDetail.portfolioDescription;
+      if (!this.isEdit) {
+        _ts.$refs?.cropper?.replace(_ts.portfolioDetail.headImgUrl);
+        portfolioContent = _ts.portfolioDetail.portfolioDescription;
+      }
+
     } else {
-      _ts.$set(_ts, 'isEdit', false);
+      this.isEdit = false
     }
 
     this.contentEditor = this._initEditor({
@@ -454,7 +434,7 @@ export default {
       height: 480,
       placeholder: '', //this.$t('inputContent', this.$store.state.locale)
       resize: false,
-      value: portfolioContent
+      value: this.portfolio.portfolioDescription
     });
   }
 }
@@ -462,6 +442,11 @@ export default {
 
 <style lang="less">
 @import "~vditor/src/assets/less/index.less";
+
+.wrapper_portfolio {
+  width: 100%;
+  max-width: 100%;
+}
 
 .preview-area {
   width: 16rem;
@@ -497,5 +482,18 @@ export default {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   overflow: hidden;
+}
+
+.portfolioDescription {
+  min-height: 50px;
+  font-size: 12px;
+  color: #909399;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  word-break: break-all;
 }
 </style>
