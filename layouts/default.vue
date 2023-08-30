@@ -24,9 +24,6 @@ export default Vue.extend({
       return this.$store.state.global.isMobile
     },
 
-  },
-  methods: {
-
   }
 })
 </script>
@@ -38,7 +35,7 @@ body {
   display: block;
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
-  /*background-color: rgb(246, 247, 248);*/
+  background-color: rgb(246, 247, 248);
   overflow-x: hidden;
   font-family: "PingFang SC", sans-serif;
 
