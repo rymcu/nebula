@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <header-view/>
+      <header-view v-bind="$attrs" v-on="$listeners"/>
     </el-header>
     <el-main>
       <nuxt/>
@@ -33,27 +33,29 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
-  import HeaderView from "./header";
-  import FooterView from "./footer";
-  import wx from "~/assets/weixin.png";
-  import gzh from "~/assets/rymcugzh.jpg";
+import {mapState} from 'vuex';
+import HeaderView from "./header";
+import FooterView from "./footer";
+import wx from "~/assets/weixin.png";
+import gzh from "~/assets/rymcugzh.jpg";
 
-  export default {
-    name: "PcMain",
-    components: {
-      HeaderView,
-      FooterView
-    },
-    computed: {
-      ...mapState('global', []),
-      isPostArticle() {
-        if (this.$route.name === 'article-post-article_id') {
-          return false;
-        }
-        return true;
+export default {
+  name: "PcMain",
+  components: {
+    HeaderView,
+    FooterView
+  },
+  props: [],
+
+  computed: {
+    ...mapState('global', []),
+    isPostArticle() {
+      if (this.$route.name === 'article-post-article_id') {
+        return false;
       }
-    },
+      return true;
+    }
+  },
     data() {
       return {
         isShow: false,
@@ -84,7 +86,7 @@
 <style scoped>
   .el-header {
     /*padding-bottom: 1rem;*/
-    background: #fff;
+    /*background: #fff;*/
     border-bottom: 1px solid rgba(0, 40, 100, 0.12);
     z-index: 80;
   }
@@ -100,7 +102,7 @@
     position: relative;
     width: 100%;
     padding-top: 1.2rem;
-    background: #fff;
+    /*background: #fff;*/
     border-top: 1px solid rgba(0, 40, 100, 0.12);
     z-index: 80;
   }
