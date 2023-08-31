@@ -15,7 +15,7 @@
               <span style="font-size: 20px" v-html="article.articleTitle"> </span>
               <el-tag size="mini" v-for="tag in article.tags" :key="tag.idTag" style="margin-right: 10px"> {{ tag.tagTitle }}</el-tag>
 
-              <div style="min-height: 100px" class="text-muted article-summary-md" v-html="article.articlePreviewContent"></div>
+              <div class="text-muted article-summary-md" v-html="article.articlePreviewContent"></div>
               <el-row>
                 <el-col :xs="3" :sm="1" :xl="1" class="mr-3">
                   <el-avatar v-if="article.articleAuthorAvatarUrl" size="medium"
