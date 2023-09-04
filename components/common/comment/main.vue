@@ -183,7 +183,6 @@ export default {
       // isPostingComment: state => state.comment.posting,
       constants: state => state.global.constants,
       language: state => state.global.language,
-      isMobile: state => state.global.isMobile,
       user: state => state.auth.user,
       loggedIn: state => state.auth.loggedIn,
       avatar: state => state.auth.user?.avatarUrl

@@ -82,7 +82,6 @@ export default {
       portfolio: state => state.portfolio.detail.data,
       articles: state => state.portfolio.articles,
       isFetching: state => state.portfolio.detail.fetching,
-      isMobile: state => state.global.isMobile,
       user: state => state.auth.user,
       avatar: state => state.auth.user?.avatarURL
     }),

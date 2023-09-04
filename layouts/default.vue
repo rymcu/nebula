@@ -1,8 +1,8 @@
 <template>
-  <body >
-  <pc-main-view v-if="!isMobile"  />
-  <mobile-main-view v-else/>
-  </body>
+  <div>
+    <pc-main-view v-if="$device.isDesktop"/>
+    <mobile-main-view v-else/>
+  </div>
 </template>
 <script>
 import Vue from 'vue';
@@ -19,10 +19,7 @@ export default Vue.extend({
   computed: {
     theme() {
       return this.$store.state.global.theme
-    },
-    isMobile() {
-      return this.$store.state.global.isMobile
-    },
+    }
 
   }
 })
