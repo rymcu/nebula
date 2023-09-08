@@ -13,6 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@babel/types": "^7.21.2",
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@nuxtjs/auth-next": "^5.0.0-1667386184.dfbbb54",
     "@nuxtjs/axios": "^5.13.1",
@@ -27,7 +28,7 @@
     "save-svg-as-png": "^1.4.17",
     "simple-icons": "^6.23.0",
     "vditor": "^3.8.18",
-    "vue-cropperjs": "^4.2.0",
+    "vue-cropper": "^0.6.2",
     "vue-sse": "^2.5.2",
     "vuejs-avataaars": "^4.0.1"
   },
