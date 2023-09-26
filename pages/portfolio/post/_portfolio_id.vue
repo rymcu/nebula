@@ -166,7 +166,6 @@ export default {
   },
   methods: {
     realTime(data) {
-      console.log(data)
       this.cropImg = data
     },
     _initEditor(data) {
@@ -305,34 +304,33 @@ export default {
       let portfolioDescription = _ts.contentEditor.getValue();
       let portfolioDescriptionHtml = _ts.contentEditor.getHTML();
       let data = _ts.portfolio;
-      data.portfolioDescription = portfolioDescription;
-      data.portfolioDescriptionHtml = portfolioDescriptionHtml;
-      data.headImgUrl = _ts.headImgUrl
-      data.headImgType = '0';
-
-      //       // _ts.$set(_ts, 'headImgUrl', _ts.cropImg);
-
-      console.log(data)
-      if ((data.portfolioDescription || undefined) == undefined || (data.portfolioDescriptionHtml || undefined) == undefined) {
-        this.$message.error('请输入必填信息');
-        return false
-      }
-      let title = id ? '更新' : '添加';
-      _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
-        if (res && res.message) {
-          _ts.$message.error(res.message);
-        } else {
-          _ts.$message({
-            type: 'success',
-            message: title + '成功!'
-          });
-          _ts.$set(_ts, 'notificationFlag', false);
-          _ts.$router.push({
-            path: '/portfolio/' + res.idPortfolio
-          })
+      this.$refs.cropper.getCropData(img => {
+        data.headImgUrl = img
+        data.portfolioDescription = portfolioDescription;
+        data.portfolioDescriptionHtml = portfolioDescriptionHtml;
+        // data.headImgUrl = _ts.headImgUrl
+        data.headImgType = '0';
+        if ((data.portfolioDescription || undefined) == undefined || (data.portfolioDescriptionHtml || undefined) == undefined) {
+          this.$message.error('请输入必填信息');
+          return false
         }
-        _ts.$set(_ts, 'loading', false)
-      }).catch(error => _ts.$set(_ts, 'loading', false))
+        let title = id ? '更新' : '添加';
+        _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
+          if (res && res.message) {
+            _ts.$message.error(res.message);
+          } else {
+            _ts.$message({
+              type: 'success',
+              message: title + '成功!'
+            });
+            _ts.$set(_ts, 'notificationFlag', false);
+            _ts.$router.push({
+              path: '/portfolio/' + res.idPortfolio
+            })
+          }
+          _ts.$set(_ts, 'loading', false)
+        }).catch(error => _ts.$set(_ts, 'loading', false))
+      })
     },
     deletePortfolio() {
       let _ts = this;
@@ -364,28 +362,6 @@ export default {
       this.headImgUrl = ''
       // this.$refs.cropper.clearCrop()
     },
-    // get image data for post processing, e.g. upload or setting image src
-    // cropImage() {
-    //   let _ts = this;
-    //   try {
-    //     _ts.cropImg = _ts.$refs.cropper.startCrop();
-    //     this.$refs.cropper.getCropData(data => {
-    //       console.log(data)
-    //       return false
-    //       // do something
-    //       let portfolio = data;
-    //       // portfolio.headImgUrl = data;
-    //       // portfolio.headImgType = '0';
-    //       _ts.$set(_ts, 'portfolio', portfolio);
-    //       // _ts.$set(_ts, 'headImgUrl', _ts.cropImg);
-    //       _ts.$message.success('已裁剪 !');
-    //     })
-    //
-    //   } catch (e) {
-    //     _ts.$message.error('图片获取失败 !');
-    //     return;
-    //   }
-    // }
   },
   beforeRouteLeave(to, from, next) {
     let _ts = this;
@@ -437,8 +413,8 @@ export default {
 
     let portfolioContent = '';
     if (_ts.idPortfolio) {
-      this.isEdit = true
-      // _ts.$set(_ts, 'isEdit', true);
+      // this.isEdit = true
+      _ts.$set(_ts, 'isEdit', true);
       _ts.$set(_ts, 'portfolio', JSON.parse(JSON.stringify(_ts.portfolioDetail)));
       _ts.$set(_ts, 'headImgUrl', _ts.portfolioDetail.headImgUrl);
       if (!this.isEdit) {
