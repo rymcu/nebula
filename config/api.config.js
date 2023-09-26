@@ -3,7 +3,7 @@ import {NODE_ENV} from '../environment'
 const apisMap = {
   development: {
     FE: 'http://localhost:3000',
-    BASE: 'https://rymcu.com',
+    BASE: 'http://localhost:8099/forest',
     CDN: '',
     PROXY: '/proxy',
     SOCKET: 'http://localhost:3000/ws',
