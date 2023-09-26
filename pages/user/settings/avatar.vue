@@ -75,8 +75,7 @@
 import {mapState} from 'vuex';
 import Avataaars from 'vuejs-avataaars';
 import saveSvg from 'save-svg-as-png';
-import VueCropper from 'vue-cropperjs';
-import 'cropperjs/dist/cropper.css';
+import VueCropper from 'vue-cropper';
 
 const {generateRandomAvatar} = require('~/plugins/avataaars/generator/generateAvatar');
 export default {

@@ -118,8 +118,7 @@
 <script>
 import Vue from 'vue';
 import {mapState} from 'vuex';
-import VueCropper from 'vue-cropperjs';
-import 'cropperjs/dist/cropper.css';
+import VueCropper from 'vue-cropper';
 import apiConfig from '~/config/api.config';
 
 export default {

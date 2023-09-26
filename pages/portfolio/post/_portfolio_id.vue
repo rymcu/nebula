@@ -31,41 +31,50 @@
         </el-col>
         <el-col :span="6">
           <el-card>
-            <vue-cropper
-              :aspect-ratio="1"
-              :autoCrop="autoCrop"
-              :autoCropArea="1"
-              :fixedNumber="[1,2]"
-              :checkCrossOrigin="false"
-              :checkOrientation="false"
-              :imgStyle="{'width': '200px'}"
-              :img="headImgUrl"
-              preview=".preview"
-              ref="cropper"
-              v-if="headImgUrl"
-            />
-
-            <div class="preview preview-large"/>
-            <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
-            <div class="portfolioDescription">
-              {{ portfolio.portfolioDescription }}
-            </div>
-            <el-upload
-              :before-upload="beforeAvatarUpload"
-              :multiple="true"
-              :show-file-list="false"
-              action=""
-              class="avatar-uploader">
-              <div>
-                <el-button plain round type="primary">上传</el-button>
+            <div>
+              <div class="cropperBox">
+                <vue-cropper
+                  :aspect-ratio="1"
+                  :autoCrop="autoCrop"
+                  :autoCropArea="1"
+                  :fixedNumber="[1,2]"
+                  :checkCrossOrigin="false"
+                  :checkOrientation="false"
+                  :img="headImgUrl"
+                  preview=".preview"
+                  ref="cropper"
+                  @realTime="realTime"
+                />
               </div>
-            </el-upload>
-            <el-button @click.prevent="reset" plain round style="margin-top: 1rem;" type="primary">重置
-            </el-button>
-            <el-button @click.prevent="cropImage" plain round type="primary">裁剪</el-button>
-            <p style="color: red;padding-right: 5px;">*
-              <span style="color: black">上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
-            </p>
+              <div class="cropperBox">
+                <div :style="{height:cropImg.h+'px',width:cropImg.w+'px'}"
+                     style="overflow:hidden;margin: 0 auto">
+                  <img :src="cropImg.url" :style="cropImg.img">
+                </div>
+              </div>
+
+              <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
+              <div class="portfolioDescription">
+                {{ portfolio.portfolioDescription }}
+              </div>
+
+              <div class="button_box">
+
+                <el-upload
+                  :before-upload="beforeAvatarUpload"
+                  :multiple="true"
+                  :show-file-list="false"
+                  action=""
+                  class="avatar-uploader">
+                  <div>
+                    <el-button plain round type="primary">上传</el-button>
+                  </div>
+                </el-upload>
+
+                <el-button @click="reset" style="margin-left: 10px" plain round type="primary">重置
+                </el-button>
+              </div>
+            </div>
           </el-card>
         </el-col>
       </el-row>
@@ -85,8 +94,6 @@
 <script>
 import Vue from 'vue';
 import {mapState} from 'vuex';
-import VueCropper from 'vue-cropperjs';
-import 'cropperjs/dist/cropper.css';
 import apiConfig from '~/config/api.config';
 
 export default {
@@ -103,9 +110,7 @@ export default {
         .catch(err => error({statusCode: 404}))
     ])
   },
-  components: {
-    VueCropper
-  },
+
   computed: {
     ...mapState({
       portfolioDetail: state => state.portfolio.detail.data,
@@ -160,6 +165,9 @@ export default {
     }
   },
   methods: {
+    realTime(data) {
+      this.cropImg = data
+    },
     _initEditor(data) {
       //初始化
       let _ts = this;
@@ -256,7 +264,7 @@ export default {
       if (res && res.data && res.data.url) {
         let portfolio = _ts.portfolio;
         portfolio.headImgUrl = res.data.url;
-        portfolio.headImgType = '0';
+        // portfolio.headImgType = '0';
         _ts.$set(_ts, 'portfolio', portfolio);
         _ts.$set(_ts, 'headImgUrl', res.data.url);
       } else {
@@ -284,40 +292,45 @@ export default {
       reader.readAsDataURL(file);
       reader.onload = function () {
         _ts.$set(_ts, 'headImgUrl', this.result);
-        _ts.$refs.cropper?.replace(this.result);
+        // _ts.$refs.cropper?.replace(this.result);
       }
     },
     async updatePortfolio() {
       //headImgUrl
       let _ts = this;
-      this.cropImage()
+      // this.cropImage()
       _ts.$set(_ts, 'loading', true);
       let id = _ts.idPortfolio;
       let portfolioDescription = _ts.contentEditor.getValue();
       let portfolioDescriptionHtml = _ts.contentEditor.getHTML();
       let data = _ts.portfolio;
-      data.portfolioDescription = portfolioDescription;
-      data.portfolioDescriptionHtml = portfolioDescriptionHtml;
-      if ((data.portfolioDescription || undefined) == undefined || (data.portfolioDescriptionHtml || undefined) == undefined) {
-        this.$message.error('请输入必填信息');
-        return false
-      }
-      let title = id ? '更新' : '添加';
-      _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
-        if (res && res.message) {
-          _ts.$message.error(res.message);
-        } else {
-          _ts.$message({
-            type: 'success',
-            message: title + '成功!'
-          });
-          _ts.$set(_ts, 'notificationFlag', false);
-          _ts.$router.push({
-            path: '/portfolio/' + res.idPortfolio
-          })
+      this.$refs.cropper.getCropData(img => {
+        data.headImgUrl = img
+        data.portfolioDescription = portfolioDescription;
+        data.portfolioDescriptionHtml = portfolioDescriptionHtml;
+        // data.headImgUrl = _ts.headImgUrl
+        data.headImgType = '0';
+        if ((data.portfolioDescription || undefined) == undefined || (data.portfolioDescriptionHtml || undefined) == undefined) {
+          this.$message.error('请输入必填信息');
+          return false
         }
-        _ts.$set(_ts, 'loading', false)
-      }).catch(error => _ts.$set(_ts, 'loading', false))
+        let title = id ? '更新' : '添加';
+        _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
+          if (res && res.message) {
+            _ts.$message.error(res.message);
+          } else {
+            _ts.$message({
+              type: 'success',
+              message: title + '成功!'
+            });
+            _ts.$set(_ts, 'notificationFlag', false);
+            _ts.$router.push({
+              path: '/portfolio/' + res.idPortfolio
+            })
+          }
+          _ts.$set(_ts, 'loading', false)
+        }).catch(error => _ts.$set(_ts, 'loading', false))
+      })
     },
     deletePortfolio() {
       let _ts = this;
@@ -346,24 +359,9 @@ export default {
       });
     },
     reset() {
-      this.$refs.cropper.reset();
+      this.headImgUrl = ''
+      // this.$refs.cropper.clearCrop()
     },
-    // get image data for post processing, e.g. upload or setting image src
-    cropImage() {
-      let _ts = this;
-      try {
-        _ts.cropImg = _ts.$refs.cropper.getCroppedCanvas().toDataURL();
-        let portfolio = _ts.portfolio;
-        portfolio.headImgUrl = _ts.cropImg;
-        portfolio.headImgType = '0';
-        _ts.$set(_ts, 'portfolio', portfolio);
-        _ts.$set(_ts, 'headImgUrl', _ts.cropImg);
-        _ts.$message.success('已裁剪 !');
-      } catch (e) {
-        _ts.$message.error('图片获取失败 !');
-        return;
-      }
-    }
   },
   beforeRouteLeave(to, from, next) {
     let _ts = this;
@@ -415,8 +413,8 @@ export default {
 
     let portfolioContent = '';
     if (_ts.idPortfolio) {
-      this.isEdit = true
-      // _ts.$set(_ts, 'isEdit', true);
+      // this.isEdit = true
+      _ts.$set(_ts, 'isEdit', true);
       _ts.$set(_ts, 'portfolio', JSON.parse(JSON.stringify(_ts.portfolioDetail)));
       _ts.$set(_ts, 'headImgUrl', _ts.portfolioDetail.headImgUrl);
       if (!this.isEdit) {
@@ -442,6 +440,10 @@ export default {
 
 <style lang="less">
 @import "~vditor/src/assets/less/index.less";
+
+.button_box {
+  display: flex;
+}
 
 .wrapper_portfolio {
   width: 100%;
@@ -478,10 +480,16 @@ export default {
 
 .preview-large {
   width: 100%;
-  height: 480px;
+  height: 380px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   overflow: hidden;
+  border: 1px solid red;
+
+  > img {
+    display: block;
+    margin: 0 auto;
+  }
 }
 
 .portfolioDescription {
@@ -496,4 +504,13 @@ export default {
   -webkit-line-clamp: 3;
   word-break: break-all;
 }
+
+.cropperBox {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 20px;
+  border: 1px solid #F2F6FC;
+}
+
+
 </style>
