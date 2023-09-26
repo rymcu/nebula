@@ -191,7 +191,6 @@ export default {
     ...mapState({
       article: state => state.article.detail.data,
       isFetching: state => state.article.detail.fetching,
-      isMobile: state => state.global.isMobile,
       loggedIn: state => state.auth.loggedIn,
       user: state => state.auth.user,
       avatar: state => state.auth.user?.avatarUrl

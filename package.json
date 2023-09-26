@@ -36,6 +36,7 @@
     "@commitlint/cli": "^17.4.0",
     "@commitlint/config-conventional": "^17.4.0",
     "@nuxt/types": "~2.16.0",
+    "@nuxtjs/device": "^2.1.0",
     "@nuxtjs/proxy": "^2.1.0",
     "conventional-changelog-cli": "^2.2.2",
     "cz-git": "^1.4.1",

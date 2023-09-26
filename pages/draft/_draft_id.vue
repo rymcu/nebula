@@ -87,7 +87,6 @@
       ...mapState({
         article: state => state.draft.detail.data,
         isFetching: state => state.draft.detail.fetching,
-        isMobile: state => state.global.isMobile,
         user: state => state.auth.user,
         avatar: state => state.auth.user?.avatarURL
       }),
