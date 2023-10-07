@@ -24,7 +24,7 @@
               <el-form-item class="text-right">
                 <el-button :loading="loading" @click="deletePortfolio" v-if="isEdit">删除</el-button>
                 <el-button :loading="loading" @click="updatePortfolio" v-if="isEdit">更新</el-button>
-                <el-button @click="updatePortfolio" v-else>提交</el-button>
+                <el-button @click="submitData" v-else>提交</el-button>
               </el-form-item>
             </el-form>
           </el-card>
@@ -37,7 +37,8 @@
                   :aspect-ratio="1"
                   :autoCrop="autoCrop"
                   :autoCropArea="1"
-                  :fixedNumber="[1,2]"
+                  fixed
+                  :fixedNumber="[1,1]"
                   :checkCrossOrigin="false"
                   :checkOrientation="false"
                   :img="headImgUrl"
@@ -264,7 +265,6 @@ export default {
       if (res && res.data && res.data.url) {
         let portfolio = _ts.portfolio;
         portfolio.headImgUrl = res.data.url;
-        // portfolio.headImgType = '0';
         _ts.$set(_ts, 'portfolio', portfolio);
         _ts.$set(_ts, 'headImgUrl', res.data.url);
       } else {
@@ -295,25 +295,58 @@ export default {
         // _ts.$refs.cropper?.replace(this.result);
       }
     },
-    async updatePortfolio() {
-      //headImgUrl
+    handleSubmitData() {
       let _ts = this;
-      // this.cropImage()
       _ts.$set(_ts, 'loading', true);
-      let id = _ts.idPortfolio;
       let portfolioDescription = _ts.contentEditor.getValue();
       let portfolioDescriptionHtml = _ts.contentEditor.getHTML();
       let data = _ts.portfolio;
+      data.portfolioDescription = portfolioDescription;
+      data.portfolioDescriptionHtml = portfolioDescriptionHtml;
+      data.headImgType = 0
+      // if (_ts.isEdit) {
+
+      //
+      // } else {
+      //   data.headImgUrl = _ts.headImgUrl
+      // }
+      if ((data.portfolioDescription || undefined) == undefined || (data.portfolioDescriptionHtml || undefined) == undefined) {
+        this.$message.error('请输入必填信息');
+        return false
+      }
+      return data
+    },
+    async submitData() {
+      let _ts = this
+      let data = this.handleSubmitData()
+      let id = _ts.idPortfolio;
+
+      data.headImgUrl = _ts.headImgUrl
+      let title = id ? '更新' : '添加';
+      _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
+        if (res && res.message) {
+          _ts.$message.error(res.message);
+        } else {
+          _ts.$message({
+            type: 'success',
+            message: title + '成功!'
+          });
+          _ts.$set(_ts, 'notificationFlag', false);
+          _ts.$router.push({
+            path: '/portfolio/' + res.idPortfolio
+          })
+        }
+        _ts.$set(_ts, 'loading', false)
+      }).catch(error => _ts.$set(_ts, 'loading', false))
+
+    },
+    async updatePortfolio() {
+      let _ts = this
+      let data = this.handleSubmitData()
+      let id = _ts.idPortfolio;
+
       this.$refs.cropper.getCropData(img => {
         data.headImgUrl = img
-        data.portfolioDescription = portfolioDescription;
-        data.portfolioDescriptionHtml = portfolioDescriptionHtml;
-        // data.headImgUrl = _ts.headImgUrl
-        data.headImgType = '0';
-        if ((data.portfolioDescription || undefined) == undefined || (data.portfolioDescriptionHtml || undefined) == undefined) {
-          this.$message.error('请输入必填信息');
-          return false
-        }
         let title = id ? '更新' : '添加';
         _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
           if (res && res.message) {

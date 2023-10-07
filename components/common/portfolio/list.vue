@@ -2,28 +2,15 @@
   <div class="wrapper">
     <el-row class="row-cards row-deck" :gutter="20">
       <el-col :xs="24" :sm="12" :md="12" v-for="portfolio in portfolios.list" :key="portfolio.idPortfolio">
-        <el-col v-if="portfolio.headImgUrl" style="margin-bottom: 20px;">
-          <el-card :body-style="{ padding: '20px' }">
+        <el-col style="margin-bottom: 20px;">
+          <el-card>
             <el-col :span="12">
-              <el-image :src="portfolio.headImgUrl" style="width:96px;height: 96px;border-radius: 10px;background: #f5f7fa;border: #f5f7fa solid 1px;" fit="cover"
-                        :preview-src-list="[portfolio.headImgUrl]"></el-image>
-            </el-col>
-            <el-col :span="12" style="padding-top: 30px;text-align: right;">
-              <el-button @click="onRouter('portfolio', portfolio.idPortfolio)" round>阅读</el-button>
-            </el-col>
-            <el-col style="padding-top: 20px;font-size: 16px;line-height: 22px;font-weight: 500;margin-bottom: 4px;">
-              <span v-html="portfolio.portfolioTitle"></span>
-            </el-col>
-            <el-col style="padding-bottom: 20px;font-size: 14px;">
-              <span>{{ portfolio.articleNumber || 0 }} 篇文章</span>
-            </el-col>
-          </el-card>
-        </el-col>
-        <el-col v-else style="margin-bottom: 20px;">
-          <el-card :body-style="{ padding: '20px' }">
-            <el-col :span="12">
-              <el-image style="width:96px;height: 96px;border-radius: 10px;border: #f5f7fa solid 2px;">
-                <div slot="error" style="display: flex;justify-content: center;align-items: center;width: 100%;height: 100%;background: #f5f7fa;color: #909399;">
+              <el-image :src="portfolio.headImgUrl"
+                        style="width:96px;height: 96px;border-radius: 10px;background: #f5f7fa;border: #f5f7fa solid 1px;"
+                        fit="cover"
+                        :preview-src-list="[portfolio.headImgUrl]">
+                <div v-if="portfolio.headImgUrl" slot="error"
+                     style="display: flex;justify-content: center;align-items: center;width: 100%;height: 100%;background: #f5f7fa;color: #909399;">
                   无图片
                 </div>
               </el-image>
@@ -32,7 +19,7 @@
               <el-button @click="onRouter('portfolio', portfolio.idPortfolio)" round>阅读</el-button>
             </el-col>
             <el-col style="padding-top: 20px;font-size: 16px;line-height: 22px;font-weight: 500;margin-bottom: 4px;">
-              <span v-html="portfolio.portfolioTitle"></span>
+              <span class="portTitle" v-html="portfolio.portfolioTitle"></span>
             </el-col>
             <el-col style="padding-bottom: 20px;font-size: 14px;">
               <span>{{ portfolio.articleNumber || 0 }} 篇文章</span>
@@ -197,5 +184,14 @@ h3, .h3 {
 .el-col-6 {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
+}
+
+.portTitle {
+  display: block;
+  /*border: 1px solid red;*/
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
