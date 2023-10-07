@@ -37,7 +37,8 @@
                   :aspect-ratio="1"
                   :autoCrop="autoCrop"
                   :autoCropArea="1"
-                  :fixedNumber="[1,2]"
+                  fixed
+                  :fixedNumber="[1,1]"
                   :checkCrossOrigin="false"
                   :checkOrientation="false"
                   :img="headImgUrl"
