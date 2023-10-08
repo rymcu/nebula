@@ -30,63 +30,59 @@
           </el-card>
         </el-col>
         <el-col :span="6">
-          <el-card>
-            <div>
-              <div class="cropperBox">
-                <vue-cropper
-                  :aspect-ratio="1"
-                  :autoCrop="autoCrop"
-                  :autoCropArea="1"
-                  fixed
-                  :fixedNumber="[1,1]"
-                  :checkCrossOrigin="false"
-                  :checkOrientation="false"
-                  :img="headImgUrl"
-                  preview=".preview"
-                  ref="cropper"
-                  @realTime="realTime"
-                />
-              </div>
-              <div class="cropperBox">
-                <div :style="{height:cropImg.h+'px',width:cropImg.w+'px'}"
-                     style="overflow:hidden;margin: 0 auto">
-                  <img :src="cropImg.url" :style="cropImg.img">
+          <client-only>
+            <el-card>
+              <div style="display: block;">
+                <div class="cropperBox">
+                  <vue-cropper
+                      :autoCrop="autoCrop"
+                      :img="headImgUrl"
+                      ref="cropper"
+                      :fixed="true"
+                      @realTime="realTime"
+                  />
+                </div>
+                <div class="cropperBox">
+                  <div :style="{height:cropImg.h+'px',width:cropImg.w+'px'}"
+                       style="overflow:hidden;margin: 0 auto">
+                    <img :src="cropImg.url" :style="cropImg.img">
+                  </div>
+                </div>
+
+                <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
+                <div class="portfolioDescription">
+                  {{ portfolio.portfolioDescription }}
+                </div>
+
+                <div class="button_box">
+
+                  <el-upload
+                      :before-upload="beforeAvatarUpload"
+                      :multiple="true"
+                      :show-file-list="false"
+                      action=""
+                      class="avatar-uploader">
+                    <div>
+                      <el-button plain round type="primary">上传</el-button>
+                    </div>
+                  </el-upload>
+
+                  <el-button @click="reset" style="margin-left: 10px" plain round type="primary">重置
+                  </el-button>
                 </div>
               </div>
-
-              <h4 class="article-header-md">{{ portfolio.portfolioTitle }}</h4>
-              <div class="portfolioDescription">
-                {{ portfolio.portfolioDescription }}
-              </div>
-
-              <div class="button_box">
-
-                <el-upload
-                  :before-upload="beforeAvatarUpload"
-                  :multiple="true"
-                  :show-file-list="false"
-                  action=""
-                  class="avatar-uploader">
-                  <div>
-                    <el-button plain round type="primary">上传</el-button>
-                  </div>
-                </el-upload>
-
-                <el-button @click="reset" style="margin-left: 10px" plain round type="primary">重置
-                </el-button>
-              </div>
-            </div>
-          </el-card>
+            </el-card>
+          </client-only>
         </el-col>
       </el-row>
     </div>
     <el-col class="text-center" v-else>
       <el-alert
-        :closable="false"
-        center
-        show-icon
-        title="用户无权限"
-        type="warning">
+          :closable="false"
+          center
+          show-icon
+          title="用户无权限"
+          type="warning">
       </el-alert>
     </el-col>
   </div>
@@ -108,7 +104,7 @@ export default {
   asyncData({store, params, error}) {
     return Promise.all([
       store.dispatch('portfolio/fetchPostDetail', params)
-        .catch(err => error({statusCode: 404}))
+          .catch(err => error({statusCode: 404}))
     ])
   },
 
@@ -161,13 +157,13 @@ export default {
       cropImg: '',
       isEdit: false,
       autoCrop: true,
-      notificationFlag: true
-      , contentHtml: {}
+      notificationFlag: true,
+      contentHtml: {}
     }
   },
   methods: {
     realTime(data) {
-      this.cropImg = data
+      this.cropImg = data;
     },
     _initEditor(data) {
       //初始化
@@ -544,6 +540,4 @@ export default {
   margin-bottom: 20px;
   border: 1px solid #F2F6FC;
 }
-
-
 </style>
