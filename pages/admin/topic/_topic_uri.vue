@@ -95,7 +95,7 @@ export default {
       tags: state => state.topic.tags.data
     }),
     hasPermissions() {
-      return this.$auth.hasScope('topic');
+      return this.$auth.hasScope('admin') || this.$auth.hasScope('blog_admin');
     }
   },
   methods: {
