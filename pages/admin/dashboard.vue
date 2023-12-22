@@ -71,9 +71,9 @@
                 <el-button size="mini" type="primary" @click="updateTags(scope.$index, scope.row)" plain>编辑标签
                 </el-button>
                 <el-button v-if="scope.row.articleStatus === '0'" size="mini" type="danger"
-                           @click="toggleStatus(scope.$index, scope.row)" plain>下架
+                           @click="toggleStatus(scope.row.idArticle, 1)" plain>下架
                 </el-button>
-                <el-button v-else size="mini" type="success" @click="toggleStatus(scope.$index, scope.row)" plain>上架
+                <el-button v-else size="mini" type="success" @click="toggleStatus(scope.row.idArticle, 0)" plain>上架
                 </el-button>
               </template>
             </el-table-column>
