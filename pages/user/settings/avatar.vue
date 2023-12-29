@@ -1,35 +1,60 @@
 <template>
   <el-row>
-    <el-col>
+    <el-col :spn="12">
       <h1>我的头像</h1>
     </el-col>
     <el-col>
       <el-form :model="user" ref="user" label-width="100px">
         <el-form-item>
           <el-row>
-            <el-col :span="24">
-              <vue-cropper
-                ref="cropper"
-                :aspect-ratio="1 / 1"
-                :src="avatarUrl"
-                :checkCrossOrigin="false"
-                :checkOrientation="false"
-                :imgStyle="{width: '360px'}"
-                :autoCropArea="1"
-                :autoCrop="autoCrop"
-                preview=".preview"
-              />
+            <el-col :span="12">
+              <client-only>
+                <div class="cropperBox">
+                  <!--                  <vue-cropper-->
+                  <!--                    :autoCrop="autoCrop"-->
+                  <!--                    :img="avatarUrl"-->
+                  <!--                    ref="cropper"-->
+                  <!--                    :fixed="true"-->
+                  <!--                    @realTime="realTime"-->
+                  <!--                    @imgMoving="cropImage"-->
+                  <!--                    @cropMoving="cropImage"-->
+                  <!--                  />-->
+                  <vue-cropper
+                    :autoCrop="autoCrop"
+                    :img="avatarUrl"
+                    ref="cropper"
+                    :fixed="true"
+                    @realTime="realTime"
+                  />
+                </div>
+              </client-only>
             </el-col>
             <el-col :span="24" style="margin-top: 2rem;">
               <el-col :span="8" style="max-width: 20rem;max-height: 20rem;">
-                <div class="preview preview-large"/>
+                <div class="preview preview-large" :style="{height:cropImg.h+'px',width:cropImg.w+'px'}"
+                     style="overflow:hidden;margin: 0 auto">
+                  <img :src="cropImg.url" :style="cropImg.img">
+                </div>
               </el-col>
-              <el-col :span="6" style="height: 20rem;">
-                <div class="preview preview-medium"/>
-              </el-col>
-              <el-col :span="4" style="height: 20rem;">
-                <div class="preview preview-small"/>
-              </el-col>
+<!--              <el-col :span="6" style="height: 20rem;">-->
+<!--                <div class="preview preview-medium" style="overflow:hidden;">-->
+<!--                  <div :style="{height:cropImg.h+'px',width:cropImg.w+'px'}"-->
+<!--                       style="overflow:hidden;margin: 0 auto">-->
+<!--                    <img :src="cropImg.url" :style="cropImg.img">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </el-col>-->
+<!--              <el-col :span="4" style="height: 20rem;">-->
+<!--                <div class="preview preview-small" style="overflow:hidden;">-->
+<!--                  <div :style="{height:(cropImg.h*0.2)+'px',width:cropImg.w+'px'}"-->
+<!--                       style="overflow:hidden;margin: 0 auto">-->
+<!--                    <img :src="cropImg.url" :style="cropImg.img">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;                <div class="preview preview-small">&ndash;&gt;-->
+<!--                &lt;!&ndash;                  <img :src="cropImg.url"/>&ndash;&gt;-->
+<!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+<!--              </el-col>-->
             </el-col>
             <el-col :span="24" style="margin-top: 2rem;">
               <el-upload
@@ -62,7 +87,7 @@
               </el-upload>
               <el-button style="margin-top: 1rem;" type="primary" round plain @click="genAvatar">随机</el-button>
               <el-button type="primary" round plain @click.prevent="reset">重置</el-button>
-              <el-button type="primary" round plain @click.prevent="cropImage">提交</el-button>
+              <el-button type="primary" round plain @click.prevent="updateUser">提交</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -75,15 +100,13 @@
 import {mapState} from 'vuex';
 import Avataaars from 'vuejs-avataaars';
 import saveSvg from 'save-svg-as-png';
-import VueCropper from 'vue-cropper';
 
 const {generateRandomAvatar} = require('~/plugins/avataaars/generator/generateAvatar');
 export default {
   name: "avatar",
   middleware: 'auth',
   components: {
-    Avataaars,
-    VueCropper
+    Avataaars
   },
   computed: {
     ...mapState({
@@ -97,14 +120,19 @@ export default {
     return {
       user: {},
       loading: false,
+      oldAvatarUrl: '',
       avatarUrl: '',
       avatar: {},
       cropImg: '',
       data: null,
-      autoCrop: true
+      autoCrop: true,
     }
   },
   methods: {
+    realTime(data) {
+      console.log(data.img)
+      this.cropImg = data;
+    },
     genAvatar() {
       let _ts = this;
       let user = _ts.user
@@ -116,7 +144,6 @@ export default {
             user.avatarType = 1;
             user.avatarUrl = uri;
             _ts.$set(_ts, 'avatarUrl', uri);
-            _ts.$refs.cropper.replace(uri);
           } else {
             _ts.$message.error('头像上传失败 !');
           }
@@ -159,45 +186,47 @@ export default {
           } else {
             _ts.$set(_ts, 'user', res);
             _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
-            _ts.$refs.cropper.replace(res.avatarUrl);
+            _ts.$set(_ts, 'oldAvatarUrl', res.avatarUrl);
             // _ts.webImageToBase64(res.user.avatarUrl);
           }
         }
       })
     },
     reset() {
-      this.$refs.cropper.reset();
+      this.avatarUrl = JSON.parse(JSON.stringify(this.oldAvatarUrl))
+      // this.$refs.cropper.clearCrop();
     },
     // get image data for post processing, e.g. upload or setting image src
     cropImage() {
       let _ts = this;
-      try {
-        this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
-      } catch (e) {
-        _ts.$message.error('图片获取失败 !');
-        return;
-      }
-      let user = _ts.user;
-      user.avatarType = 1;
-      user.avatarUrl = _ts.cropImg;
-      _ts.updateUser(user);
+      this.$refs.cropper.getCropData(data => {
+        let user = _ts.user;
+        user.avatarUrl = data;
+        user.avatarType = '1';
+        _ts.$set(_ts, 'user', user);
+        _ts.$set(_ts, 'avatarUrl', data);
+      })
     },
-    updateUser(user) {
+    updateUser() {
       let _ts = this;
+      let user = _ts.user;
       _ts.$refs['user'].validate((valid) => {
         if (valid) {
-          _ts.$axios.$patch('/api/user-info/update', user).then(function (res) {
-            if (res) {
-              if (res.message) {
-                _ts.$message.error(res.message);
-              } else {
-                _ts.$set(_ts, 'user', res);
-                _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
-                _ts.$store.commit('setUserInfo', res);
-                _ts.$message.success('更新成功 !');
+          this.$refs.cropper.getCropData(data => {
+            user.avatarUrl = data
+            _ts.$axios.$patch('/api/user-info/update', user).then(function (res) {
+              if (res) {
+                if (res.message) {
+                  _ts.$message.error(res.message);
+                } else {
+                  _ts.$set(_ts, 'user', res);
+                  _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
+                  _ts.$store.commit('setUserInfo', res);
+                  _ts.$message.success('更新成功 !');
+                }
               }
-            }
-          })
+            })
+          });
         } else {
           _ts.$message.error('数据异常 !');
         }
@@ -209,7 +238,6 @@ export default {
       reader.readAsDataURL(file);
       reader.onload = function () {
         _ts.$set(_ts, 'avatarUrl', this.result);
-        _ts.$refs.cropper.replace(this.result);
       }
     },
     compress(img, width, height, ratio) {
@@ -312,6 +340,12 @@ export default {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC);
 }
 
+.preview-large img {
+  object-fit: contain;
+  width: 16rem;
+  height: 16rem;
+}
+
 .preview-large {
   width: 16rem;
   height: 16rem;
@@ -324,6 +358,13 @@ export default {
   overflow: hidden;
 }
 
+.preview-medium img {
+  object-fit: contain;
+  width: 8rem;
+  height: 8rem;
+}
+
+
 .preview-medium {
   width: 8rem;
   height: 8rem;
@@ -334,7 +375,9 @@ export default {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   overflow: hidden;
+
 }
+
 
 .preview-small {
   width: 2rem;
@@ -346,5 +389,18 @@ export default {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   overflow: hidden;
+}
+
+.preview-small img {
+  object-fit: contain;
+  width: 2rem;
+  height: 2rem;
+}
+
+.cropperBox {
+  width: 100%;
+  height: 256px;
+  margin-bottom: 20px;
+  border: 1px solid #F2F6FC;
 }
 </style>
