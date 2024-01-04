@@ -250,7 +250,6 @@ export default {
       }
     },
     getUnreadNotifications() {
-      console.log('我执行了')
       let _ts = this;
       if (_ts.user) {
         _ts.$axios.$get('/api/notification/unread').then(function (res) {
