@@ -266,7 +266,7 @@ export default {
         tab: '\t',
         cdn: apiConfig.VDITOR,
         cache: {
-          enable: this.postId ? false : true,
+          enable: !this.postId,
           id: this.postId ? this.postId : '',
         },
         after() {

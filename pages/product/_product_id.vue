@@ -8,6 +8,16 @@
               {{ product.productTitle }}
             </h1>
           </div>
+          <div style="margin: 1rem 0;">
+            <el-tag
+              style="margin-right: 0.5rem;"
+              v-for="tag in product.tags?.split(',') || []"
+              :key="tag"
+              size="small"
+              effect="plain">
+              # {{ tag }}
+            </el-tag>
+          </div>
           <div class="pt-7 pipe-content__reset vditor-reset" id="articleContent" v-html="product.productContent"
                style="overflow: hidden;"></div>
         </div>
