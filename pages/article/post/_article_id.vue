@@ -427,11 +427,8 @@
           height: 480,
           placeholder: '', //_ts.$t('inputContent', _ts.$store.state.locale)
           resize: false,
-          value: ''
+          value: articleContent
         });
-
-        let mark = _ts.contentEditor.html2md(articleContent);
-        _ts.contentEditor.setValue(mark);
       })
     }
   }
