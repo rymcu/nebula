@@ -155,7 +155,11 @@ export default {
         rows: _ts.products.pageSize
       })
     },
-    handleEdit(index ,row) {}
+    handleEdit(index ,row) {
+      this.$router.push({
+        path: `/admin/product/post/${row.idProduct}`
+      })
+    }
   }
 }
 </script>
