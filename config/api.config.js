@@ -8,8 +8,8 @@ const apisMap = {
     PROXY: '/proxy',
     SOCKET: 'http://localhost:3000/ws',
     GRAVATAR: '/proxy/static.rymcu.com/avatar',
-    VDITOR: 'https://static.rymcu.com/vditor@3.8.14/',
-    VDITOR_CSS: 'https://static.rymcu.com/vditor@3.8.14/dist/css/content-theme'
+    VDITOR: 'https://static.rymcu.com/vditor@3.9.8/',
+    VDITOR_CSS: 'https://static.rymcu.com/vditor@3.9.8/dist/css/content-theme'
   },
   test: {
     FE: 'https://rymcu.com',
@@ -18,8 +18,8 @@ const apisMap = {
     PROXY: 'https://static.rymcu.com/proxy',
     SOCKET: 'https://rymcu.com/wss',
     GRAVATAR: 'https://static.rymcu.com/avatar',
-    VDITOR: 'https://static.rymcu.com/vditor@3.8.14/',
-    VDITOR_CSS: 'https://static.rymcu.com/vditor@3.8.14/dist/css/content-theme'
+    VDITOR: 'https://static.rymcu.com/vditor@3.9.8/',
+    VDITOR_CSS: 'https://static.rymcu.com/vditor@3.9.8/dist/css/content-theme'
   },
   production: {
     FE: 'https://rymcu.com',
@@ -28,8 +28,8 @@ const apisMap = {
     PROXY: 'https://static.rymcu.com/proxy',
     SOCKET: 'https://rymcu.com/wss',
     GRAVATAR: 'https://static.rymcu.com/avatar',
-    VDITOR: 'https://static.rymcu.com/vditor@3.8.14/',
-    VDITOR_CSS: 'https://static.rymcu.com/vditor@3.8.14/dist/css/content-theme'
+    VDITOR: 'https://static.rymcu.com/vditor@3.9.8/',
+    VDITOR_CSS: 'https://static.rymcu.com/vditor@3.9.8/dist/css/content-theme'
   }
 }
 

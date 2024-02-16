@@ -197,7 +197,7 @@
               // Vue.Vditor.highlightRender({style: 'github'}, element, this.contentEditor);
             },
             theme: {
-              cdn: apiConfig.VDITOR_CSS
+              path: apiConfig.VDITOR_CSS
             }
           },
           upload: {

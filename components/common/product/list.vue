@@ -1,18 +1,30 @@
 <template>
   <div class="wrapper">
     <el-row class="row-cards row-deck" :gutter="20">
-      <el-col :span="8" v-for="product in products.list" :key="product.idProduct" style="margin-right: 20px;">
+      <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10" v-for="product in products.list" :key="product.idProduct" style="margin-bottom: 10px;">
         <el-card :body-style="{ padding: '20px' }">
           <el-col :span="24">
             <el-image :src="product.productImgUrl"
                       style="border-radius: 10px;background: #f5f7fa;border: #f5f7fa solid 1px;" fit="cover"></el-image>
           </el-col>
-          <el-col style="padding-top: 20px;font-size: 16px;line-height: 22px;font-weight: 500;margin-bottom: 4px;">
-            <span v-html="product.productTitle"></span>
+          <el-col :span="24">
+            <el-tag
+              style="margin-right: 0.5rem;"
+              v-for="tag in product.tags?.split(',') || []"
+              :key="tag"
+              size="small"
+              effect="plain">
+              # {{ tag }}
+            </el-tag>
           </el-col>
-          <el-col style="padding-top: 30px;text-align: right;">
-<!--            <el-button type="text" class="button">立即购买</el-button>-->
-            <el-button type="text" class="button" @click="handleClick(product.idProduct)">查看详情</el-button>
+          <el-col :span="24" style="font-size: 16px;line-height: 22px;font-weight: 500;margin: 4px 0;text-align: center;">
+            <span style="font-weight: bolder;" v-html="product.productTitle"></span>
+          </el-col>
+          <el-col span="24">
+            <small v-html="product.productDescription"></small>
+          </el-col>
+          <el-col :span="24" style="text-align: center;">
+            <el-button type="text" class="button" @click="handleClick(product.idProduct)">了解更多</el-button>
           </el-col>
         </el-card>
       </el-col>

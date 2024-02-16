@@ -46,7 +46,7 @@ export default {
   ** Global CSS
   */
   css: [
-    'element-ui/lib/theme-chalk/index.css',
+    'element-ui/lib/theme-chalk/index.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -72,7 +72,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     '@nuxtjs/auth-next',
-    '@nuxtjs/device',
+    '@nuxtjs/device'
   ],
   auth: {
     redirect: {
@@ -128,7 +128,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
-    transpile: [/^element-ui/,'defu'],
+    transpile: [/^element-ui/, 'defu'],
     optimization: {
       splitChunks: {
         minSize: 10000,
