@@ -1,31 +1,27 @@
 <template>
   <div>
-
-
-  <el-row  style="margin-top: 20px;">
-    <el-col style="margin-bottom: 1rem;">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>专题管理</el-breadcrumb-item>
-      </el-breadcrumb>
-    </el-col>
-    <el-col style="margin: .5rem;">
-      <el-button size="small" @click="createTopic" plain>创建专题</el-button>
-    </el-col>
-
-
-
-  </el-row>  <el-row :gutter="20">
-  <el-col :span="8" style="margin-bottom: .5rem;" v-for="topic in topics.list" :key="topic.idTopic">
-    <el-card shadow="never">
-      <div class="card-body d-flex flex-column">
-        <el-row :gutter="20">
-          <el-col :span="4" style="text-align: right;">
-            <img style="margin-right: 10px;" :src="topic.topicIconPath" :alt="topic.topicTitle"
-                 class="topic-brand-img">
-          </el-col>
-          <el-col :span="20" >
-            <el-link rel="nofollow" @click="onRouter('admin-topic-detail',topic.topicUri)" :underline="false">
+    <el-row style="margin-top: 20px;">
+      <el-col style="margin-bottom: 1rem;">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item>专题管理</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+      <el-col style="margin: .5rem;">
+        <el-button size="small" @click="createTopic" plain>创建专题</el-button>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="8" style="margin-bottom: .5rem;" v-for="topic in topics.list" :key="topic.idTopic">
+        <el-card shadow="never">
+          <div class="card-body d-flex flex-column">
+            <el-row :gutter="20">
+              <el-col :span="4" style="text-align: right;">
+                <img style="margin-right: 10px;" :src="topic.topicIconPath" :alt="topic.topicTitle"
+                     class="topic-brand-img">
+              </el-col>
+              <el-col :span="20">
+                <el-link rel="nofollow" @click="onRouter('admin-topic-detail',topic.topicUri)" :underline="false">
               <span style="font-size: 20px;font-weight: bold"> {{ topic.topicTitle }}</span>
             </el-link>
             <div class="text-muted article-summary-md text-content">{{ topic.topicDescription }}</div>
