@@ -107,6 +107,7 @@ export default {
       })
     },
     handleCommand(command) {
+      console.log(command)
       let _ts = this;
       if ("admin-post-topic" === command) {
         _ts.$router.push({
@@ -142,7 +143,9 @@ export default {
       }).catch(() => {
       });
     }
-  }
+  },
+
+
 }
 </script>
 

@@ -23,17 +23,24 @@
         <el-form-item label="图标">
           <el-row>
             <el-col :span="24">
-              <vue-cropper
-                ref="cropper"
-                :aspect-ratio="1 / 1"
-                :src="topicIconPath"
-                :checkCrossOrigin="false"
-                :checkOrientation="false"
-                :imgStyle="{width: '480px', height: '480px'}"
-                :autoCropArea="1"
-                :autoCrop="autoCrop"
-                preview=".preview"
-              />
+<!--              <vue-cropper-->
+<!--                ref="cropper"-->
+<!--                :aspect-ratio="1 / 1"-->
+<!--                :src="topicIconPath"-->
+<!--                :checkCrossOrigin="false"-->
+<!--                :checkOrientation="false"-->
+<!--                :imgStyle="{width: '480px', height: '480px'}"-->
+<!--                :autoCropArea="1"-->
+<!--                :autoCrop="autoCrop"-->
+<!--                preview=".preview"-->
+<!--              />-->
+              {{topicIconPath}}
+                            <vue-cropper
+                              :autoCrop="autoCrop"
+                              :img="topicIconPath"
+                              ref="cropper"
+                              :fixed="true"
+                            />
             </el-col>
             <el-col :span="24" style="margin-top: 2rem;">
               <el-col :span="8">
@@ -41,6 +48,7 @@
                   <div class="card-body d-flex flex-column">
                     <el-col :span="4" style="text-align: right;">
                       <div v-if="topicIconPath" class="preview preview-large topic-brand-img"/>
+
                       <el-image v-else class="topic-brand-img" />
                     </el-col>
                     <el-col :span="20">
