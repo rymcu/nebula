@@ -7,26 +7,30 @@
         </el-col>
         <el-col>
           <el-form :model="user" :rules="rules" ref="user" label-width="100px">
-            <el-form-item>
-              <Avataaars
-                v-show="cropperVisible"
-                id="avatarSvg"
-                style="width: 100px; height: 100px;"
-                :avatarStyle='avatar.avatarStyle'
-                :topType='avatar.topType'
-                :accessoriesType='avatar.accessoriesType'
-                :hairColor='avatar.hairColor'
-                :facialHairType='avatar.facialHairType'
-                :clotheType='avatar.clotheType'
-                :clotheColor='avatar.clotheColor'
-                :eyeType='avatar.eyeType'
-                :eyebrowType='avatar.eyebrowType'
-                :mouthType='avatar.mouthType'
-                :skinColor='avatar.skinColor'>
-              </Avataaars>
-              <img @click="cropperVisible=true" :src="user.avatarUrl" />
-              <span @click="genAvatar" title="随机头像" class="random">{{ randomTitle }}</span>
-<!--              <span class="random">上传</span>-->
+            <el-form-item style="text-align: center;">
+              <el-col>
+                <Avataaars
+                  v-show="cropperVisible"
+                  id="avatarSvg"
+                  style="width: 256px; height: 256px;"
+                  :avatarStyle='avatar.avatarStyle'
+                  :topType='avatar.topType'
+                  :accessoriesType='avatar.accessoriesType'
+                  :hairColor='avatar.hairColor'
+                  :facialHairType='avatar.facialHairType'
+                  :clotheType='avatar.clotheType'
+                  :clotheColor='avatar.clotheColor'
+                  :eyeType='avatar.eyeType'
+                  :eyebrowType='avatar.eyebrowType'
+                  :mouthType='avatar.mouthType'
+                  :skinColor='avatar.skinColor'>
+                </Avataaars>
+                <img @click="cropperVisible=true" alt="用户头像" :src="user.avatarUrl" class="card-profile-img-avatar"/>
+              </el-col>
+              <el-col>
+                <el-button @click="cropperVisible=true">上传</el-button>
+                <el-button @click="genAvatar" class="random">{{ randomTitle }}</el-button>
+              </el-col>
             </el-form-item>
             <el-form-item label="昵称" prop="nickname">
               <el-input v-model="user.nickname" @blur="checkNickname"></el-input>
@@ -126,8 +130,7 @@ export default {
       avatar: {},
     }
   },
-  watch: {
-  },
+  watch: {},
   methods: {
     updateUser(data) {
       let _ts = this;
@@ -225,5 +228,15 @@ export default {
   display: inline-block;
   cursor: pointer;
   color: #409EFF;
+}
+
+.card-profile-img-avatar {
+  max-width: 16rem;
+  height: auto;
+  margin-bottom: 1rem;
+  border: 3px solid #fff;
+  border-radius: 100%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
 }
 </style>
