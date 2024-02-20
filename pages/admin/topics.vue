@@ -16,24 +16,23 @@
         <el-card shadow="never">
           <div class="card-body d-flex flex-column">
             <el-row :gutter="20">
-              <el-col :span="4" style="text-align: right;">
-                <img style="margin-right: 10px;" :src="topic.topicIconPath" :alt="topic.topicTitle"
-                     class="topic-brand-img">
+              <el-col :span="5" style="text-align: right;">
+                <img :src="topic.topicIconPath" :alt="topic.topicTitle"
+                   style="display: block;width:60px;height: 60px"  class="topic-brand-img">
               </el-col>
-              <el-col :span="20">
+              <el-col :span="18">
                 <el-link rel="nofollow" @click="onRouter('admin-topic-detail',topic.topicUri)" :underline="false">
-              <span style="font-size: 20px;font-weight: bold"> {{ topic.topicTitle }}</span>
+              <span style="font-size: 18px;font-weight: bold"> {{ topic.topicTitle }}</span>
             </el-link>
             <div class="text-muted article-summary-md text-content">{{ topic.topicDescription }}</div>
           </el-col>
         </el-row>
-
-
       </div>
     </el-card>
 
   </el-col>
-</el-row> </div>
+</el-row>
+  </div>
 </template>
 
 <script>
@@ -73,7 +72,7 @@ export default {
 
 <style scoped>
 .topic-brand-img {
-  margin-top: 40%;
+  /*margin-top: 40%;*/
 }
 
 .text-content {

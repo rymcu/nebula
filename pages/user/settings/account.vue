@@ -130,8 +130,9 @@ export default {
   },
   methods: {
     updateUser(data) {
+      let _ts = this;
+
       if (data) {
-        let _ts = this;
         let user = _ts.user;
         user.avatarUrl = data
         user.avatarType = 1

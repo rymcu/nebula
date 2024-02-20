@@ -23,71 +23,38 @@
         <el-form-item label="图标">
           <el-row>
             <el-col :span="24">
-<!--              <vue-cropper-->
-<!--                ref="cropper"-->
-<!--                :aspect-ratio="1 / 1"-->
-<!--                :src="topicIconPath"-->
-<!--                :checkCrossOrigin="false"-->
-<!--                :checkOrientation="false"-->
-<!--                :imgStyle="{width: '480px', height: '480px'}"-->
-<!--                :autoCropArea="1"-->
-<!--                :autoCrop="autoCrop"-->
-<!--                preview=".preview"-->
-<!--              />-->
-              {{topicIconPath}}
-                            <vue-cropper
-                              :autoCrop="autoCrop"
-                              :img="topicIconPath"
-                              ref="cropper"
-                              :fixed="true"
-                            />
-            </el-col>
-            <el-col :span="24" style="margin-top: 2rem;">
-              <el-col :span="8">
-                <el-card>
-                  <div class="card-body d-flex flex-column">
-                    <el-col :span="4" style="text-align: right;">
-                      <div v-if="topicIconPath" class="preview preview-large topic-brand-img"/>
-
-                      <el-image v-else class="topic-brand-img" />
-                    </el-col>
-                    <el-col :span="20">
-                      <el-col>
-                        <el-col>
-                          <el-link rel="nofollow" :underline="false">
-                            <h4>{{ topic.topicTitle }}</h4>
-                          </el-link>
-                        </el-col>
-                        <el-col>
-                          <div class="text-muted article-summary-md">{{ topic.topicDescription }}</div>
-                        </el-col>
-                      </el-col>
-                    </el-col>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-col>
-            <el-col :span="24" style="margin-top: 2rem;">
-              <el-upload
-                class="avatar-uploader"
-                action=""
-                :multiple="true"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <div>
-                  <el-button type="primary" round plain>上传</el-button>
-                </div>
-              </el-upload>
-              <el-button style="margin-top: 1rem;" type="primary" round plain @click.prevent="reset">重置</el-button>
-              <el-button type="primary" round plain @click.prevent="cropImage">裁剪</el-button>
-              <el-col>
-                <span style="color: red;padding-right: 5px;">*</span>
-                <span>上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
-              </el-col>
+              <img @click="cropperVisible=true" :src="topicIconPath" style="width: 80px;height: 80px"/>
             </el-col>
           </el-row>
         </el-form-item>
+        <el-form-item label="描述">
+          <div id="contentEditor" @blur="blurData"></div>
+        </el-form-item>
+<!--        <el-form-item>-->
+<!--          <el-row >-->
+<!--            <el-col :span="8">-->
+<!--              <el-card>-->
+<!--                <div class="card-body d-flex flex-column">-->
+<!--                  <el-card shadow="never">-->
+<!--                    <div class="card-body d-flex flex-column">-->
+<!--                      <el-row :gutter="20">-->
+<!--                        <el-col :span="5" style="text-align: right;">-->
+<!--                          <img :src="topicIconPath" :alt="topic.topicTitle"-->
+<!--                               style="display: block;width:60px;height: 60px" class="topic-brand-img">-->
+<!--                        </el-col>-->
+<!--                        <el-col :span="18">-->
+<!--                          <span style="font-size: 18px;font-weight: bold"> {{ topic.topicTitle }}</span>-->
+<!--                          <div class="text-muted article-summary-md text-content">{{ topic.topicDescription }}</div>-->
+<!--                        </el-col>-->
+<!--                      </el-row>-->
+<!--                    </div>-->
+<!--                  </el-card>-->
+<!--                </div>-->
+<!--              </el-card>-->
+<!--            </el-col>-->
+<!--          </el-row>-->
+
+<!--        </el-form-item>-->
         <el-form-item label="导航主题">
           <el-switch
             v-model="topic.topicNva"
@@ -112,14 +79,14 @@
         <el-form-item label="标签数">
           <el-input v-model="topic.topicTagCount" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="描述">
-          <div id="contentEditor"></div>
-        </el-form-item>
+
         <el-form-item class="text-right">
           <el-button @click="updateTopic" :loading="loading" plain>提交</el-button>
         </el-form-item>
       </el-form>
     </el-col>
+    <ImgCropper @onSubmit="updateUser" :visible.sync='cropperVisible' :avatarUrl="topicIconPath||''"></ImgCropper>
+
   </el-row>
 </template>
 
@@ -128,12 +95,13 @@ import Vue from 'vue';
 import {mapState} from 'vuex';
 import VueCropper from 'vue-cropper';
 import apiConfig from '~/config/api.config';
+import ImgCropper from "~/components/ImgCropper.vue";
 
 export default {
   name: "adminTopicPost",
   middleware: 'auth',
   components: {
-    VueCropper
+    VueCropper, ImgCropper
   },
   computed: {
     ...mapState({
@@ -170,13 +138,31 @@ export default {
       topicIconPath: '',
       isEdit: false,
       autoCrop: true,
-      notificationFlag: true
+      notificationFlag: true,
+      cropperVisible: false,
+      contentEditor:{}
+
     }
   },
   methods: {
+    blurData(){
+
+      console.log(this.contentEditor)
+      if(this.contentEditor!={}){
+        console.log(this.contentEditor.getValue())
+
+        this.topic.topicDescription=this.contentEditor.getValue();
+      }
+
+    },
+    updateUser(data) {
+      this.topic.topicIconPath = data
+      this.topicIconPath = data
+      this.cropperVisible = false
+
+    },
     _initEditor(data) {
       let _ts = this;
-
       let toolbar = [
         'emoji',
         'headings',
@@ -264,43 +250,6 @@ export default {
         lang: this.$store.state.locale,
         placeholder: data.placeholder,
       })
-    },
-    handleAvatarSuccess(res) {
-      let _ts = this;
-      if (res && res.data && res.data.url) {
-        let topic = _ts.topic;
-        topic.topicIconPath = res.data.url;
-        _ts.$set(_ts, 'topic', topic);
-        _ts.$set(_ts, 'topicIconPath', res.data.url);
-      } else {
-        _ts.$message.error('上传失败!');
-      }
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isPNG = file.type === 'image/png';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!(isJPG || isPNG)) {
-        this.$message.error('上传图标只能是 JPG 或者 PNG 格式!');
-        return false;
-      }
-      if (!isLt2M) {
-        this.$message.error('上传图标大小不能超过 2MB!');
-        return false;
-      }
-
-      this.fileToBase64(file);
-      return false;
-    },
-    fileToBase64(file) {
-      let _ts = this;
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        _ts.$set(_ts, 'topicIconPath', this.result);
-        _ts.$refs.cropper.replace(this.result);
-      }
     },
     async updateTopic() {
       let _ts = this;
@@ -409,12 +358,16 @@ export default {
     _ts.contentEditor = _ts._initEditor({
       id: 'contentEditor',
       mode: 'both',
-      height: 480,
+      height: 300,
       placeholder: '', //this.$t('inputContent', this.$store.state.locale)
       resize: false,
-      value: articleContent
+      value: articleContent,
     });
-  }
+    setTimeout(()=>{
+      _ts.contentEditor.blur()
+    })
+  },
+
 }
 </script>
 
