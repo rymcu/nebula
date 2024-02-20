@@ -75,7 +75,7 @@ export default {
   methods: {
     onSubmit() {
       this.$refs.cropper.getCropData(data => {
-        console.log(data)
+        // console.log(data)
         this.$emit('onSubmit',data)
       });
 
