@@ -13,8 +13,8 @@ RUN cd /opt/app
 RUN chmod -R 777 *
 # 添加执行shell文件权限
 RUN chmod u+x pm2.sh
-RUN yarn --registry=https://registry.npm.taobao.org
-RUN npm i pm2 -g --registry=https://registry.npm.taobao.org
+RUN yarn --registry=https://registry.npmmirror.com
+RUN npm i pm2 -g --registry=https://registry.npmmirror.com
 RUN npm run build
 
 RUN ls -l -a

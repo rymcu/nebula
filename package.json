@@ -27,7 +27,7 @@
     "raw-loader": "^4.0.2",
     "save-svg-as-png": "^1.4.17",
     "simple-icons": "^6.23.0",
-    "vditor": "^3.9.8",
+    "vditor": "^3.8.18",
     "vue-cropper": "^0.6.2",
     "vue-sse": "^2.5.2",
     "vuejs-avataaars": "^4.0.1"
