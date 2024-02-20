@@ -75,21 +75,7 @@ export default {
   methods: {
     onSubmit() {
       this.$refs.cropper.getCropData(data => {
-        console.log(data)
         this.$emit('onSubmit',data)
-
-        // _ts.$axios.$patch('/api/user-info/update', user).then(function (res) {
-        //   if (res) {
-        //     if (res.message) {
-        //       _ts.$message.error(res.message);
-        //     } else {
-        //       _ts.$set(_ts, 'user', res);
-        //       _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
-        //       _ts.$store.commit('setUserInfo', res);
-        //       _ts.$message.success('更新成功 !');
-        //     }
-        //   }
-        // })
       });
 
       /*
@@ -106,17 +92,12 @@ export default {
       this.$emit('update:visible', false)
     },
     realTime(data) {
-      console.log(data)
       this.cropImg = data;
       // this.$emit('cropImg', data)
     },
     handleAvatarSuccess(res) {
       let _ts = this;
       if (res && res.data && res.data.url) {
-        console.log(res.data.url)
-        // let user = _ts.user;
-        // user.avatarUrl = res.data.url;
-        user.avatarType = '0';
         _ts.$set(_ts, 'newAvatarUrl', res.data.url);
       } else {
         _ts.$message.error('上传失败!');

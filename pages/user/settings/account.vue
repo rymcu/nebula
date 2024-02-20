@@ -3,13 +3,30 @@
     <client-only>
       <el-row>
         <el-col>
-          <h1>基本信息</h1>
+          <h1>基本信息 </h1>
         </el-col>
         <el-col>
           <el-form :model="user" :rules="rules" ref="user" label-width="100px">
             <el-form-item>
-              <img :src="user.avatarUrl" style="width: 100px;height: 100px" @click="visible=true">
-              <!--              <el-image :src="user.avatarUrl"></el-image>-->
+              <Avataaars
+                v-show="cropperVisible"
+                id="avatarSvg"
+                style="width: 100px; height: 100px;"
+                :avatarStyle='avatar.avatarStyle'
+                :topType='avatar.topType'
+                :accessoriesType='avatar.accessoriesType'
+                :hairColor='avatar.hairColor'
+                :facialHairType='avatar.facialHairType'
+                :clotheType='avatar.clotheType'
+                :clotheColor='avatar.clotheColor'
+                :eyeType='avatar.eyeType'
+                :eyebrowType='avatar.eyebrowType'
+                :mouthType='avatar.mouthType'
+                :skinColor='avatar.skinColor'>
+              </Avataaars>
+              <img @click="cropperVisible=true" :src="user.avatarUrl" />
+              <span @click="genAvatar" title="随机头像" class="random">{{ randomTitle }}</span>
+<!--              <span class="random">上传</span>-->
             </el-form-item>
             <el-form-item label="昵称" prop="nickname">
               <el-input v-model="user.nickname" @blur="checkNickname"></el-input>
@@ -63,7 +80,7 @@
         </el-col>
       </el-row>
     </client-only>
-    <ImgCropper @onSubmit="updateUser" :visible.sync='visible' :avatarUrl="user.avatarUrl||''"></ImgCropper>
+    <ImgCropper @onSubmit="updateUser" :visible.sync='cropperVisible' :avatarUrl="user.avatarUrl||''"></ImgCropper>
 
   </el-card>
 
@@ -73,12 +90,16 @@
 import {mapState} from 'vuex';
 import ImgCropper from "~/components/ImgCropper.vue";
 import VueCropper from "vue-cropper";
+import saveSvg from "save-svg-as-png";
+import Avataaars from 'vuejs-avataaars';
+
+const {generateRandomAvatar} = require('~/plugins/avataaars/generator/generateAvatar');
 
 export default {
   name: "account",
   middleware: 'auth',
   components: {
-    ImgCropper, VueCropper
+    ImgCropper, VueCropper, Avataaars
   },
   computed: {
     ...mapState({
@@ -100,31 +121,35 @@ export default {
         ]
       },
       loading: false,
-      visible: false
+      cropperVisible: false,
+      randomTitle: '随机施法',
+      avatar: {},
     }
   },
   watch: {
-    user() {
-      console.log(this.user)
-    }
   },
   methods: {
     updateUser(data) {
-      let _ts = this;
-      let user = _ts.user;
-      user.avatarUrl = data
-      _ts.$axios.$patch('/api/user-info/update', user).then(function (res) {
-        if (res) {
-          if (res.message) {
-            _ts.$message.error(res.message);
-          } else {
-            _ts.$set(_ts, 'user', res);
-            // _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
-            // _ts.$store.commit('setUserInfo', res);
-            _ts.$message.success('更新成功 !');
+      if (data) {
+        let _ts = this;
+        let user = _ts.user;
+        user.avatarUrl = data
+        user.avatarType = 1
+        _ts.$axios.$patch('/api/user-info/update', user).then(function (res) {
+          if (res) {
+            if (res.message) {
+              _ts.$message.error(res.message);
+            } else {
+              _ts.$set(_ts, 'user', res);
+              // _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
+              // _ts.$store.commit('setUserInfo', res);
+              _ts.$message.success('更新成功 !');
+              _ts.cropperVisible = false
+            }
           }
-        }
-      })
+        })
+      } else _ts.$message.error('失败，请重试');
+
 
     },
     getData() {
@@ -169,7 +194,23 @@ export default {
           _ts.$message.success('更新成功 !');
         }
       })
-    }
+    },
+    genAvatar() {
+      let _ts = this;
+      const avatar = generateRandomAvatar();
+      _ts.$set(_ts, 'avatar', avatar);
+
+      setTimeout(function () {
+        saveSvg.svgAsPngUri(document.getElementById('avatarSvg'), {}).then(uri => {
+          if (uri) {
+            _ts.updateUser(uri)
+            _ts.randomTitle = '‧★,:*:‧\\(￣▽￣)/‧:*‧°★* 再来一次'
+          } else {
+            _ts.$message.error('头像上传失败 !');
+          }
+        });
+      }, 300);
+    },
   },
   mounted() {
     this.$store.commit('setActiveMenu', 'account');
@@ -179,5 +220,9 @@ export default {
 </script>
 
 <style scoped>
-
+.random {
+  display: inline-block;
+  cursor: pointer;
+  color: #409EFF;
+}
 </style>
