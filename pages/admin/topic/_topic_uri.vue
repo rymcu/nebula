@@ -12,7 +12,7 @@
         <img :src="topic.topicIconPath" :alt="topic.topicTitle" class="topic-brand-img">
       </el-col>
       <el-col :span="20">
-        <el-col>
+        <el-row :gutter="20">
           <el-col :span="20">
             <span class="topic-title">{{ topic.topicTitle }}</span>
             <span class="text-muted" v-if="topic.topicTagCount">{{ topic.topicTagCount }} 引用</span>
@@ -28,9 +28,9 @@
             </el-dropdown>
           </el-col>
           <el-col>
-            <p>{{ topic.topicDescription }}</p>
+            <span v-html="topic.topicDescriptionHtml"></span>
           </el-col>
-        </el-col>
+        </el-row>
       </el-col>
       <el-col v-for="tag in tags.list" :key="tag.idTag">
         <el-card style="margin: .5rem;">
@@ -107,6 +107,7 @@ export default {
       })
     },
     handleCommand(command) {
+      console.log(command)
       let _ts = this;
       if ("admin-post-topic" === command) {
         _ts.$router.push({
@@ -142,7 +143,9 @@ export default {
       }).catch(() => {
       });
     }
-  }
+  },
+
+
 }
 </script>
 

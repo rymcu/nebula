@@ -107,13 +107,7 @@ export default {
     getData() {
       let _ts = this;
       _ts.$axios.$get('/api/user-info/detail/' + _ts.idUser).then(function (res) {
-        if (res) {
-          if (res.message) {
-            _ts.$message.error(res.message);
-          } else {
-            _ts.$set(_ts, 'user', res.user);
-          }
-        }
+        _ts.$set(_ts, 'user', res);
       })
     },
     hideChangeEmailDialog() {

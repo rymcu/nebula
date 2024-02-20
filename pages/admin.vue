@@ -15,18 +15,26 @@
         </el-menu>
       </el-col>
       <el-col :span="20">
-        <el-tabs :value="editableTabsValue" type="card" @tab-remove="handleRemoveTab" @tab-click="handleClick">
-          <el-tab-pane
-            :key="item.name"
-            v-for="(item, index) in editableTabs"
-            :label="item.title"
-            :name="item.name"
-            :closable="item.closable"
-          >
+        <el-card>
+
+          <el-row>
+            <el-tabs :value="editableTabsValue" type="card" @tab-remove="handleRemoveTab" @tab-click="handleClick">
+              <el-tab-pane
+                :key="item.name"
+                v-for="(item, index) in editableTabs"
+                :label="item.title"
+                :name="item.name"
+                :closable="item.closable">
+              </el-tab-pane>
+            </el-tabs>
+
+          </el-row>
+          <el-row>
             <nuxt-child keep-alive
                         :keep-alive-props="{include: editableTabs}"/>
-          </el-tab-pane>
-        </el-tabs>
+          </el-row>
+
+        </el-card>
       </el-col>
     </el-col>
     <el-col v-else class="text-center">

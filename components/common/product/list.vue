@@ -1,12 +1,13 @@
 <template>
   <div class="wrapper">
     <el-row class="row-cards row-deck" :gutter="20">
-      <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10" v-for="product in products.list" :key="product.idProduct" style="margin-bottom: 10px;">
+      <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10" v-for="product in products.list" :key="product.idProduct"
+              style="margin-bottom: 10px;">
         <el-card :body-style="{ padding: '20px' }">
-          <el-col :span="24">
-            <el-image :src="product.productImgUrl"
-                      style="border-radius: 10px;background: #f5f7fa;border: #f5f7fa solid 1px;" fit="cover"></el-image>
-          </el-col>
+          <div style="width: 96%;">
+            <img style="max-height: 300px;display: block;margin: 0 auto" :src="product.productImgUrl"
+                 object-fit="contain"/>
+          </div>
           <el-col :span="24">
             <el-tag
               style="margin-right: 0.5rem;"
@@ -17,11 +18,14 @@
               # {{ tag }}
             </el-tag>
           </el-col>
-          <el-col :span="24" style="font-size: 16px;line-height: 22px;font-weight: 500;margin: 4px 0;text-align: center;">
+          <el-col :span="24"
+                  style="font-size: 16px;line-height: 22px;font-weight: 500;margin: 4px 0;text-align: center;">
             <span style="font-weight: bolder;" v-html="product.productTitle"></span>
           </el-col>
-          <el-col span="24">
-            <small v-html="product.productDescription"></small>
+          <el-col :span="24">
+            <small class="text-container">
+              {{ product.productDescription }}
+            </small>
           </el-col>
           <el-col :span="24" style="text-align: center;">
             <el-button type="text" class="button" @click="handleClick(product.idProduct)">了解更多</el-button>
@@ -166,5 +170,14 @@ h3, .h3 {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
+
+.text-container {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 </style>
