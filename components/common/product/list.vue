@@ -5,29 +5,31 @@
               style="margin-bottom: 10px;">
         <el-card :body-style="{ padding: '20px' }">
           <div style="width: 96%;">
-            <img style="max-height: 300px;display: block;margin: 0 auto" :src="product.productImgUrl" object-fit="contain" ;/>
+            <img style="max-height: 300px;display: block;margin: 0 auto" :src="product.productImgUrl"
+                 object-fit="contain"/>
           </div>
-                    <el-col :span="24">
-                      <el-tag
-                        style="margin-right: 0.5rem;"
-                        v-for="tag in product.tags?.split(',') || []"
-                        :key="tag"
-                        size="small"
-                        effect="plain">
-                        # {{ tag }}
-                      </el-tag>
-                    </el-col>
-                    <el-col :span="24" style="font-size: 16px;line-height: 22px;font-weight: 500;margin: 4px 0;text-align: center;">
-                      <span style="font-weight: bolder;" v-html="product.productTitle"></span>
-                    </el-col>
-                    <el-col span="24">
-                      <small class="text-container">
-                        {{product.productDescription}}
-                      </small>
-                    </el-col>
-                    <el-col :span="24" style="text-align: center;">
-                      <el-button type="text" class="button" @click="handleClick(product.idProduct)">了解更多</el-button>
-                    </el-col>
+          <el-col :span="24">
+            <el-tag
+              style="margin-right: 0.5rem;"
+              v-for="tag in product.tags?.split(',') || []"
+              :key="tag"
+              size="small"
+              effect="plain">
+              # {{ tag }}
+            </el-tag>
+          </el-col>
+          <el-col :span="24"
+                  style="font-size: 16px;line-height: 22px;font-weight: 500;margin: 4px 0;text-align: center;">
+            <span style="font-weight: bolder;" v-html="product.productTitle"></span>
+          </el-col>
+          <el-col :span="24">
+            <small class="text-container">
+              {{ product.productDescription }}
+            </small>
+          </el-col>
+          <el-col :span="24" style="text-align: center;">
+            <el-button type="text" class="button" @click="handleClick(product.idProduct)">了解更多</el-button>
+          </el-col>
         </el-card>
       </el-col>
     </el-row>
@@ -168,6 +170,7 @@ h3, .h3 {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
+
 .text-container {
   display: -webkit-box;
   -webkit-box-orient: vertical;
