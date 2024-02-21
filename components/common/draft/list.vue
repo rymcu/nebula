@@ -13,7 +13,7 @@
         <el-divider></el-divider>
       </el-col>
     </el-col>
-    <el-col v-if="articles.list&&articles.list.length == 0" class="text-center">
+    <el-col v-if="articles.total === 0" class="text-center">
       <span class="text-default">这里什么也没有!</span>
     </el-col>
     <el-col>
