@@ -13,10 +13,19 @@ export default {
   data() {
     return {
       contentEditor: null,
+      tokenURL: {}
     }
   },
   props: {
     initValue: {
+      type: String,
+      required: true
+    },
+    cacheId: {
+      type: String,
+      required: true
+    },
+    mode: {
       type: String,
       required: true
     }
@@ -46,7 +55,7 @@ export default {
         'insert-before',
         'insert-after',
         '|',
-        // 'upload',
+        'upload',
         // 'record',
         'table',
         '|',
@@ -65,24 +74,29 @@ export default {
         }]
       return new Vue.Vditor(data.id, {
         toolbar,
-        mode: 'sv',
+        mode: _ts.mode,
         tab: '\t',
         cdn: apiConfig.VDITOR,
         cache: {
-          enable: this.$route.params.article_id ? false : true,
-          id: this.$route.params.article_id ? this.$route.params.article_id : '',
+          enable: !_ts.cacheId,
+          id: _ts.cacheId,
         },
         after() {
           _ts.contentEditor.setValue(data.value ? data.value : '');
-
         },
         typewriterMode: true,
         hint: {
           emoji: Vue.emoji
         },
         preview: {
+          hljs: {
+            enable: true,
+            lineNumber: true,
+            style: 'github'
+          },
           markdown: {
             toc: true,
+            autoSpace: true
           },
           math: {
             inlineDigit: true
@@ -101,38 +115,55 @@ export default {
             cdn: apiConfig.VDITOR_CSS
           }
         },
+        upload: {
+          max: 10 * 1024 * 1024,
+          url: _ts.tokenURL.URL,
+          linkToImgUrl: _ts.tokenURL.linkToImageURL,
+          token: _ts.tokenURL.token,
+          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
+          replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
+          replace('/\\s/g', '')
+        },
         height: data.height,
         counter: 102400,
         resize: {
           enable: data.resize,
         },
         lang: this.$store.state.locale,
-        // placeholder: data.placeholder,
+        placeholder: data.placeholder,
       })
     },
-    editValue() {
-      console.log('我被执行了')
-      let data = this.contentEditor.getValue();
-      this.$emit('editValue', data)
+    contentValue() {
+      return this.contentEditor.getValue();
     },
-    editHtml() {
-      let data = this.contentEditor.getHTML();
-      this.$emit('editHtml', data)
+    async contentHtml() {
+      return await this.contentEditor.getHTML()
     }
   },
-  mounted() {
-    this.contentEditor = this._initEditor({
+  async mounted() {
+    let _ts = this;
+    const responseData = await _ts.$axios.$get('/api/upload/token');
+    if (responseData) {
+      _ts.$store.commit('setUploadHeaders', responseData.uploadToken);
+      _ts.$set(_ts, 'tokenURL', {
+        token: responseData.uploadToken || '',
+        URL: responseData.uploadURL || '',
+        linkToImageURL: responseData.linkToImageURL || ''
+      })
+    }
+    _ts.contentEditor = _ts._initEditor({
       id: 'contentEditor',
       mode: 'both',
       height: 480,
       placeholder: '', //this.$t('inputContent', this.$store.state.locale)
       resize: false,
-      value: this.initValue
+      value: _ts.initValue
     });
   }
 }
 </script>
 
-<style scoped>
+<style lang="less">
+@import "~vditor/src/assets/less/index.less";
 
 </style>

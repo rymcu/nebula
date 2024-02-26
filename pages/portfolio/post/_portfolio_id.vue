@@ -19,8 +19,8 @@
               </el-form-item>
               <br>
               <el-form-item label="作品集介绍">
-                <content-editor @editValue="editValue" :initValue="portfolio.portfolioDescription||''"
-                                v-if="isLoading" @editHtml="editHtml"
+                <content-editor mode="sv" :cacheId="'portfolio-' + (portfolio.idPortfolio || '')"
+                                :initValue="portfolio.portfolioDescription||''" v-if="isLoading"
                                 ref="contentEditor"></content-editor>
               </el-form-item>
               <el-form-item class="text-right">
@@ -37,11 +37,11 @@
               <div style="display: block;">
                 <div class="cropperBox">
                   <vue-cropper
-                      :autoCrop="autoCrop"
-                      :img="headImgUrl"
-                      ref="cropper"
-                      :fixed="true"
-                      @realTime="realTime"
+                    :autoCrop="autoCrop"
+                    :img="headImgUrl"
+                    ref="cropper"
+                    :fixed="true"
+                    @realTime="realTime"
                   />
                 </div>
                 <div class="cropperBox">
@@ -59,11 +59,11 @@
                 <div class="button_box">
 
                   <el-upload
-                      :before-upload="beforeAvatarUpload"
-                      :multiple="true"
-                      :show-file-list="false"
-                      action=""
-                      class="avatar-uploader">
+                    :before-upload="beforeAvatarUpload"
+                    :multiple="true"
+                    :show-file-list="false"
+                    action=""
+                    class="avatar-uploader">
                     <div>
                       <el-button plain round type="primary">上传</el-button>
                     </div>
@@ -80,11 +80,11 @@
     </div>
     <el-col class="text-center" v-else>
       <el-alert
-          :closable="false"
-          center
-          show-icon
-          title="用户无权限"
-          type="warning">
+        :closable="false"
+        center
+        show-icon
+        title="用户无权限"
+        type="warning">
       </el-alert>
     </el-col>
   </div>
@@ -160,12 +160,6 @@ export default {
     }
   },
   methods: {
-    editValue(data) {
-      this.contentValue.portfolioDescription = data
-    },
-    editHtml(data) {
-      this.contentValue.portfolioDescriptionHtml = data
-    },
     realTime(data) {
       this.cropImg = data;
     },
@@ -204,17 +198,15 @@ export default {
         // _ts.$refs.cropper?.replace(this.result);
       }
     },
-    handleSubmitData() {
+    async handleSubmitData() {
       let _ts = this;
       _ts.$set(_ts, 'loading', true);
-
-      _ts.$refs.contentEditor.editValue();
-      _ts.$refs.contentEditor.editHtml();
       let data = _ts.portfolio;
-      data.portfolioDescription = _ts.contentValue.portfolioDescription;
-      data.portfolioDescriptionHtml = _ts.contentValue.portfolioDescriptionHtml;
-      data.headImgType = 0
-      if ((data.portfolioDescription || undefined) == undefined || (data.portfolioDescriptionHtml || undefined) == undefined) {
+      data.portfolioDescription = _ts.$refs.contentEditor.contentValue();
+      data.portfolioDescriptionHtml = await _ts.$refs.contentEditor.contentHtml();
+      data.headImgType = 0;
+      data.headImgUrl = _ts.headImgUrl;
+      if ((data.portfolioDescription || undefined) === undefined || (data.portfolioDescriptionHtml || undefined) === undefined) {
         this.$message.error('请输入必填信息');
         return false
       }
@@ -222,10 +214,8 @@ export default {
     },
     async submitData() {
       let _ts = this
-      let data = this.handleSubmitData()
+      let data = await this.handleSubmitData()
       let id = _ts.idPortfolio;
-
-      data.headImgUrl = _ts.headImgUrl
       let title = id ? '更新' : '添加';
       _ts.$axios[id ? '$put' : '$post']('/api/portfolio/post', data).then(function (res) {
         if (res && res.message) {
@@ -245,7 +235,6 @@ export default {
 
     },
     async updatePortfolio() {
-      console.log('我怎么一直在执行')
       let _ts = this
       let data = this.handleSubmitData()
       let id = _ts.idPortfolio;
@@ -338,17 +327,6 @@ export default {
     });
     let _ts = this;
     _ts.$store.commit("setActiveMenu", "portfolio-post");
-    this.$axios.$get('/api/upload/simple/token').then(function (res) {
-      if (res) {
-
-        _ts.$store.commit('setUploadHeaders', res.uploadToken);
-        _ts.$set(_ts, 'tokenURL', {
-          token: res.uploadToken || '',
-          URL: res.uploadURL || '',
-          linkToImageURL: res.linkToImageURL || ''
-        })
-      }
-    });
 
     let portfolioContent = '';
     if (_ts.idPortfolio) {
@@ -360,7 +338,6 @@ export default {
         _ts.$refs?.cropper?.replace(_ts.portfolioDetail.headImgUrl);
         portfolioContent = _ts.portfolioDetail.portfolioDescription;
       }
-
     } else {
       this.isEdit = false
     }
@@ -370,7 +347,6 @@ export default {
 </script>
 
 <style lang="less">
-@import "~vditor/src/assets/less/index.less";
 
 .button_box {
   display: flex;
