@@ -236,7 +236,7 @@ export default {
     },
     async updatePortfolio() {
       let _ts = this
-      let data = this.handleSubmitData()
+      let data = await this.handleSubmitData()
       let id = _ts.idPortfolio;
 
       this.$refs.cropper.getCropData(img => {
