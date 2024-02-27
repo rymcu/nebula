@@ -1,83 +1,125 @@
 <template>
-  <el-row style="margin-top: 20px;">
-    <el-col style="margin-bottom: 1rem;">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>产品管理</el-breadcrumb-item>
-      </el-breadcrumb>
-    </el-col>
-    <el-col>
-      <el-table
-        :data="products.list"
-        style="width: 100%">
-        <el-table-column
-          label="#"
-          width="40"
-          prop="idProduct">
-        </el-table-column>
-        <el-table-column
-          label="主图"
-          width="60"
-          prop="productImgUrl">
-          <template slot-scope="scope">
-            <el-avatar size="medium" :src="scope.row.productImgUrl"></el-avatar>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="商品名称"
-          width="140"
-          prop="productTitle">
-          <template slot-scope="scope">
-            <el-link type="primary" :href="'/product/' + scope.row.idProduct" :underline="false">
-              {{ scope.row.productTitle }}
-            </el-link>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="创建时间"
-          width="180"
-          prop="createdTime">
-        </el-table-column>
-        <el-table-column
-          label="状态"
-          width="180"
-          prop="status">
-          <template slot-scope="scope">
-            <el-tag type="primary" disable-transitions>
-              {{ scope.row.status === '0' ? '正常' : '禁用' }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" plain>编辑</el-button>
-            <el-button v-if="scope.row.status == 1" size="mini" type="primary"
-                       @click="toggleStatus(scope.$index, scope.row)" plain>上架
-            </el-button>
-            <el-button v-else size="mini" type="danger" @click="toggleStatus(scope.$index, scope.row)" plain>下架
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-col>
-    <el-col>
-      <el-pagination
-        :hide-on-single-page="true"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="products.pageNum"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size="products.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="products.total">
-      </el-pagination>
-    </el-col>
-  </el-row>
+  <div>
+    <el-row style="margin-top: 20px;">
+      <el-col style="margin-bottom: 1rem;">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item>产品管理</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+      <el-col>
+        <el-table
+          :data="products.list"
+          style="width: 100%">
+          <el-table-column
+            label="#"
+            width="40"
+            prop="idProduct">
+          </el-table-column>
+          <el-table-column
+            label="主图"
+            width="60"
+            prop="productImgUrl">
+            <template slot-scope="scope">
+              <el-avatar size="medium" :src="scope.row.productImgUrl"></el-avatar>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="商品名称"
+            width="140"
+            prop="productTitle">
+            <template slot-scope="scope">
+              <el-link type="primary" :href="'/product/' + scope.row.idProduct" :underline="false">
+                {{ scope.row.productTitle }}
+              </el-link>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="创建时间"
+            width="180"
+            prop="createdTime">
+          </el-table-column>
+          <el-table-column
+            label="状态"
+            width="180"
+            prop="status">
+            <template slot-scope="scope">
+              <el-tag type="primary" disable-transitions>
+                {{ scope.row.status === '0' ? '正常' : '禁用' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" plain>编辑</el-button>
+              <el-button v-if="scope.row.status == 1" size="mini" type="primary"
+                         @click="toggleStatus(scope.$index, scope.row)" plain>上架
+              </el-button>
+              <el-button v-else size="mini" type="danger" @click="toggleStatus(scope.$index, scope.row)" plain>下架
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-col>
+      <el-col>
+        <el-pagination
+          :hide-on-single-page="true"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="products.pageNum"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="products.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="products.total">
+        </el-pagination>
+      </el-col>
+    </el-row>
+    <el-dialog :title="`物流公司-${isEdit?'修改':'新增'}项目`" :visible.sync='editVisible'
+               center width='880px'>
+      <el-form ref='formStore' :model='formStore' :rules='rules' label-poionsit='right' label-width='110px'>
+        <div style="margin-bottom:20px">
+          <img @click="cropperVisible=true" :src="formStore.productImgUrl"
+               style="width: 120px;height: 120px;margin: 0 auto;display: block">
+        </div>
+
+        <el-form-item label='产品名称' prop='productTitle'>
+          <el-input v-model='formStore.productTitle' placeholder='请输入产品名称'/>
+        </el-form-item>
+        <el-form-item label='产品价格' prop='code'>
+          <el-input v-model='formStore.productPrice' placeholder='请输入产品价格'/>
+        </el-form-item>
+        <el-form-item label='产品描述' prop='type'>
+          <el-input v-model='formStore.productDescription' placeholder='请输入产品描述'/>
+        </el-form-item>
+        <el-form-item label='tags' prop='order'>
+          <el-input v-model='formStore.tags' placeholder='请输入tags'/>
+        </el-form-item>
+      </el-form>
+      <span slot='footer' class='dialog-footer'>
+        <el-button @click='cropperVisible = false'>取 消</el-button>
+                <el-button type='primary' @click='handelStore'>确 定</el-button>
+      </span>
+    </el-dialog>
+    <ImgCropper append-to-body @onSubmit="updateUser" :visible.sync='cropperVisible'
+                :avatarUrl="formStore.productImgUrl||''"></ImgCropper>
+
+  </div>
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import ImgCropper from "~/components/ImgCropper.vue";
 
+import {mapState} from 'vuex';
+import VueCropper from "vue-cropper";
+
+const rules = {
+  productTitle: [
+    {required: true, message: '请输入公司名称', trigger: 'blur'},
+    {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
+  ],
+  productDescription: [{required: true, message: '请输入产品描述', trigger: 'blur'}]
+
+}
 export default {
   name: "products",
   middleware: 'auth',
@@ -96,8 +138,16 @@ export default {
   },
   data() {
     return {
-      order: 'desc'
+      order: 'desc',
+      editVisible: false,
+      formStore: {},
+      rules: rules,
+      cropperVisible: false,
+      isEdit: false
     }
+  },
+  components: {
+    ImgCropper, VueCropper
   },
   methods: {
     onRouter(name, data) {
@@ -155,11 +205,35 @@ export default {
         rows: _ts.products.pageSize
       })
     },
-    handleEdit(index ,row) {
-      this.$router.push({
-        path: `/admin/product/post/${row.idProduct}`
-      })
-    }
+    handleEdit(index, row) {
+      this.formStore = row
+      this.editVisible = true
+      // this.$router.push({
+      //   path: `/admin/product/post/${row.idProduct}`
+      // })
+    },
+    handelStore() {
+      //这里是其他信息保存
+    },
+    updateUser(data) {
+      //这里是单图片保存
+      let _ts = this;
+
+      if (data) {
+        // let user = _ts.user;
+        this.formStore.productImgUrl = data
+        // user.avatarType = 1
+        _ts.$axios[this.formStore.idProduct ? '$put' : '$post']('/api/product/post', this.formStore).then(function (res) {
+          if (res) {
+            console.log('res')
+            // _ts.$router.push({
+            //   path: `/product/${res}`
+            // })
+          }
+        })
+      } else _ts.$message.error('失败，请重试');
+
+    },
   }
 }
 </script>

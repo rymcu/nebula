@@ -62,7 +62,7 @@ import {mapState} from 'vuex';
 import apiConfig from '~/config/api.config';
 
 export default {
-  name: "PostArticle",
+  name: "PostProducts",
   middleware: 'auth',
   validate({params, store}) {
     if (typeof params.product_id === 'undefined') {
@@ -379,6 +379,7 @@ export default {
     window.onbeforeunload = null;
   },
   async mounted() {
+    console.log('??')
     if (!this.hasPermissions) {
       return
     }
