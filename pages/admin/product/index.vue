@@ -8,6 +8,9 @@
         </el-breadcrumb>
       </el-col>
       <el-col>
+        <el-button type="primary" @click="handleAdd">新增产品</el-button>
+      </el-col>
+      <el-col>
         <el-table
           :data="products.list"
           style="width: 100%">
@@ -74,43 +77,39 @@
         </el-pagination>
       </el-col>
     </el-row>
-    <el-dialog :title="`物流公司-${isEdit?'修改':'新增'}项目`" :visible.sync='editVisible'
-               center width='880px'>
-      <el-form ref='formStore' :model='formStore' :rules='rules' label-poionsit='right' label-width='110px'>
-        <div style="margin-bottom:20px">
-          <img @click="cropperVisible=true" :src="formStore.productImgUrl"
-               style="width: 120px;height: 120px;margin: 0 auto;display: block">
-        </div>
+    <!--    <el-dialog :title="`物流公司-${isEdit?'修改':'新增'}项目`" :visible.sync='editVisible'-->
+    <!--               center width='880px'>-->
+    <!--      <el-form ref='formStore' :model='formStore' :rules='rules' label-poionsit='right' label-width='110px'>-->
+    <!--        <div style="margin-bottom:20px">-->
+    <!--          <img @click="cropperVisible=true" :src="formStore.productImgUrl"-->
+    <!--               style="width: 120px;height: 120px;margin: 0 auto;display: block">-->
+    <!--        </div>-->
 
-        <el-form-item label='产品名称' prop='productTitle'>
-          <el-input v-model='formStore.productTitle' placeholder='请输入产品名称'/>
-        </el-form-item>
-        <el-form-item label='产品价格' prop='code'>
-          <el-input v-model='formStore.productPrice' placeholder='请输入产品价格'/>
-        </el-form-item>
-        <el-form-item label='产品描述' prop='type'>
-          <el-input v-model='formStore.productDescription' placeholder='请输入产品描述'/>
-        </el-form-item>
-        <el-form-item label='tags' prop='order'>
-          <el-input v-model='formStore.tags' placeholder='请输入tags'/>
-        </el-form-item>
-      </el-form>
-      <span slot='footer' class='dialog-footer'>
-        <el-button @click='cropperVisible = false'>取 消</el-button>
-                <el-button type='primary' @click='handelStore'>确 定</el-button>
-      </span>
-    </el-dialog>
-    <ImgCropper append-to-body @onSubmit="updateUser" :visible.sync='cropperVisible'
-                :avatarUrl="formStore.productImgUrl||''"></ImgCropper>
+    <!--        <el-form-item label='产品名称' prop='productTitle'>-->
+    <!--          <el-input v-model='formStore.productTitle' placeholder='请输入产品名称'/>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item label='产品价格' prop='code'>-->
+    <!--          <el-input v-model='formStore.productPrice' placeholder='请输入产品价格'/>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item label='产品描述' prop='type'>-->
+    <!--          <el-input v-model='formStore.productDescription' placeholder='请输入产品描述'/>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item label='tags' prop='order'>-->
+    <!--          <el-input v-model='formStore.tags' placeholder='请输入tags'/>-->
+    <!--        </el-form-item>-->
+    <!--      </el-form>-->
+    <!--      <span slot='footer' class='dialog-footer'>-->
+    <!--        <el-button @click='cropperVisible = false'>取 消</el-button>-->
+    <!--                <el-button type='primary' @click='handelStore'>确 定</el-button>-->
+    <!--      </span>-->
+    <!--    </el-dialog>-->
 
   </div>
 </template>
 
 <script>
-import ImgCropper from "~/components/ImgCropper.vue";
-
 import {mapState} from 'vuex';
-import VueCropper from "vue-cropper";
+// import VueCropper from "vue-cropper";
 
 const rules = {
   productTitle: [
@@ -121,7 +120,7 @@ const rules = {
 
 }
 export default {
-  name: "products",
+  name: "productsList",
   middleware: 'auth',
   fetch() {
     let {store, params, error} = this.$nuxt.context
@@ -146,15 +145,12 @@ export default {
       isEdit: false
     }
   },
-  components: {
-    ImgCropper, VueCropper
-  },
   methods: {
-    onRouter(name, data) {
-      this.$router.push({
-        path: `/${name}/${data}`
-      })
-    },
+    // onRouter(name, data) {
+    //   this.$router.push({
+    //     path: `/${name}/${data}`
+    //   })
+    // },
     toggleStatus(index, product) {
       let _ts = this;
       let title, status;
@@ -206,34 +202,37 @@ export default {
       })
     },
     handleEdit(index, row) {
-      this.formStore = row
-      this.editVisible = true
-      // this.$router.push({
-      //   path: `/admin/product/post/${row.idProduct}`
-      // })
+      // this.formStore = {...row}
+      // this.editVisible = true
+      this.$router.push({
+        path: `/admin/product/post/${row.idProduct}`,
+      })
     },
     handelStore() {
-      //这里是其他信息保存
+      let _ts = this;
+      this.formStore.idProduct = this.formStore.idProduct ? this.formStore.idProduct : 0
+      _ts.$axios[this.formStore.idProduct ? '$put' : '$post']('/api/product/post', this.formStore).then(function (res) {
+        if (res) {
+          console.log('res')
+          // _ts.$router.push({
+          //   path: `/product/${res}`
+          // })
+        }
+      })
     },
     updateUser(data) {
-      //这里是单图片保存
       let _ts = this;
-
       if (data) {
-        // let user = _ts.user;
         this.formStore.productImgUrl = data
-        // user.avatarType = 1
-        _ts.$axios[this.formStore.idProduct ? '$put' : '$post']('/api/product/post', this.formStore).then(function (res) {
-          if (res) {
-            console.log('res')
-            // _ts.$router.push({
-            //   path: `/product/${res}`
-            // })
-          }
-        })
+        this.formStore.productImgType = 1
+        // this.cropperVisible = false
       } else _ts.$message.error('失败，请重试');
-
     },
+    handleAdd() {
+      this.isEdit = false
+      this.formStore = {}
+      this.editVisible = true
+    }
   }
 }
 </script>

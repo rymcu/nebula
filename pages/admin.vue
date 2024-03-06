@@ -1,13 +1,13 @@
 <template>
   <el-row type="flex" justify="center" :gutter="8">
     <el-col v-if="hasPermissions" :span="20">
-      <el-col :span="4">
+      <el-col :span="4" v-if="menus">
         <el-menu
           :default-active="activeMenu"
           class="el-menu-vertical-demo"
           @select="handleSelectMenu">
           <template v-for="menu in menus">
-            <el-menu-item :key="menu.name" :index="menu.name">
+            <el-menu-item v-if="!(menu.isEdit)||false" :key="menu.name" :index="menu.name">
               <i :class="menu.icon"></i>
               <span slot="title">{{ menu.title }}</span>
             </el-menu-item>
@@ -131,10 +131,18 @@ export default {
         },
         {
           title: '产品管理',
-          name: 'admin-products',
-          path: '/admin/products',
+          name: 'admin-product',
+          path: '/admin/product/index',
           icon: 'el-icon-box',
           closable: true
+        },
+        {
+          title: '产品编辑',
+          name: 'admin-product-post-product_id',
+          path: '/admin/product/post/:id?',
+          icon: 'el-icon-postcard',
+          closable: true,
+          isEdit: true
         }
       ]
     }
@@ -189,11 +197,13 @@ export default {
         _ts.$store.commit('admin/pushTags', _ts.menus[index])
         reset = '1'
       }
+      let params = _ts.$route.params
+      params.reset = reset
+      let query = _ts.$route.query
       _ts.$router.push({
         name: item,
-        params: {
-          reset: reset
-        }
+        params,
+        query
       })
     },
     handleSelectMenu(item) {
