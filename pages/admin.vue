@@ -189,11 +189,13 @@ export default {
         _ts.$store.commit('admin/pushTags', _ts.menus[index])
         reset = '1'
       }
+      let params = _ts.$route.params
+      params.reset = reset
+      let query = _ts.$route.query
       _ts.$router.push({
         name: item,
-        params: {
-          reset: reset
-        }
+        params,
+        query
       })
     },
     handleSelectMenu(item) {
