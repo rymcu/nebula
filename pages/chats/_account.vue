@@ -131,15 +131,23 @@ export default {
         tab: '\t',
         cdn: apiConfig.VDITOR,
         cache: {
-          enable: this.postId ? false : true,
-          id: this.postId ? this.postId : '',
+          enable: false
         },
         after() {
           _ts.contentEditor.setValue(data.value ? data.value : '');
         },
         preview: {
+          hljs: {
+            enable: true,
+            lineNumber: true,
+            style: 'github'
+          },
           markdown: {
             toc: true,
+            autoSpace: true
+          },
+          math: {
+            inlineDigit: true
           },
           delay: 500,
           mode: data.mode,
@@ -188,7 +196,9 @@ export default {
       });
       _ts.contentEditor.setValue('')
       _ts.$axios.$post('/api/openai/new-chat', _ts.messages).then(async res => {
-        const html = await Vue.Vditor.md2html(_ts.message);
+        const html = await Vue.Vditor.md2html(_ts.message, {
+          cdn: apiConfig.VDITOR
+        });
         _ts.messages.push({
           to: _ts.user.account,
           from: _ts.to.account,
