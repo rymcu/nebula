@@ -111,14 +111,6 @@
 import {mapState} from 'vuex';
 // import VueCropper from "vue-cropper";
 
-const rules = {
-  productTitle: [
-    {required: true, message: '请输入公司名称', trigger: 'blur'},
-    {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
-  ],
-  productDescription: [{required: true, message: '请输入产品描述', trigger: 'blur'}]
-
-}
 export default {
   name: "productsList",
   middleware: 'auth',
@@ -140,9 +132,6 @@ export default {
       order: 'desc',
       editVisible: false,
       formStore: {},
-      rules: rules,
-      cropperVisible: false,
-      isEdit: false
     }
   },
   methods: {
@@ -225,13 +214,12 @@ export default {
       if (data) {
         this.formStore.productImgUrl = data
         this.formStore.productImgType = 1
-        // this.cropperVisible = false
       } else _ts.$message.error('失败，请重试');
     },
     handleAdd() {
-      this.isEdit = false
-      this.formStore = {}
-      this.editVisible = true
+      this.$router.push({
+        path: `/admin/product/post/`,
+      })
     }
   }
 }

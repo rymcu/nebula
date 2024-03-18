@@ -131,8 +131,8 @@ export default {
         },
         {
           title: '产品管理',
-          name: 'admin-product',
-          path: '/admin/product/index',
+          name: 'admin-products',
+          path: '/admin/products',
           icon: 'el-icon-box',
           closable: true
         },
