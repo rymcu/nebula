@@ -2,7 +2,7 @@
   <el-row style="margin-top: 20px;">
     <el-col style="margin-bottom: 1rem;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/admin/tags' }">标签管理</el-breadcrumb-item>
         <el-breadcrumb-item v-if="tag.idTag">编辑</el-breadcrumb-item>
         <el-breadcrumb-item v-else>创建</el-breadcrumb-item>

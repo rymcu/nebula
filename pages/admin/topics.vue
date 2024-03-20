@@ -3,7 +3,7 @@
     <el-row style="margin-top: 20px;">
       <el-col style="margin-bottom: 1rem;">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>专题管理</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
