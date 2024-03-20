@@ -43,19 +43,32 @@
             prop="createdTime">
           </el-table-column>
           <el-table-column
+            label="标签">
+            <template slot-scope="scope">
+              <el-tag
+                style="margin-left: 0.5rem;"
+                v-for="tag in scope.row.tags?.split(',')"
+                :key="tag"
+                size="mini"
+                effect="plain">
+                # {{ tag }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
             label="状态"
             width="180"
             prop="status">
             <template slot-scope="scope">
               <el-tag type="primary" disable-transitions>
-                {{ scope.row.status === '0' ? '正常' : '禁用' }}
+                {{ scope.row.status === 0 ? '正常' : '禁用' }}
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" plain>编辑</el-button>
-              <el-button v-if="scope.row.status == 1" size="mini" type="primary"
+              <el-button v-if="scope.row.status === 1" size="mini" type="primary"
                          @click="toggleStatus(scope.$index, scope.row)" plain>上架
               </el-button>
               <el-button v-else size="mini" type="danger" @click="toggleStatus(scope.$index, scope.row)" plain>下架
@@ -77,39 +90,11 @@
         </el-pagination>
       </el-col>
     </el-row>
-    <!--    <el-dialog :title="`物流公司-${isEdit?'修改':'新增'}项目`" :visible.sync='editVisible'-->
-    <!--               center width='880px'>-->
-    <!--      <el-form ref='formStore' :model='formStore' :rules='rules' label-poionsit='right' label-width='110px'>-->
-    <!--        <div style="margin-bottom:20px">-->
-    <!--          <img @click="cropperVisible=true" :src="formStore.productImgUrl"-->
-    <!--               style="width: 120px;height: 120px;margin: 0 auto;display: block">-->
-    <!--        </div>-->
-
-    <!--        <el-form-item label='产品名称' prop='productTitle'>-->
-    <!--          <el-input v-model='formStore.productTitle' placeholder='请输入产品名称'/>-->
-    <!--        </el-form-item>-->
-    <!--        <el-form-item label='产品价格' prop='code'>-->
-    <!--          <el-input v-model='formStore.productPrice' placeholder='请输入产品价格'/>-->
-    <!--        </el-form-item>-->
-    <!--        <el-form-item label='产品描述' prop='type'>-->
-    <!--          <el-input v-model='formStore.productDescription' placeholder='请输入产品描述'/>-->
-    <!--        </el-form-item>-->
-    <!--        <el-form-item label='tags' prop='order'>-->
-    <!--          <el-input v-model='formStore.tags' placeholder='请输入tags'/>-->
-    <!--        </el-form-item>-->
-    <!--      </el-form>-->
-    <!--      <span slot='footer' class='dialog-footer'>-->
-    <!--        <el-button @click='cropperVisible = false'>取 消</el-button>-->
-    <!--                <el-button type='primary' @click='handelStore'>确 定</el-button>-->
-    <!--      </span>-->
-    <!--    </el-dialog>-->
-
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex';
-// import VueCropper from "vue-cropper";
 
 export default {
   name: "productsList",
@@ -143,7 +128,7 @@ export default {
     toggleStatus(index, product) {
       let _ts = this;
       let title, status;
-      if (product.status == 0) {
+      if (product.status === 0) {
         title = '下架';
         status = 1;
       } else {
@@ -191,34 +176,13 @@ export default {
       })
     },
     handleEdit(index, row) {
-      // this.formStore = {...row}
-      // this.editVisible = true
       this.$router.push({
         path: `/admin/product/post/${row.idProduct}`,
       })
     },
-    handelStore() {
-      let _ts = this;
-      this.formStore.idProduct = this.formStore.idProduct ? this.formStore.idProduct : 0
-      _ts.$axios[this.formStore.idProduct ? '$put' : '$post']('/api/product/post', this.formStore).then(function (res) {
-        if (res) {
-          console.log('res')
-          // _ts.$router.push({
-          //   path: `/product/${res}`
-          // })
-        }
-      })
-    },
-    updateUser(data) {
-      let _ts = this;
-      if (data) {
-        this.formStore.productImgUrl = data
-        this.formStore.productImgType = 1
-      } else _ts.$message.error('失败，请重试');
-    },
     handleAdd() {
       this.$router.push({
-        path: `/admin/product/post/`,
+        path: `/admin/product/post`,
       })
     }
   }
