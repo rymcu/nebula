@@ -1,58 +1,66 @@
 <template>
   <el-row class="products">
-    <el-col v-if="hasPermissions">
-      <el-col>
-        <el-input
-          v-model="productTitle"
-          class="product-title"
-          placeholder="请输入标题"
-          @change="setLocalstorage('title',productTitle)">
-        </el-input>
-      </el-col>
-      <el-col>
-        <div id="contentEditor"></div>
-      </el-col>
+    <el-col style="margin-bottom: 1rem;">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/products' }">产品管理</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="product.idProduct">编辑</el-breadcrumb-item>
+        <el-breadcrumb-item v-else>创建</el-breadcrumb-item>
+      </el-breadcrumb>
+    </el-col>
+    <el-col>
+      <el-form ref='productInfo' :model='productInfo' :rules='rules' label-poionsit='right' label-width='110px'>
+        <div style="margin-bottom:20px">
+          <img :src="productInfo.productImgUrl" style="width: 120px;height: 120px;margin: 0 auto;display: block"
+               @click="cropperVisible=true">
+        </div>
+        <el-form-item label='产品名称' prop='productTitle'>
+          <el-input v-model='productInfo.productTitle' placeholder='请输入产品名称'/>
+        </el-form-item>
+        <el-form-item label='产品价格' prop='productPrice'>
+          <el-input v-model='productInfo.productPrice' placeholder='请输入产品价格'/>
+        </el-form-item>
+        <el-form-item label='产品描述' prop='type'>
+          <div id="contentEditor"></div>
+        </el-form-item>
+        <el-form-item label='标签' prop='tags'>
+          <el-select
+            style="width: 100%;"
+            v-model="productTags"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            remote
+            :remote-method="remoteMethod"
+            placeholder="请选择文章标签"
+            :loading="loading"
+            @change="setLocalstorage('tags', productTags)">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+
       <el-col style="margin-top: 1rem;">
-        <el-select
-          style="width: 100%;"
-          v-model="productTags"
-          multiple
-          filterable
-          allow-create
-          default-first-option
-          remote
-          :remote-method="remoteMethod"
-          placeholder="请选择文章标签"
-          :loading="loading"
-          @change="setLocalstorage('tags',productTags)">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
       </el-col>
       <el-col v-if="!isEdit" style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-        <el-button :loading="doLoading" @click="saveArticle" plain>保存草稿</el-button>
-        <el-button type="primary" :loading="doLoading" @click="postArticle" plain>发布</el-button>
+        <el-button :loading="doLoading" plain type="primary" @click="postProduct">发布</el-button>
       </el-col>
       <el-col v-else style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-        <el-button type="danger" :loading="doLoading" @click="deleteArticle" plain>删除</el-button>
-        <el-button v-if="productStatus === '1'" :loading="doLoading" @click="saveArticle" plain>保存草稿</el-button>
-        <el-button v-if="productStatus === '0'" :loading="doLoading" type="primary" @click="postArticle" plain>更新</el-button>
-        <el-button v-else type="primary" :loading="doLoading" @click="postArticle" plain>发布</el-button>
+        <el-button v-if="productInfo.status === 0" :loading="doLoading" plain type="danger" @click="updateStatus">下架</el-button>
+        <el-button v-else :loading="doLoading" plain type="danger" @click="updateStatus">上架</el-button>
+        <el-button v-if="productInfo.status === 0" :loading="doLoading" plain type="primary" @click="postProduct">更新
+        </el-button>
+        <el-button v-else :loading="doLoading" plain type="primary" @click="postProduct">发布</el-button>
       </el-col>
     </el-col>
-    <el-col v-else class="text-center">
-      <el-alert
-        title="用户无权限"
-        type="warning"
-        center
-        show-icon
-        :closable="false">
-      </el-alert>
-    </el-col>
+    <ImgCropper :avatarUrl="productInfo.productImgUrl||''" :visible.sync='cropperVisible'
+                @onSubmit="updateProductImgUrl"></ImgCropper>
   </el-row>
 </template>
 
@@ -60,9 +68,18 @@
 import Vue from 'vue';
 import {mapState} from 'vuex';
 import apiConfig from '~/config/api.config';
+import ImgCropper from "~/components/ImgCropper.vue";
+import VueCropper from "vue-cropper";
 
+const rules = {
+  productTitle: [
+    {required: true, message: '请输入公司名称', trigger: 'blur'},
+    {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
+  ],
+  productDescription: [{required: true, message: '请输入产品描述', trigger: 'blur'}]
+}
 export default {
-  name: "PostArticle",
+  name: "PostProducts",
   middleware: 'auth',
   validate({params, store}) {
     if (typeof params.product_id === 'undefined') {
@@ -76,23 +93,13 @@ export default {
         .catch(err => error({statusCode: 404}))
     ])
   },
+  components: {
+    VueCropper, ImgCropper
+  },
   computed: {
     ...mapState({
       product: state => state.product.detail.data
-    }),
-    hasPermissions() {
-      let account = this.$store.state.auth.user?.nickname;
-      if (account) {
-        if (this.$route.params.product_id) {
-          if (account === this.product.productAuthor.userNickname) {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }
-      return this.$auth.hasScope('blog_admin') || this.$auth.hasScope('admin');
-    }
+    })
   },
   data() {
     return {
@@ -102,21 +109,34 @@ export default {
         linkToImageURL: '',
         token: ''
       },
-      idArticle: 0,
-      productTitle: '',
-      productContent: '',
-      productType: 0,
+      productInfo: {
+        idProduct: 0,
+        productTitle: '',
+        productContent: '',
+        productType: 0,
+        tags: '',
+        status: 0,
+        productPrice: 0,
+        productImgUrl: '',
+        productImgType: 0
+      },
       productTags: [],
-      productStatus: '0',
       options: [],
       list: [],
       loading: false,
       doLoading: false,
       isEdit: false,
-      notificationFlag: true
+      notificationFlag: true,
+      cropperVisible: false,
+      rules: rules,
     }
   },
   methods: {
+    updateProductImgUrl(data) {
+      this.productInfo.productImgUrl = data
+      this.productInfo.productImgType = '1'
+      this.cropperVisible = false
+    },
     _initEditor(data) {
       let _ts = this;
 
@@ -164,7 +184,7 @@ export default {
         tab: '\t',
         cdn: apiConfig.VDITOR,
         cache: {
-          enable: this.$route.params.product_id ? false : true,
+          enable: !this.$route.params.product_id,
           id: this.$route.params.product_id ? this.$route.params.product_id : '',
         },
         after() {
@@ -191,7 +211,7 @@ export default {
           /*url: `${process.env.Server}/api/console/markdown`,*/
           parse: (element) => {
             if (element.style.display === 'none') {
-              return
+
             }
             // LazyLoadImage();
             // Vue.Vditor.highlightRender({style: 'github'}, element, this.contentEditor);
@@ -205,9 +225,7 @@ export default {
           url: this.tokenURL.URL,
           linkToImgUrl: this.tokenURL.linkToImageURL,
           token: this.tokenURL.token,
-          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
-          replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
-          replace('/\\s/g', '')
+          filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
         },
         height: data.height,
         counter: 102400,
@@ -248,10 +266,10 @@ export default {
         this.options = [];
       }
     },
-    deleteArticle() {
+    deleteProduct() {
       let _ts = this;
       _ts.doLoading = true;
-      this.$confirm('确定删除吗?', '提示', {
+      this.$confirm('确定下架吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -267,7 +285,7 @@ export default {
           _ts.contentEditor.setValue('');
           _ts.$set(_ts, 'notificationFlag', false);
           _ts.$router.push({
-            name: 'index'
+            name: 'admin-products'
           })
         })
       }).catch(() => {
@@ -275,26 +293,27 @@ export default {
       });
 
     },
-    async postArticle() {
+    async postProduct() {
       let _ts = this;
       _ts.doLoading = true;
-      let id = _ts.$route.params.product_id;
       let productContent = _ts.contentEditor.getValue();
       let productContentHtml = await _ts.contentEditor.getHTML();
-      if (!(_ts.productTitle && productContent)) {
+      if (!(_ts.productInfo.productTitle && productContent)) {
         _ts.$message("标题/正文不能为空！");
         _ts.doLoading = false;
         return false;
       }
       let product = {
-        idArticle: _ts.idArticle,
-        productTitle: _ts.productTitle,
+        idProduct: _ts.productInfo.idProduct,
+        productTitle: _ts.productInfo.productTitle,
+        productPrice: _ts.productInfo.productPrice,
+        productImgType: _ts.productInfo.productImgType || '0',
+        productImgUrl: _ts.productInfo.productImgUrl,
+        tags: _ts.productTags.join(','),
         productContent: productContent,
         productContentHtml: productContentHtml,
-        productTags: _ts.productTags.join(","),
-        productStatus: 0
       };
-      _ts.$axios[id ? '$put' : '$post']('/api/product/post', product).then(function (res) {
+      _ts.$axios[_ts.productInfo.idProduct ? '$put' : '$post']('/api/product/post', product).then(function (res) {
         if (res) {
           if (res.message) {
             _ts.$message(res.message);
@@ -307,32 +326,32 @@ export default {
           _ts.$store.commit('product/clearDetailData')
           _ts.$set(_ts, 'notificationFlag', false);
           _ts.$router.push({
-            path: `/product/${res}`
+            name: 'admin-products'
           })
         }
       })
 
     },
-    async saveArticle() {
+    async saveProduct() {
       let _ts = this;
       _ts.doLoading = true;
       let id = _ts.$route.params.product_id;
       let productContent = _ts.contentEditor.getValue();
       let productContentHtml = await _ts.contentEditor.getHTML();
-      if (!(_ts.productTitle && productContent)) {
+      if (!(_ts.productInfo.productTitle && productContent)) {
         _ts.$message("标题/正文不能为空！");
         _ts.doLoading = false;
         return false;
       }
+
       let product = {
-        idArticle: _ts.idArticle,
-        productTitle: _ts.productTitle,
         productContent: productContent,
         productContentHtml: productContentHtml,
-        productTags: _ts.productTags.join(","),
-        productStatus: 1
+        productStatus: 1,
+        ..._ts.productInfo
       };
-      _ts.$axios[id ? '$put' : '$post']('/api/product/post', product).then(function (res) {
+
+      _ts.$axios[_ts.productInfo.idProduct ? '$put' : '$post']('/api/product/post', product).then(function (res) {
         if (res) {
           if (res.message) {
             _ts.$message(res.message);
@@ -344,7 +363,7 @@ export default {
           _ts.contentEditor.setValue('');
           _ts.$set(_ts, 'notificationFlag', false);
           _ts.$router.push({
-            path: `/draft/${res}`
+            name: 'admin-products'
           })
         }
       })
@@ -356,6 +375,43 @@ export default {
           _ts.$set(_ts, 'list', res);
         }
       })
+    },
+    updateStatus() {
+      let _ts = this;
+      let product = _ts.productInfo
+      let title, status;
+      if (product.status === 0) {
+        title = '下架';
+        status = 1;
+      } else {
+        title = '上架';
+        status = 0;
+      }
+      _ts.$confirm('确定' + title + '产品 ' + product.productTitle + '?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        _ts.$axios.$patch('/api/admin/product/update-status', {
+          idProduct: product.idProduct,
+          status: status
+        }).then(function (res) {
+          if (res && res.message) {
+            _ts.$message.error(res.message);
+          } else {
+            _ts.$message({
+              type: 'success',
+              message: title + '成功!'
+            });
+          }
+        });
+      }).catch(() => {
+        _ts.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -370,7 +426,7 @@ export default {
       }).catch(() => {
         return false
       });
-      _ts.$store.commit("setActiveMenu", "product-post");
+      _ts.$store.commit("setActiveMenu", "admin-product-post-product_id");
     } else {
       next();
     }
@@ -379,22 +435,15 @@ export default {
     window.onbeforeunload = null;
   },
   async mounted() {
-    if (!this.hasPermissions) {
-      return
-    }
     window.addEventListener('beforeunload', e => {
       e = e || window.event;
-
-      // 兼容IE8和Firefox 4之前的版本
       if (e) {
         e.returnValue = '关闭提示';
       }
-
-      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
       return '关闭提示';
     });
     let _ts = this;
-    _ts.$store.commit('setActiveMenu', 'product-post');
+    _ts.$store.commit('setActiveMenu', 'admin-product-post-product_id');
     const responseData = await _ts.$axios.$get('/api/upload/token');
     if (responseData) {
       _ts.$set(_ts, 'tokenURL', {
@@ -410,14 +459,10 @@ export default {
       if (_ts.$route.params.product_id) {
         _ts.$set(_ts, 'isEdit', true);
         let product = _ts.product;
-        _ts.$set(_ts, 'idArticle', product.idArticle);
-        _ts.$set(_ts, 'productTitle', product.productTitle);
-        _ts.$set(_ts, 'productContent', product.productContent);
-        _ts.$set(_ts, 'productStatus', product.productStatus);
-        _ts.$set(_ts, 'productTags', (product.productTags).split(','));
-        localStorage.setItem("product-title", product.productTitle);
-        localStorage.setItem("product-tags", (product.productTags).split(','));
+        _ts.productInfo = JSON.parse(JSON.stringify(product))
         productContent = product.productContent
+        let productTags = product.tags?.split(',');
+        _ts.$set(_ts, 'productTags', productTags || []);
       } else {
         _ts.$set(_ts, 'isEdit', false);
       }

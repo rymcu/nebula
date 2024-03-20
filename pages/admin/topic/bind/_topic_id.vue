@@ -3,7 +3,7 @@
     <el-col>
       <el-col style="margin-bottom: 1rem;">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item :to="{ path: '/admin/topics' }">专题管理</el-breadcrumb-item>
           <el-breadcrumb-item :to="{ path: '/admin/topic/' + topic.topicUri }">{{ topic.topicTitle }}</el-breadcrumb-item>
           <el-breadcrumb-item>关联标签</el-breadcrumb-item>

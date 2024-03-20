@@ -93,7 +93,6 @@
 <script>
 import {mapState} from 'vuex';
 import ImgCropper from "~/components/ImgCropper.vue";
-import VueCropper from "vue-cropper";
 import saveSvg from "save-svg-as-png";
 import Avataaars from 'vuejs-avataaars';
 
@@ -103,7 +102,7 @@ export default {
   name: "account",
   middleware: 'auth',
   components: {
-    ImgCropper, VueCropper, Avataaars
+    ImgCropper, Avataaars
   },
   computed: {
     ...mapState({
