@@ -17,74 +17,9 @@
           <el-input v-model="tag.tagUri"></el-input>
         </el-form-item>
         <el-form-item label="图标">
-          <el-upload
-            class="avatar-uploader"
-            :action="tokenURL.URL"
-            :multiple="true"
-            :with-credentials="true"
-            :headers="uploadHeaders"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="tagIconPath" class="tag-brand-img" :src="tagIconPath">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
           <el-row>
             <el-col :span="24">
-              <vue-cropper
-                ref="cropper"
-                :aspect-ratio="1 / 1"
-                :src="tagIconPath"
-                :checkCrossOrigin="false"
-                :checkOrientation="false"
-                :imgStyle="{width: '480px', height: '480px'}"
-                :autoCropArea="1"
-                :autoCrop="autoCrop"
-                preview=".preview"
-              />
-            </el-col>
-            <el-col :span="24" style="margin-top: 2rem;">
-              <el-col :span="8">
-                <el-card>
-                  <div class="card-body d-flex flex-column">
-                    <el-col :span="4" style="text-align: right;">
-                      <div v-if="tagIconPath" class="preview preview-large topic-brand-img"/>
-                      <el-image v-else class="topic-brand-img"/>
-                    </el-col>
-                    <el-col :span="20">
-                      <el-col>
-                        <el-col>
-                          <el-link rel="nofollow" :underline="false">
-                            <h4>{{ tag.tagTitle }}</h4>
-                          </el-link>
-                        </el-col>
-                        <el-col>
-                          <div class="text-muted article-summary-md">{{ tag.tagDescription }}</div>
-                        </el-col>
-                      </el-col>
-                    </el-col>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-col>
-            <el-col :span="24" style="margin-top: 2rem;">
-              <el-upload
-                class="avatar-uploader"
-                action=""
-                :multiple="true"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <div>
-                  <el-button type="primary" round plain>上传</el-button>
-                </div>
-              </el-upload>
-              <el-button style="margin-top: 1rem;" type="primary" round plain @click.prevent="reset">重置</el-button>
-              <el-button type="primary" round plain @click.prevent="cropImage">裁剪</el-button>
-              <el-col>
-                <span style="color: red;padding-right: 5px;">*</span>
-                <span>上传图片调整至最佳效果后,请点击裁剪按钮截取</span>
-              </el-col>
+              <img @click="cropperVisible=true" :src="tag.tagIconPath" style="width: 80px;height: 80px"/>
             </el-col>
           </el-row>
         </el-form-item>
@@ -114,6 +49,7 @@
         </el-form-item>
       </el-form>
     </el-col>
+    <ImgCropper @onSubmit="updateTagIcon" :visible.sync='cropperVisible' :avatarUrl="tagIconPath || ''"></ImgCropper>
   </el-row>
 </template>
 
@@ -122,14 +58,15 @@ import Vue from "vue";
 import {mapState} from 'vuex';
 import VueCropper from "vue-cropper";
 import apiConfig from '~/config/api.config';
+import ImgCropper from "~/components/ImgCropper.vue";
 
 export default {
   name: "PostTag",
   middleware: 'auth',
   components: {
-    VueCropper
+    VueCropper, ImgCropper
   },
-  validate({params, store}) {
+  validate({params}) {
     if (typeof params.tag_id === 'undefined') {
       return true;
     }
@@ -145,7 +82,8 @@ export default {
     ...mapState({
       uploadHeaders: state => {
         return {'X-Upload-Token': state.uploadHeaders}
-      }
+      },
+      tagInfo: state => state.tag.detail.data
     })
   },
   data() {
@@ -155,15 +93,23 @@ export default {
         linkToImageURL: '',
         token: ''
       },
+      tag: {},
       tagIconPath: '',
       loading: false,
       isEdit: false,
-      tag: {},
       autoCrop: true,
+      cropperVisible: false,
       notificationFlag: true
     }
   },
   methods: {
+    updateTagIcon(data) {
+      this.tag.tagIconPath = data
+      this.tagIconPath = data
+      this.tag.tagImageType = '1'
+      this.cropperVisible = false
+
+    },
     _initEditor(data) {
       let _ts = this;
 
@@ -255,52 +201,15 @@ export default {
         placeholder: data.placeholder,
       })
     },
-    handleAvatarSuccess(res) {
-      let _ts = this;
-      if (res && res.data && res.data.url) {
-        let tag = _ts.tag;
-        tag.tagIconPath = res.data.url;
-        _ts.$set(_ts, 'tag', tag);
-        _ts.$set(_ts, 'tagIconPath', res.data.url);
-      } else {
-        _ts.$message.error('上传失败!');
-      }
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isPNG = file.type === 'image/png';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!(isJPG || isPNG)) {
-        this.$message.error('上传图标只能是 JPG 或者 PNG 格式!');
-        return false;
-      }
-      if (!isLt2M) {
-        this.$message.error('上传图标大小不能超过 2MB!');
-        return false;
-      }
-
-      this.fileToBase64(file);
-      return false;
-    },
-    fileToBase64(file) {
-      let _ts = this;
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        _ts.$set(_ts, 'tagIconPath', this.result);
-        _ts.$refs.cropper.replace(this.result);
-      }
-    },
     async updateTag() {
       let _ts = this;
       _ts.$set(_ts, 'loading', true);
       let tag = _ts.tag;
       let id = tag.idTag;
-      let tagContent = _ts.contentEditor.getValue();
-      let tagContentHtml = await _ts.contentEditor.getHTML();
-      tag.tagDescription = tagContent;
-      tag.tagDescriptionHtml = tagContentHtml;
+      let tagDescription = _ts.contentEditor.getValue();
+      let tagDescriptionHtml = await _ts.contentEditor.getHTML();
+      tag.tagDescription = tagDescription;
+      tag.tagDescriptionHtml = tagDescriptionHtml;
       let title = id ? '更新' : '添加';
       _ts.$axios[id ? '$put' : '$post']('/api/admin/tag/post', tag).then(function (res) {
         if (res && res.message) {
@@ -318,21 +227,6 @@ export default {
     },
     reset() {
       this.$refs.cropper.reset();
-    },
-    // get image data for post processing, e.g. upload or setting image src
-    cropImage() {
-      let _ts = this;
-      try {
-        _ts.cropImg = _ts.$refs.cropper.getCroppedCanvas().toDataURL();
-        let tag = _ts.tag;
-        tag.tagIconPath = _ts.cropImg;
-        _ts.$set(_ts, 'tag', tag);
-        _ts.$set(_ts, 'tagIconPath', _ts.cropImg);
-        _ts.$message.success('已裁剪 !');
-      } catch (e) {
-        _ts.$message.error('图片获取失败 !');
-        return;
-      }
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -354,7 +248,7 @@ export default {
   beforeDestroy() {
     window.onbeforeunload = null;
   },
-  mounted() {
+  async mounted() {
     window.addEventListener('beforeunload', e => {
       e = e || window.event;
 
@@ -367,23 +261,21 @@ export default {
       return '关闭提示';
     });
     let _ts = this;
-    _ts.$axios.$get('/api/upload/simple/token').then(function (res) {
-      if (res) {
-        _ts.$store.commit('setUploadHeaders', res.uploadToken);
-        _ts.$set(_ts, 'tokenURL', {
-          token: res.uploadToken || '',
-          URL: res.uploadURL || '',
-          linkToImageURL: res.linkToImageURL || ''
-        })
-      }
-    });
-
-    let tag = _ts.$store.state.tag.detail.data;
-    _ts.$set(_ts, 'tag', JSON.parse(JSON.stringify(tag)));
+    const responseData = await _ts.$axios.$get('/api/upload/simple/token');
+    if (responseData) {
+      _ts.$store.commit('setUploadHeaders', responseData.uploadToken);
+      _ts.$set(_ts, 'tokenURL', {
+        token: responseData.uploadToken || '',
+        URL: responseData.uploadURL || '',
+        linkToImageURL: responseData.linkToImageURL || ''
+      })
+    }
 
     Vue.nextTick(() => {
       let tagDescription = '';
       if (_ts.$route.params.tag_id) {
+        let tag = _ts.tagInfo
+        _ts.$set(_ts, 'tag', JSON.parse(JSON.stringify(tag)));
         _ts.$set(_ts, 'isEdit', true);
         tagDescription = _ts.tag.tagDescription
       } else {
@@ -404,5 +296,5 @@ export default {
 </script>
 
 <style lang="less">
-  @import "~vditor/src/assets/less/index.less";
+@import "~vditor/src/assets/less/index.less";
 </style>

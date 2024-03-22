@@ -91,17 +91,8 @@ export const actions = {
       })
   },
 
-  // 获取文章详情
+  // 获取详情
   fetchPostDetail({ commit }, params = {}) {
-    // const delay = fetchDelay(
-    //   isBrowser
-    // )
-    // if (isBrowser) {
-    //   Vue.nextTick(() => {
-    //     window.scrollTo(0, 300);
-    //   })
-    // }
-
     if (typeof params.tag_id === 'undefined') {
       commit('updateDetailData', getDefaultData())
       return;

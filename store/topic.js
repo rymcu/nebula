@@ -20,6 +20,18 @@ const getDefaultTagsData = () => {
   }
 }
 
+const getDefaultData = () => {
+  return {
+    topicTitle: '',
+    topicIconPath: '',
+    topicDescription: '',
+    topicNva: '0',
+    topicStatus: '0',
+    topicTagCount: 0,
+    topicSort: 10
+  }
+}
+
 export const state = () => {
   return {
     fetching: false,
@@ -113,6 +125,32 @@ export const actions = {
       })
       .catch(error => {
         commit('updateDetailFetching', false)
+      })
+  },
+
+  // 获取详情
+  fetchPostDetail({ commit }, params = {}) {
+    if (typeof params.topic_id === 'undefined') {
+      commit('updateDetailData', getDefaultData())
+      return;
+    }
+    commit('updateDetailFetching', true)
+    // commit('updateDetailData', {})
+    return this.$axios
+      .$get(`${ADMIN_API_PATH}/topic/detail/${params.topic_id}`)
+      .then(response => {
+        return new Promise(resolve => {
+          commit('updateDetailData', response)
+          commit('updateDetailFetching', false)
+          resolve(response)
+          // delay(() => {
+          //   resolve(response)
+          // })
+        })
+      })
+      .catch(error => {
+        commit('updateDetailFetching', false)
+        return Promise.reject(error)
       })
   },
   fetchTopicTags({ commit }, params) {

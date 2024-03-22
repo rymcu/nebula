@@ -23,38 +23,13 @@
         <el-form-item label="图标">
           <el-row>
             <el-col :span="24">
-              <img @click="cropperVisible=true" :src="topicIconPath" style="width: 80px;height: 80px"/>
+              <img @click="cropperVisible = true" :src="topic.topicIconPath" style="width: 80px;height: 80px"/>
             </el-col>
           </el-row>
         </el-form-item>
         <el-form-item label="描述">
-          <div id="contentEditor" @blur="blurData"></div>
+          <div id="contentEditor"></div>
         </el-form-item>
-<!--        <el-form-item>-->
-<!--          <el-row >-->
-<!--            <el-col :span="8">-->
-<!--              <el-card>-->
-<!--                <div class="card-body d-flex flex-column">-->
-<!--                  <el-card shadow="never">-->
-<!--                    <div class="card-body d-flex flex-column">-->
-<!--                      <el-row :gutter="20">-->
-<!--                        <el-col :span="5" style="text-align: right;">-->
-<!--                          <img :src="topicIconPath" :alt="topic.topicTitle"-->
-<!--                               style="display: block;width:60px;height: 60px" class="topic-brand-img">-->
-<!--                        </el-col>-->
-<!--                        <el-col :span="18">-->
-<!--                          <span style="font-size: 18px;font-weight: bold"> {{ topic.topicTitle }}</span>-->
-<!--                          <div class="text-muted article-summary-md text-content">{{ topic.topicDescription }}</div>-->
-<!--                        </el-col>-->
-<!--                      </el-row>-->
-<!--                    </div>-->
-<!--                  </el-card>-->
-<!--                </div>-->
-<!--              </el-card>-->
-<!--            </el-col>-->
-<!--          </el-row>-->
-
-<!--        </el-form-item>-->
         <el-form-item label="导航主题">
           <el-switch
             v-model="topic.topicNva"
@@ -85,7 +60,7 @@
         </el-form-item>
       </el-form>
     </el-col>
-    <ImgCropper @onSubmit="updateUser" :visible.sync='cropperVisible' :avatarUrl="topicIconPath||''"></ImgCropper>
+    <ImgCropper @onSubmit="updateTopicIcon" :visible.sync='cropperVisible' :avatarUrl="topicIconPath||''"></ImgCropper>
 
   </el-row>
 </template>
@@ -103,11 +78,24 @@ export default {
   components: {
     VueCropper, ImgCropper
   },
+  validate({params}) {
+    if (typeof params.topic_id === 'undefined') {
+      return true;
+    }
+    return params.topic_id && !isNaN(Number(params.topic_id))
+  },
+  asyncData({store, params, error}) {
+    return Promise.all([
+      store.dispatch('topic/fetchPostDetail', params)
+        .catch(err => error({statusCode: 404}))
+    ])
+  },
   computed: {
     ...mapState({
       uploadHeaders: state => {
         return {'X-Upload-Token': state.uploadHeaders}
-      }
+      },
+      topicInfo: state => state.topic.detail.data
     })
   },
   data() {
@@ -140,24 +128,15 @@ export default {
       autoCrop: true,
       notificationFlag: true,
       cropperVisible: false,
-      contentEditor:{}
+      contentEditor: {}
 
     }
   },
   methods: {
-    blurData(){
-
-      console.log(this.contentEditor)
-      if(this.contentEditor!={}){
-        console.log(this.contentEditor.getValue())
-
-        this.topic.topicDescription=this.contentEditor.getValue();
-      }
-
-    },
-    updateUser(data) {
+    updateTopicIcon(data) {
       this.topic.topicIconPath = data
       this.topicIconPath = data
+      this.topic.topicImageType = '1'
       this.cropperVisible = false
 
     },
@@ -264,6 +243,7 @@ export default {
       _ts.$axios[id ? '$put' : '$post']('/api/admin/topic/post', data).then(function (res) {
         if (res && res.message) {
           _ts.$message.error(res.message);
+          _ts.$set(_ts, 'loading', false);
         } else {
           _ts.$message({
             type: 'success',
@@ -271,30 +251,11 @@ export default {
           });
           _ts.$set(_ts, 'loading', false);
           _ts.$set(_ts, 'notificationFlag', false);
-          _ts.contentEditor.setValue('');
-          _ts.$router.push({
-            path: `/admin/topic/${data.topicUri}`
-          })
         }
       })
     },
     reset() {
       this.$refs.cropper.reset();
-    },
-    // get image data for post processing, e.g. upload or setting image src
-    cropImage() {
-      let _ts = this;
-      try {
-        _ts.cropImg = _ts.$refs.cropper.getCroppedCanvas().toDataURL();
-        let topic = _ts.topic;
-        topic.topicIconPath = _ts.cropImg;
-        _ts.$set(_ts, 'topic', topic);
-        _ts.$set(_ts, 'topicIconPath', _ts.cropImg);
-        _ts.$message.success('已裁剪 !');
-      } catch (e) {
-        _ts.$message.error('图片获取失败 !');
-        return;
-      }
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -316,7 +277,7 @@ export default {
   beforeDestroy() {
     window.onbeforeunload = null;
   },
-  async mounted() {
+  mounted() {
     window.addEventListener('beforeunload', e => {
       e = e || window.event;
 
@@ -339,32 +300,24 @@ export default {
       }
     });
 
-
-    if (_ts.$route.params.topic_id) {
-      _ts.$set(_ts, 'isEdit', true);
-      const responseData = await _ts.$axios.$get('/api/admin/topic/detail/' + _ts.$route.params.topic_id);
-      _ts.$set(_ts, 'topic', responseData);
-      if (responseData.topicIconPath) {
-        _ts.$set(_ts, 'topicIconPath', responseData.topicIconPath);
+    Vue.nextTick(() => {
+      let topicDescription = '';
+      if (_ts.$route.params.topic_id) {
+        let topic = _ts.topicInfo
+        _ts.$set(_ts, 'topic', JSON.parse(JSON.stringify(topic)));
+        _ts.$set(_ts, 'isEdit', true);
+        topicDescription = _ts.topic.topicDescription;
+      } else {
+        _ts.$set(_ts, 'isEdit', false);
       }
-    } else {
-      _ts.$set(_ts, 'isEdit', false);
-    }
-
-    let articleContent = '';
-    if (_ts.topic.topicDescription) {
-      articleContent = _ts.topic.topicDescription;
-    }
-    _ts.contentEditor = _ts._initEditor({
-      id: 'contentEditor',
-      mode: 'both',
-      height: 300,
-      placeholder: '', //this.$t('inputContent', this.$store.state.locale)
-      resize: false,
-      value: articleContent,
-    });
-    setTimeout(()=>{
-      _ts.contentEditor.blur()
+      _ts.contentEditor = _ts._initEditor({
+        id: 'contentEditor',
+        mode: 'both',
+        height: 300,
+        placeholder: '', //this.$t('inputContent', this.$store.state.locale)
+        resize: false,
+        value: topicDescription,
+      });
     })
   },
 
@@ -372,7 +325,7 @@ export default {
 </script>
 
 <style lang="less">
-  @import "~vditor/src/assets/less/index.less";
+@import "~vditor/src/assets/less/index.less";
 
 .preview-area {
   width: 16rem;
