@@ -26,7 +26,7 @@
         <el-col>
           <el-col class="row align-items-center">
             <el-col class="col-auto">
-              Copyright © 2020
+              Copyright © {{new Date().getFullYear()}}
               <el-link rel="nofollow" :underline="false" href="/" style="vertical-align: baseline;"><span>{{
                   systemName
                 }}</span>
