@@ -68,6 +68,8 @@
   import Vue from 'vue';
   import {mapState} from 'vuex';
   import 'vditor/dist/css/content-theme/light.css';
+  import apiConfig from '~/config/api.config'
+
 
   export default {
     name: "DraftDetail",
