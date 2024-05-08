@@ -155,7 +155,7 @@ export default {
       if (res && res.data && res.data.url) {
         let user = _ts.user;
         user.avatarUrl = res.data.url;
-        user.avatarType = '0';
+        user.avatarType = '1';
         _ts.$set(_ts, 'user', user);
         _ts.$set(_ts, 'avatarUrl', res.data.url);
       } else {
@@ -193,7 +193,13 @@ export default {
       })
     },
     reset() {
-      this.avatarUrl = JSON.parse(JSON.stringify(this.oldAvatarUrl))
+      let _ts = this;
+      const avatarUrl = JSON.parse(JSON.stringify(this.oldAvatarUrl))
+      let user = _ts.user;
+      user.avatarUrl = avatarUrl;
+      user.avatarType = '0';
+      _ts.$set(_ts, 'user', user);
+      _ts.$set(_ts, 'avatarUrl', avatarUrl);
       // this.$refs.cropper.clearCrop();
     },
     // get image data for post processing, e.g. upload or setting image src

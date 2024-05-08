@@ -156,7 +156,8 @@ export default {
         portfolioDescription: '',
         portfolioDescriptionHtml: ''
       },
-      isLoading: false
+      isLoading: false,
+      headImgType: '0'
     }
   },
   methods: {
@@ -195,6 +196,7 @@ export default {
       reader.readAsDataURL(file);
       reader.onload = function () {
         _ts.$set(_ts, 'headImgUrl', this.result);
+        _ts.$set(_ts, 'headImgType', '1');
         // _ts.$refs.cropper?.replace(this.result);
       }
     },
@@ -204,7 +206,7 @@ export default {
       let data = _ts.portfolio;
       data.portfolioDescription = _ts.$refs.contentEditor.contentValue();
       data.portfolioDescriptionHtml = await _ts.$refs.contentEditor.contentHtml();
-      data.headImgType = 0;
+      data.headImgType = _ts.headImgType;
       data.headImgUrl = _ts.headImgUrl;
       if ((data.portfolioDescription || undefined) === undefined || (data.portfolioDescriptionHtml || undefined) === undefined) {
         this.$message.error('请输入必填信息');
@@ -287,6 +289,7 @@ export default {
     },
     reset() {
       this.headImgUrl = ''
+      this.$set(this, 'headImgType', '0');
       // this.$refs.cropper.clearCrop()
     },
   },
