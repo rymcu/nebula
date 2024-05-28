@@ -1,24 +1,8 @@
 <template>
   <client-only>
     <el-row class="wrapper" v-if="user">
-      <el-col>
-        <div id="contentEditor"></div>
-      </el-col>
-      <el-col style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-        <el-button type="primary" :loading="loading" @click="send" plain>发送</el-button>
-      </el-col>
-      <el-col style="margin-top: 2rem;" id="messagesContent">
-        <el-col v-if="message">
-          <el-col :span="2">
-            <el-avatar :src="to.avatarUrl"></el-avatar>
-          </el-col>
-          <el-col :span="22" style="text-align: left;">
-            <div class="to-message">
-              <div v-html="message"></div>
-            </div>
-          </el-col>
-        </el-col>
-        <el-col v-for="message in messages" :key="message.dataId">
+      <el-col style="padding: 0 .5rem 1rem 0;max-height: 38rem;overflow-y: auto;" id="messagesContent">
+        <el-col v-for="message in messages" :key="message.dataId" style="max-height: 38rem;">
           <el-col v-if="message.from === user.account">
             <el-col :span="22" style="text-align: right;">
               <div class="from-message">
@@ -39,6 +23,24 @@
               </div>
             </el-col>
           </el-col>
+        </el-col>
+        <el-col v-if="message">
+          <el-col :span="2">
+            <el-avatar :src="to.avatarUrl"></el-avatar>
+          </el-col>
+          <el-col :span="22" style="text-align: left;">
+            <div class="to-message">
+              <div v-html="message"></div>
+            </div>
+          </el-col>
+        </el-col>
+      </el-col>
+      <el-col style="position: fixed;bottom: 5.5rem;max-width: 71rem;left: 30rem;">
+        <el-col :span="20">
+          <div id="contentEditor"></div>
+        </el-col>
+        <el-col :span="4" style="position: fixed;bottom: 6rem;right: 15.5rem;">
+          <el-button type="primary" :loading="loading" @click="send" plain>发送</el-button>
         </el-col>
       </el-col>
     </el-row>
@@ -127,7 +129,7 @@ export default {
         }]
       return new Vue.Vditor(data.id, {
         toolbar,
-        mode: 'sv',
+        mode: 'ir',
         tab: '\t',
         cdn: apiConfig.VDITOR,
         cache: {
@@ -192,7 +194,7 @@ export default {
       }
       _ts.messages.push(message);
       _ts.messages.sort((a, b) => {
-        return b.dataId - a.dataId;
+        return a.dataId - b.dataId;
       });
       _ts.contentEditor.setValue('')
       _ts.$axios.$post('/api/openai/new-chat', _ts.messages).then(async res => {
@@ -208,7 +210,7 @@ export default {
           content: html
         });
         _ts.messages.sort((a, b) => {
-          return b.dataId - a.dataId;
+          return a.dataId - b.dataId;
         });
         _ts.message = '';
       });
@@ -247,7 +249,7 @@ export default {
     },
     //handleCustomEvents回调
     handleCustomEvents(res) {
-      let { data } = res;
+      let {data} = res;
       this.customEvents = data;
     }
   },
@@ -294,7 +296,7 @@ export default {
         _ts.contentEditor = _ts._initEditor({
           id: 'contentEditor',
           mode: 'both',
-          height: 200,
+          height: 160,
           placeholder: '', //this.$t('inputContent', this.$store.state.locale)
           resize: false,
           value: ''
@@ -324,8 +326,8 @@ export default {
   background-color: skyblue;
   border-bottom-color: skyblue;
   /*为了给after伪元素自动继承*/
-  color: #fff;
-  font-size: 12px;
+  color: #000;
+  font-size: 14px;
   line-height: 18px;
   padding: 5px 12px 5px 12px;
   box-sizing: border-box;
@@ -342,8 +344,8 @@ export default {
   background-color: skyblue;
   border-bottom-color: skyblue;
   /*为了给after伪元素自动继承*/
-  color: #fff;
-  font-size: 12px;
+  color: #000;
+  font-size: 14px;
   line-height: 18px;
   padding: 5px 12px 5px 12px;
   box-sizing: border-box;
