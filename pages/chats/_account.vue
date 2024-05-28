@@ -1,8 +1,8 @@
 <template>
   <client-only>
     <el-row class="wrapper" v-if="user">
-      <el-col style="padding: 0 .5rem 1rem 0;max-height: 38rem;overflow-y: auto;" id="messagesContent">
-        <el-col v-for="message in messages" :key="message.dataId" style="max-height: 38rem;">
+      <el-col style="padding: 0 .5rem 1rem 0;max-height: 64vh;overflow-y: auto;" id="messagesContent">
+        <el-col v-for="message in messages" :key="message.dataId">
           <el-col v-if="message.from === user.account">
             <el-col :span="22" style="text-align: right;">
               <div class="from-message">
@@ -35,11 +35,11 @@
           </el-col>
         </el-col>
       </el-col>
-      <el-col style="position: fixed;bottom: 5.5rem;max-width: 71rem;left: 30rem;">
+      <el-col style="position: fixed;bottom: 10vh;max-width: 60vw;left: 25vw;">
         <el-col :span="20">
           <div id="contentEditor"></div>
         </el-col>
-        <el-col :span="4" style="position: fixed;bottom: 6rem;right: 15.5rem;">
+        <el-col :span="4" style="position: fixed;bottom: 10vh;right: 12vw;">
           <el-button type="primary" :loading="loading" @click="send" plain>发送</el-button>
         </el-col>
       </el-col>
