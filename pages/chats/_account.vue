@@ -197,6 +197,7 @@ export default {
         return a.dataId - b.dataId;
       });
       _ts.contentEditor.setValue('')
+      _ts.scrollToBottom();
       _ts.$axios.$post('/api/openai/new-chat', _ts.messages).then(async res => {
         const html = await Vue.Vditor.md2html(_ts.message, {
           cdn: apiConfig.VDITOR
@@ -213,6 +214,7 @@ export default {
           return a.dataId - b.dataId;
         });
         _ts.message = '';
+        _ts.scrollToBottom();
       });
     },
     close() {
@@ -243,14 +245,23 @@ export default {
     },
     //message回调
     handleMessage(res) {
+      let _ts = this;
       if (typeof res !== "undefined") {
-        this.message += res;
+        _ts.message += res;
+        _ts.scrollToBottom();
       }
     },
     //handleCustomEvents回调
     handleCustomEvents(res) {
       let {data} = res;
       this.customEvents = data;
+    },
+    scrollToBottom() {
+      setTimeout(() => {
+        // 获取指定容器的 DOM 元素
+        let container = document.getElementById("messagesContent");
+        container.scrollTop = container.scrollHeight;
+      }, 100);
     }
   },
   async mounted() {
