@@ -12,35 +12,22 @@
       <el-form ref='productInfo' :model='productInfo' :rules='rules' label-poionsit='right' label-width='110px'>
         <div style="margin-bottom:20px">
           <img :src="productInfo.productImgUrl" style="width: 120px;height: 120px;margin: 0 auto;display: block"
-               @click="cropperVisible=true">
+            @click="cropperVisible = true">
         </div>
         <el-form-item label='产品名称' prop='productTitle'>
-          <el-input v-model='productInfo.productTitle' placeholder='请输入产品名称'/>
+          <el-input v-model='productInfo.productTitle' placeholder='请输入产品名称' />
         </el-form-item>
         <el-form-item label='产品价格' prop='productPrice'>
-          <el-input v-model='productInfo.productPrice' placeholder='请输入产品价格'/>
+          <el-input v-model='productInfo.productPrice' placeholder='请输入产品价格' />
         </el-form-item>
         <el-form-item label='产品描述' prop='type'>
           <div id="contentEditor"></div>
         </el-form-item>
         <el-form-item label='标签' prop='tags'>
-          <el-select
-            style="width: 100%;"
-            v-model="productTags"
-            multiple
-            filterable
-            allow-create
-            default-first-option
-            remote
-            :remote-method="remoteMethod"
-            placeholder="请选择文章标签"
-            :loading="loading"
+          <el-select style="width: 100%;" v-model="productTags" multiple filterable allow-create default-first-option
+            remote :remote-method="remoteMethod" placeholder="请选择文章标签" :loading="loading"
             @change="setLocalstorage('tags', productTags)">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -52,45 +39,46 @@
         <el-button :loading="doLoading" plain type="primary" @click="postProduct">发布</el-button>
       </el-col>
       <el-col v-else style="margin-top: 1rem;padding-right:3rem;text-align: right;">
-        <el-button v-if="productInfo.status === 0" :loading="doLoading" plain type="danger" @click="updateStatus">下架</el-button>
+        <el-button v-if="productInfo.status === 0" :loading="doLoading" plain type="danger"
+          @click="updateStatus">下架</el-button>
         <el-button v-else :loading="doLoading" plain type="danger" @click="updateStatus">上架</el-button>
         <el-button v-if="productInfo.status === 0" :loading="doLoading" plain type="primary" @click="postProduct">更新
         </el-button>
         <el-button v-else :loading="doLoading" plain type="primary" @click="postProduct">发布</el-button>
       </el-col>
     </el-col>
-    <ImgCropper :avatarUrl="productInfo.productImgUrl||''" :visible.sync='cropperVisible'
-                @onSubmit="updateProductImgUrl"></ImgCropper>
+    <ImgCropper :avatarUrl="productInfo.productImgUrl || ''" :visible.sync='cropperVisible'
+      @onSubmit="updateProductImgUrl"></ImgCropper>
   </el-row>
 </template>
 
 <script>
 import Vue from 'vue';
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
 import apiConfig from '~/config/api.config';
 import ImgCropper from "~/components/ImgCropper.vue";
 import VueCropper from "vue-cropper";
 
 const rules = {
   productTitle: [
-    {required: true, message: '请输入公司名称', trigger: 'blur'},
-    {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
+    { required: true, message: '请输入公司名称', trigger: 'blur' },
+    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
   ],
-  productDescription: [{required: true, message: '请输入产品描述', trigger: 'blur'}]
+  productDescription: [{ required: true, message: '请输入产品描述', trigger: 'blur' }]
 }
 export default {
   name: "PostProducts",
   middleware: 'auth',
-  validate({params, store}) {
+  validate({ params, store }) {
     if (typeof params.product_id === 'undefined') {
       return true;
     }
     return params.product_id && !isNaN(Number(params.product_id))
   },
-  asyncData({store, params, error}) {
+  asyncData({ store, params, error }) {
     return Promise.all([
       store.dispatch('product/fetchPostDetail', params)
-        .catch(err => error({statusCode: 404}))
+        .catch(err => error({ statusCode: 404 }))
     ])
   },
   components: {
@@ -120,15 +108,42 @@ export default {
         productImgUrl: '',
         productImgType: 0
       },
+      productInfo2: {
+        idProduct: 0,
+        productTitle: '',
+        productContent: '',
+        productType: 0,
+        tags: '',
+        status: 0,
+        productPrice: 0,
+        productImgUrl: '',
+        productImgType: 0
+      },
       productTags: [],
       options: [],
       list: [],
       loading: false,
       doLoading: false,
       isEdit: false,
-      notificationFlag: true,
+      notificationFlag: false,
       cropperVisible: false,
       rules: rules,
+    }
+  },
+  watch: {
+    // watch监听 判断是否修改  
+    productInfo: {
+      handler(val, oldVal) {
+        for (let i in this.editForm) {
+          if (val[i] != this.productInfo2[i]) {
+            this.notificationFlag = true;
+            break;
+          } else {
+            this.notificationFlag = false;
+          }
+        }
+      },
+      deep: true
     }
   },
   methods: {
@@ -423,6 +438,7 @@ export default {
         type: 'warning'
       }).then(() => {
         next();
+        _ts.$set(_ts, 'notificationFlag', false);
       }).catch(() => {
         return false
       });
