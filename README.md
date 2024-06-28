@@ -6,7 +6,8 @@
 
 nebula（[ˈnebyələ]，n.星云）是一款现代化的知识社区项目，使用 Vue + NuxtJS + Element-UI 实现
 
-与 [forest](https://github.com/rymcu/forest) （[ˈfôrəst]，n.森林）一起食用，让我们一起探索知识社区的未来。
+## 💡 Tips
+- 与后端项目 [forest](https://github.com/rymcu/forest) （[ˈfôrəst]，n.森林）一起食用，让我们一起探索知识社区的未来。
 
 ## ⚡ 动机
 
