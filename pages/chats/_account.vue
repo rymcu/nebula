@@ -1,7 +1,35 @@
 <template>
   <client-only>
     <el-row class="wrapper" v-if="user">
-      <el-col style="padding: 0 .5rem 1rem 0;max-height: 64vh;overflow-y: auto;" id="messagesContent">
+      <el-col :span="16">
+        <el-form label-width="80px" label-position="right">
+          <el-form-item label="助手">
+            <el-select v-model="assistant" placeholder="请选择助手" style="width: 200px;">
+              <el-option
+                v-for="item in assistantList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </el-col>
+      <el-col :span="8" style="padding: 0 1rem;text-align: right;">
+        <el-form label-width="80px" label-position="right">
+          <el-form-item label="模型">
+            <el-select v-model="gptModel" placeholder="请选择模型" style="width: 200px;">
+              <el-option
+                v-for="item in modelList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </el-col>
+      <el-col style="padding: 0 .5rem 1rem 0;max-height: 60vh;overflow-y: auto;" id="messagesContent">
         <el-col v-for="message in messages" :key="message.dataId">
           <el-col v-if="message.from === user.account">
             <el-col :span="22" style="text-align: right;">
@@ -77,7 +105,16 @@ export default {
       messages: [],
       vueSse: null,
       customEvents: null,
-      message: ''
+      message: '',
+      gptModel: 'gpt-3.5-turbo-16k-0613',
+      modelList: [
+        {value: 'gpt-3.5-turbo-16k-0613', label: 'gpt-3.5-turbo-16k-0613'},
+        {value: 'gpt-4o-mini', label: 'gpt-4o-mini'},
+      ],
+      assistant: 'Yuumi',
+      assistantList: [
+        {value: 'Yuumi', label: 'Yuumi'},
+      ]
     }
   },
   watch: {
@@ -198,7 +235,10 @@ export default {
       });
       _ts.contentEditor.setValue('')
       _ts.scrollToBottom();
-      _ts.$axios.$post('/api/openai/new-chat', _ts.messages).then(async res => {
+      _ts.$axios.$post('/api/openai/chat', {
+        messages: _ts.messages,
+        model: _ts.gptModel
+      }).then(async () => {
         const html = await Vue.Vditor.md2html(_ts.message, {
           cdn: apiConfig.VDITOR
         });
@@ -331,16 +371,17 @@ export default {
 
 .from-message {
   float: right;
+  text-align: left;
   width: auto;
   min-height: 40px;
-  margin: 10px;
+  margin: 3px;
   background-color: skyblue;
   border-bottom-color: skyblue;
   /*为了给after伪元素自动继承*/
   color: #000;
   font-size: 14px;
   line-height: 18px;
-  padding: 5px 12px 5px 12px;
+  padding: 3px 12px;
   box-sizing: border-box;
   border-radius: 6px;
   position: relative;
@@ -349,16 +390,17 @@ export default {
 
 .to-message {
   float: left;
+  text-align: left;
   width: auto;
   min-height: 40px;
-  margin: 10px;
+  margin: 3px;
   background-color: skyblue;
   border-bottom-color: skyblue;
   /*为了给after伪元素自动继承*/
   color: #000;
   font-size: 14px;
   line-height: 18px;
-  padding: 5px 12px 5px 12px;
+  padding: 3px 12px;
   box-sizing: border-box;
   border-radius: 6px;
   position: relative;
