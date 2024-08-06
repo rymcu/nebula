@@ -140,7 +140,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        _ts.$axios.$patch('/api/admin/product/update-status', {
+        _ts.$axios.$patch('/api/product/update-status', {
           idProduct: product.idProduct,
           status: status
         }).then(function (res) {
