@@ -59,7 +59,8 @@ export default {
     {src: '~/plugins/element-ui'},
     {src: '~/plugins/vditor', ssr: false},
     {src: '~/plugins/vue-sse'},
-    {src: '~/plugins/vue-cropper', ssr: false}
+    {src: '~/plugins/vue-cropper', ssr: false},
+    {src: '~/plugins/goatcounter.js', ssr: false}
   ],
   /*
   ** Nuxt.js dev-modules
