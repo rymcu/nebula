@@ -84,7 +84,7 @@
         </el-col>
       </el-row>
     </client-only>
-    <ImgCropper @onSubmit="updateUser" :visible.sync='cropperVisible' :avatarUrl="user.avatarUrl||''"></ImgCropper>
+    <ImgCropper @onSubmit="updateAvatar" :visible.sync='cropperVisible' :avatarUrl="user.avatarUrl||''"></ImgCropper>
 
   </el-card>
 
@@ -131,29 +131,27 @@ export default {
   },
   watch: {},
   methods: {
-    updateUser(data) {
+    updateUser(user) {
       let _ts = this;
-
-      if (data) {
-        let user = _ts.user;
-        user.avatarUrl = data
-        user.avatarType = 1
-        _ts.$axios.$patch('/api/user-info/update', user).then(function (res) {
-          if (res) {
-            if (res.message) {
-              _ts.$message.error(res.message);
-            } else {
-              _ts.$set(_ts, 'user', res);
-              // _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
-              // _ts.$store.commit('setUserInfo', res);
-              _ts.$message.success('更新成功 !');
-              _ts.cropperVisible = false
+      _ts.$refs['user'].validate((valid) => {
+        if (valid && user) {
+          _ts.$axios.$patch('/api/user-info/update', user).then(function (res) {
+            if (res) {
+              if (res.message) {
+                _ts.$message.error(res.message);
+              } else {
+                _ts.$set(_ts, 'user', res);
+                // _ts.$set(_ts, 'avatarUrl', res.avatarUrl);
+                // _ts.$store.commit('setUserInfo', res);
+                _ts.$message.success('更新成功 !');
+                _ts.cropperVisible = false
+              }
             }
-          }
-        })
-      } else _ts.$message.error('失败，请重试');
-
-
+          })
+        } else {
+          _ts.$message.error('失败，请重试');
+        }
+      })
     },
     getData() {
       let _ts = this;
@@ -206,7 +204,7 @@ export default {
       setTimeout(function () {
         saveSvg.svgAsPngUri(document.getElementById('avatarSvg'), {}).then(uri => {
           if (uri) {
-            _ts.updateUser(uri)
+            _ts.updateAvatar(uri)
             _ts.randomTitle = '‧★,:*:‧\\(￣▽￣)/‧:*‧°★* 再来一次'
           } else {
             _ts.$message.error('头像上传失败 !');
@@ -214,6 +212,13 @@ export default {
         });
       }, 300);
     },
+    updateAvatar(data) {
+      let _ts = this;
+      let user = _ts.user;
+      user.avatarUrl = data
+      user.avatarType = 1
+      _ts.updateUser(user);
+    }
   },
   mounted() {
     this.$store.commit('setActiveMenu', 'account');
