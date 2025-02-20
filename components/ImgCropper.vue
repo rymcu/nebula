@@ -205,10 +205,13 @@ export default {
   margin-bottom: 1rem;
   margin-top: 3rem;
   border: 3px solid #fff;
-  border-radius: 100%;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   overflow: hidden;
+}
+
+.avatar {
+  border-radius: 100%;
 }
 
 .preview-medium img {

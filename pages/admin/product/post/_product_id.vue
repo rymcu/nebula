@@ -224,7 +224,7 @@ export default {
           max: 10 * 1024 * 1024,
           url: this.tokenURL.URL,
           linkToImgUrl: this.tokenURL.linkToImageURL,
-          token: this.tokenURL.token,
+          token: this.$auth.strategy.token.get(),
           filename: name => name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
         },
         height: data.height,
